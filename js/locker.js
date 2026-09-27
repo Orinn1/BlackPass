@@ -190,9 +190,9 @@ function onStepTimerFinished() {
     btnIcon.className = '';
     btnIcon.setAttribute('data-lucide', 'arrow-right');
     btn.onclick = () => {
-      // Trigger Popunder Ad simulation on click
+      // Trigger Popunder Ad on click
       if (currentLocker.ads?.popunder) {
-        simulatePopunderAd();
+        simulatePopunderAd(currentStepIndex + 1);
       }
       startStep(currentStepIndex + 1);
     };
@@ -258,23 +258,31 @@ function updateLockerLanguage() {
 window.handleTaskItemClick = function(stepNum) {
   if (stepNum === currentStepIndex && !isStepTaskTriggered) {
     isStepTaskTriggered = true;
-    simulatePopunderAd();
+    simulatePopunderAd(stepNum);
     const notice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'เปิดหน้าสปอนเซอร์แล้ว กรุณาเปิดหน้านี้ค้างไว้จนกว่าเวลานับถอยหลังจะหมด' : 'Sponsor link opened in new tab. Keep this page active.';
     showToast(notice, 'info');
   }
 };
 
 // Real Ad Trigger & Popunder Execution Engine
-function triggerSmartlinkAd() {
+function triggerSmartlinkAd(stepNum = currentStepIndex) {
   const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
   const globalAds = settings?.ads || {};
 
-  // Prioritize Locker-specific smartlink, then fallback to global smartlink from Settings
+  // Check step-specific URLs first (Step 1 -> PopAds, Step 2 -> Adsterra, Step 3 -> Monetag)
+  let stepUrl = '';
+  if (stepNum === 1 && globalAds.step1Url) stepUrl = globalAds.step1Url;
+  else if (stepNum === 2 && globalAds.step2Url) stepUrl = globalAds.step2Url;
+  else if (stepNum === 3 && globalAds.step3Url) stepUrl = globalAds.step3Url;
+
+  // Prioritize Locker-specific smartlink, then step-specific, then fallback to global smartlink
   const targetSmartlink = (currentLocker?.smartlinkUrl && currentLocker.smartlinkUrl.trim())
     ? currentLocker.smartlinkUrl.trim()
-    : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
-      ? globalAds.smartlinkUrl.trim()
-      : 'https://publishers.adsterra.com/referral/demo';
+    : (stepUrl && stepUrl.trim())
+      ? stepUrl.trim()
+      : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
+        ? globalAds.smartlinkUrl.trim()
+        : 'https://publishers.adsterra.com/referral/demo';
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');
@@ -287,8 +295,8 @@ function triggerSmartlinkAd() {
 }
 
 // Backward-compatible alias
-function simulatePopunderAd() {
-  triggerSmartlinkAd();
+function simulatePopunderAd(stepNum) {
+  triggerSmartlinkAd(stepNum);
 }
 
 // Initialize dynamic banner and popunder script injection

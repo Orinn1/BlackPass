@@ -375,6 +375,9 @@ class BlackPassStore {
       },
       ads: {
         smartlinkUrl: '',
+        step1Url: '',
+        step2Url: '',
+        step3Url: '',
         popunderScript: '',
         bannerCode: '',
         network: 'adsterra'
@@ -388,6 +391,9 @@ class BlackPassStore {
       if (!parsed.ads) {
         parsed.ads = {
           smartlinkUrl: '',
+          step1Url: '',
+          step2Url: '',
+          step3Url: '',
           popunderScript: '',
           bannerCode: '',
           network: 'adsterra'
@@ -420,6 +426,9 @@ class BlackPassStore {
       },
       ads: {
         smartlinkUrl: '',
+        step1Url: '',
+        step2Url: '',
+        step3Url: '',
         popunderScript: '',
         bannerCode: '',
         network: 'adsterra'

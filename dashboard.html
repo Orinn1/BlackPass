@@ -512,6 +512,32 @@
             <div class="form-hint" data-i18n="settings_ads_banner_hint">โค้ดนี้จะไปแสดงในกล่องสปอนเซอร์ของหน้า Locker แทนข้อความเริ่มต้น</div>
           </div>
 
+          <!-- 3-Step Stacking Setup -->
+          <div style="background: rgba(0, 0, 0, 0.25); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: 8px; padding: 14px; margin: 18px 0;">
+            <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+              <i data-lucide="layers" style="width: 15px; height: 15px; color: #818CF8;"></i>
+              <span data-i18n="settings_ads_split_title">สูตรผสม 3 ค่ายแยกตาม 3 ด่าน (รายได้คูณ 3)</span>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" data-i18n="settings_ads_split_desc">
+              แยกค่ายโฆษณาคนละค่ายในแต่ละด่าน เพื่อให้ผู้ใช้ไม่ถูกนับเป็น IP ซ้ำ และสร้างรายได้เต็ม 100% ทั้ง 3 ด่าน
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step1_label">ด่านที่ 1 (แนะนำ: PopAds — ถอนตอนไหนก็ได้)</label>
+                <input type="url" class="form-input" id="settingsStep1Url" placeholder="https://... ลิงก์ PopAds หรือ Direct Link ด่าน 1" data-i18n-placeholder="settings_ads_step1_placeholder">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step2_label">ด่านที่ 2 (แนะนำ: Adsterra — CPM สูงสุด)</label>
+                <input type="url" class="form-input" id="settingsStep2Url" placeholder="https://... ลิงก์ Adsterra Smartlink ด่าน 2" data-i18n-placeholder="settings_ads_step2_placeholder">
+              </div>
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step3_label">ด่านที่ 3 (แนะนำ: Monetag — โหลดไว)</label>
+                <input type="url" class="form-input" id="settingsStep3Url" placeholder="https://... ลิงก์ Monetag Smartlink ด่าน 3" data-i18n-placeholder="settings_ads_step3_placeholder">
+              </div>
+            </div>
+          </div>
+
           <button class="btn btn-primary btn-sm" id="btnSaveAdSettings" data-i18n="settings_btn_save_ads">บันทึกการตั้งค่าโฆษณา</button>
         </div>
 

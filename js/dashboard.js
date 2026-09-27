@@ -463,6 +463,21 @@ function loadSettingsToUI() {
   if (bannerInput && settings.ads?.bannerCode) {
     bannerInput.value = settings.ads.bannerCode;
   }
+
+  const s1Input = document.getElementById('settingsStep1Url');
+  if (s1Input && settings.ads?.step1Url) {
+    s1Input.value = settings.ads.step1Url;
+  }
+
+  const s2Input = document.getElementById('settingsStep2Url');
+  if (s2Input && settings.ads?.step2Url) {
+    s2Input.value = settings.ads.step2Url;
+  }
+
+  const s3Input = document.getElementById('settingsStep3Url');
+  if (s3Input && settings.ads?.step3Url) {
+    s3Input.value = settings.ads.step3Url;
+  }
 }
 
 function initSettingsForm() {
@@ -488,6 +503,9 @@ function initSettingsForm() {
   document.getElementById('btnSaveAdSettings')?.addEventListener('click', () => {
     const network = document.getElementById('settingsAdNetwork')?.value || 'adsterra';
     const smartlinkUrl = (document.getElementById('settingsSmartlinkUrl')?.value || '').trim();
+    const step1Url = (document.getElementById('settingsStep1Url')?.value || '').trim();
+    const step2Url = (document.getElementById('settingsStep2Url')?.value || '').trim();
+    const step3Url = (document.getElementById('settingsStep3Url')?.value || '').trim();
     const popunderScript = (document.getElementById('settingsPopunderScript')?.value || '').trim();
     const bannerCode = (document.getElementById('settingsBannerCode')?.value || '').trim();
 
@@ -495,6 +513,9 @@ function initSettingsForm() {
     settings.ads = {
       network,
       smartlinkUrl,
+      step1Url,
+      step2Url,
+      step3Url,
       popunderScript,
       bannerCode
     };
