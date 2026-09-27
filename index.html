@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlackPass — Monetize Every Click | Modern Content Locker Platform</title>
+  <meta name="description" content="Turn your scripts, downloads, and links into high-yield revenue with BlackPass's multi-step ad gates, anti-bypass protection, and instant payouts.">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/landing.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-check" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span>BlackPass</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#calculator" class="nav-link">Calculator</a></li>
+        <li><a href="#pricing" class="nav-link">RevShare</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="dashboard.html" class="btn btn-ghost btn-sm">Sign In</a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">
+          <span>Create Locker</span>
+          <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        <span>Version 2.4 Live &mdash; 92% Highest RevShare in Industry</span>
+      </div>
+
+      <h1 class="hero-title">
+        Monetize Every Click With <br>
+        <span class="text-gradient">High-Yield Access Gates</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Turn your Roblox scripts, gaming tools, and exclusive content into recurring revenue. Engineered with multi-step task walls, anti-bypass security, and instant payouts.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="dashboard.html" class="btn btn-primary btn-lg">
+          <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
+          <span>Create Your Locker</span>
+        </a>
+        <a href="locker.html?slug=blox-fruits-v48" target="_blank" class="btn btn-secondary btn-lg">
+          <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
+          <span>Test Live Gate Demo</span>
+        </a>
+      </div>
+
+      <!-- Live Earnings Calculator -->
+      <div class="calculator-card" id="calculator">
+        <div class="calc-header">
+          <div>
+            <h3 class="calc-title">Interactive Revenue Estimator</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Calculate your projected monthly earnings based on your current audience volume.</p>
+          </div>
+          <span class="badge badge-success">Live CPM Formula</span>
+        </div>
+
+        <div class="calc-grid">
+          <div class="calc-controls">
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span>Daily Link Visitors</span>
+                <span class="slider-value" id="calcVisitorLabel">2,500 visits</span>
+              </div>
+              <input type="range" min="300" max="25000" step="100" value="2500" class="custom-range" id="calcVisitorSlider">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span>Expected CPM Rate</span>
+                <span class="slider-value" id="calcCpmLabel">$5.50 CPM</span>
+              </div>
+              <input type="range" min="1.5" max="15.0" step="0.5" value="5.5" class="custom-range" id="calcCpmSlider">
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <span>Gate Step Strategy</span>
+                <span class="slider-value" id="calcStepLabel">2 Steps (Optimal)</span>
+              </div>
+              <input type="range" min="1" max="3" step="1" value="2" class="custom-range" id="calcStepSlider">
+            </div>
+          </div>
+
+          <div class="calc-result-box">
+            <span class="calc-result-label">Estimated Monthly Revenue</span>
+            <div class="calc-result-number" id="calcMonthlyRevenue">$412.50</div>
+            <div style="font-size: 14px; font-weight: 600; color: #94A3B8;" id="calcThbRevenue">
+              &approx; 14,437 THB / month
+            </div>
+            <div class="calc-result-meta">
+              <span>Daily Average: <strong id="calcDailyRevenue" style="color: #F8FAFC;">$13.75</strong></span>
+              <span>Est. Payout Cut: <strong style="color: #34D399;">92%</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metrics Strip -->
+  <section class="stats-strip">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-item-number">18.4M+</div>
+          <div class="stat-item-label">Content Unlocks Processed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item-number">$490K+</div>
+          <div class="stat-item-label">Paid Directly to Publishers</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item-number">&lt; 40ms</div>
+          <div class="stat-item-label">Global Edge Gate Latency</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-item-number">99.98%</div>
+          <div class="stat-item-label">Anti-Bypass Shield Accuracy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Platform Features</span>
+        <h2 class="section-title">Built for Performance and Security</h2>
+        <p class="section-desc">Everything you need to safeguard your intellectual property while maximizing revenue from every viewer.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="shield-alert"></i>
+          </div>
+          <h3 class="feature-name">Anti-Bypass Defense</h3>
+          <p class="feature-desc">Stop Tampermonkey users, inspect element tricks, and automated bypass bots with time-gated server validation and dynamic session tokens.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="layers"></i>
+          </div>
+          <h3 class="feature-name">Multi-Step Task Walls</h3>
+          <p class="feature-desc">Configure 1, 2, or 3 step gates. Combine countdown timers, sponsor article visits, and captcha verification for maximum payout.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="zap"></i>
+          </div>
+          <h3 class="feature-name">Ad Network Flexibility</h3>
+          <p class="feature-desc">Connect directly to Adsterra, PopAds, Monetag, or your custom smartlinks. Toggle popunders, banners, or direct campaigns in 1 click.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="wallet"></i>
+          </div>
+          <h3 class="feature-name">Instant Local Payouts</h3>
+          <p class="feature-desc">Withdraw your earnings directly to TrueMoney Wallet, PromptPay, PayPal, or Crypto (USDT) with low $5.00 minimum payout thresholds.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="bar-chart-3"></i>
+          </div>
+          <h3 class="feature-name">Granular Analytics</h3>
+          <p class="feature-desc">Real-time telemetry showing unique impressions, completion rates, country tier breakdown, and revenue per thousand visits (CPM).</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i data-lucide="globe"></i>
+          </div>
+          <h3 class="feature-name">Custom Domain Support</h3>
+          <p class="feature-desc">Bring your own custom domain or subdomain to eliminate ad-block penalties and protect your brand reputation with clean links.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-section" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Workflow</span>
+        <h2 class="section-title">How BlackPass Works</h2>
+        <p class="section-desc">Start monetizing in less than 60 seconds with our streamlined 3-step locker deployment.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-num">STEP 01</span>
+          <h3 class="step-title">Create Your Locker</h3>
+          <p class="step-desc">Enter your destination URL or code snippet, choose a custom URL slug, and select your preferred task requirements.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">STEP 02</span>
+          <h3 class="step-title">Configure Logic &amp; Ads</h3>
+          <p class="step-desc">Set your countdown duration (5-10s), enable high-CPM popunders or native banners, and activate the Anti-Bypass Shield.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-num">STEP 03</span>
+          <h3 class="step-title">Distribute &amp; Collect</h3>
+          <p class="step-desc">Share your BlackPass link on YouTube, Discord, or your website. Track live conversions and withdraw your earnings on demand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing / RevShare Tiers -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Transparent Monetization</span>
+        <h2 class="section-title">Industry-Leading Revenue Share</h2>
+        <p class="section-desc">Keep more of what you earn with zero hidden deductions or inflated middlemen fees.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="tier-name">Standard Publisher</div>
+          <div class="tier-revshare">85% <span>Payout</span></div>
+          <p class="tier-desc">Great for creators just starting out with script and link distribution.</p>
+          <ul class="tier-features">
+            <li class="tier-feature-item"><i data-lucide="check"></i> Up to 10 active lockers</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Standard Anti-Bypass protection</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Weekly payout schedule</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> TrueMoney &amp; PayPal support</li>
+          </ul>
+          <a href="dashboard.html" class="btn btn-secondary btn-block">Get Started</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="pricing-badge">Most Popular</span>
+          <div class="tier-name">Pro Publisher</div>
+          <div class="tier-revshare">92% <span>Payout</span></div>
+          <p class="tier-desc">Optimized for high-volume content creators, gaming communities, and scripthubs.</p>
+          <ul class="tier-features">
+            <li class="tier-feature-item"><i data-lucide="check"></i> Unlimited active lockers</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Advanced Anti-Bypass Shield</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Daily automated payouts</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Custom domain CNAME mapping</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Priority direct support</li>
+          </ul>
+          <a href="dashboard.html" class="btn btn-primary btn-block">Start as Pro</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="tier-name">Enterprise Network</div>
+          <div class="tier-revshare">96% <span>Payout</span></div>
+          <p class="tier-desc">Custom infrastructure for multi-million visit platforms and large gaming networks.</p>
+          <ul class="tier-features">
+            <li class="tier-feature-item"><i data-lucide="check"></i> Custom ad tag integration</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Instant webhook postbacks</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Instant crypto USDT withdrawals</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> Dedicated account manager</li>
+          </ul>
+          <a href="dashboard.html" class="btn btn-secondary btn-block">Contact Enterprise</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Knowledge Base</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">Got questions about how BlackPass protects your links and pays you? We have answers.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>How is BlackPass different from ShrinkEarn or Linkvertise?</span>
+            <i data-lucide="chevron-down" class="faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            Traditional link shorteners keep 40% to 60% of your earnings and pay $0 when a visitor drops off halfway through. BlackPass lets you connect directly to top-tier ad providers (or use our built-in high-yield pool) with up to 92% net payouts. You earn from every valid impression, even on partial journeys.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>How does the Anti-Bypass Shield work?</span>
+            <i data-lucide="chevron-down" class="faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            Our system never leaks the final destination link inside HTML or client scripts. Destination links are securely stored in the backend and released only after the browser proves a verified time-stamped token signed with cryptographic integrity.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>What payment methods are supported for withdrawals?</span>
+            <i data-lucide="chevron-down" class="faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            We support TrueMoney Wallet, PromptPay, PayPal, Bank Transfer, and Crypto (USDT TRC20 / Polygon) with a minimal $5.00 cashout threshold.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-question">
+            <span>Can I lock direct scripts or keys without an external link?</span>
+            <i data-lucide="chevron-down" class="faq-chevron"></i>
+          </button>
+          <div class="faq-answer">
+            Yes! In addition to URLs, BlackPass supports Raw Lua Script and Access Key lockers. The unlocked state displays a one-click copy box directly to your user.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-weight: 700; color: #FFFFFF;">BlackPass</span>
+        <span>&mdash; Monetize Every Click.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="locker.html?slug=blox-fruits-v48" class="nav-link">Live Locker Demo</a></li>
+        <li><a href="#pricing" class="nav-link">RevShare</a></li>
+        <li><a href="#faq" class="nav-link">Support</a></li>
+      </ul>
+      <div>&copy; 2026 BlackPass Systems Inc. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/landing.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

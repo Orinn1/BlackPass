@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Access Gate &mdash; BlackPass</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/locker.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="locker-viewport">
+
+  <div class="locker-box">
+    <!-- Active Task State -->
+    <div id="lockerActiveView">
+      <!-- Header -->
+      <div class="locker-header">
+        <div class="locker-brand-badge">
+          <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+          <span>BlackPass Verification</span>
+        </div>
+
+        <div class="locker-shield-icon">
+          <i data-lucide="lock" style="width: 22px; height: 22px;"></i>
+        </div>
+
+        <h2 class="locker-content-title" id="lockerTitle">Content Access Restricted</h2>
+        <p class="locker-subtitle" id="lockerDesc">
+          Complete the required steps below to verify your session and unlock your destination.
+        </p>
+      </div>
+
+      <!-- Step Progress Bar -->
+      <div class="locker-progress-area">
+        <div class="progress-header">
+          <span>PROGRESS</span>
+          <span class="progress-step-text" id="progressStepText">Step 1 of 3 (33%)</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progressBarFill" style="width: 33%;"></div>
+        </div>
+      </div>
+
+      <!-- Body / Current Task -->
+      <div class="locker-body">
+        <div class="tasks-list" id="tasksList">
+          <!-- Dynamically populated step items -->
+        </div>
+
+        <!-- Ad Slot (Native Banner / Sponsor placement) -->
+        <div class="locker-ad-slot" id="lockerAdSlot">
+          <span class="locker-ad-badge">SPONSORED VERIFICATION PARTNER</span>
+          <div id="adBannerMock" style="min-height: 70px; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.02); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="sparkles" style="color: #F59E0B; width: 16px; height: 16px;"></i>
+              <span>High-Speed Roblox Script Executor v4.8 &bull; Instant Injection</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action / Countdown Button -->
+        <div class="locker-action-area">
+          <button type="button" class="btn-locker-continue" id="btnContinue" disabled>
+            <i data-lucide="loader-2" class="spin" id="btnIcon" style="width: 18px; height: 18px;"></i>
+            <span id="btnText">Please wait 8 seconds...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer: VIP Bypass -->
+      <div class="locker-footer">
+        <span class="locker-footer-text">Protected by Anti-Bypass v2.4</span>
+        <button type="button" class="btn-vip-skip" id="btnOpenVipModal">
+          <i data-lucide="crown" style="width: 14px; height: 14px;"></i>
+          <span>VIP Key?</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Unlocked State -->
+    <div class="locker-success-view" id="lockerSuccessView">
+      <div class="success-check-icon">
+        <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+      </div>
+
+      <h2 class="success-title">Content Unlocked!</h2>
+      <p class="success-desc">
+        Your access has been verified successfully. Your device is remembered for 24 hours.
+      </p>
+
+      <div class="destination-preview-box" id="destinationUrlDisplay">
+        https://pastebin.com/raw/Bf87k2Nq
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button type="button" class="btn-access-destination" id="btnAccessDestination">
+          <span>Access Content Now</span>
+          <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+        </button>
+
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCopyDestination">
+          <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
+          <span>Copy Destination Link</span>
+        </button>
+      </div>
+
+      <div style="margin-top: 24px; font-size: 12px; color: var(--text-muted);">
+        Auto-redirecting in <strong id="redirectCountdown" style="color: #FFFFFF;">5</strong> seconds...
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: VIP Key Bypass -->
+  <div class="modal-backdrop" id="vipModal">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="crown" style="color: #F59E0B; width: 18px; height: 18px;"></i>
+          <span>VIP Instant Bypass</span>
+        </h3>
+        <button class="modal-close" onclick="closeVipModal()">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
+          If you have purchased a VIP role in Discord (30 Baht permanent) or hold an access bypass key, enter it below to skip all verification tasks immediately.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">VIP License Key</label>
+          <input type="text" class="form-input" id="inputVipKey" placeholder="e.g. VIP-PASS-2026">
+          <div class="form-hint">Tip: Enter <code>VIP30</code> to test instant bypass.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeVipModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btnSubmitVipKey">Redeem &amp; Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/locker.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

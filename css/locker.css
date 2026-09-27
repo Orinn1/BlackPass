@@ -1,0 +1,394 @@
+/* ==========================================================================
+   GateFlow Content Locker Styles
+   High-Conversion Mobile-First Access Gate (LootLabs / Linkvertise Style)
+   ========================================================================== */
+
+.locker-viewport {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: radial-gradient(circle at 50% 10%, #151A26 0%, #090B10 65%);
+}
+
+.locker-box {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  animation: lockerPopIn 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes lockerPopIn {
+  from {
+    transform: scale(0.95) translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.locker-header {
+  padding: 24px 28px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.locker-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--primary-surface);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  color: #A5B4FC;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+}
+
+.locker-shield-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-raised);
+  border: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  color: #818CF8;
+}
+
+.locker-content-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+.locker-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Progress Section */
+.locker-progress-area {
+  padding: 16px 28px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.progress-step-text {
+  color: #A5B4FC;
+  font-family: var(--font-mono);
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-surface-hover);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366F1, #38BDF8);
+  border-radius: var(--radius-full);
+  transition: width 400ms ease;
+  width: 33%;
+}
+
+/* Tasks / Offers Area */
+.locker-body {
+  padding: 24px 28px;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.task-item:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+}
+
+.task-item.active {
+  border-color: var(--primary);
+  background: var(--primary-surface);
+}
+
+.task-item.completed {
+  border-color: var(--success-border);
+  background: var(--success-surface);
+}
+
+.task-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.task-item.active .task-icon {
+  color: #A5B4FC;
+}
+
+.task-item.completed .task-icon {
+  background: var(--success);
+  color: #FFFFFF;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.task-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.task-status-indicator {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-item.completed .task-status-indicator {
+  color: #34D399;
+}
+
+/* Banner Slot Inside Locker */
+.locker-ad-slot {
+  margin: 18px 0;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.locker-ad-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Action Button & Timer */
+.locker-action-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-locker-continue {
+  height: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--primary);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+  transition: all var(--transition-fast);
+}
+
+.btn-locker-continue:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.btn-locker-continue:disabled {
+  background: var(--bg-surface-raised);
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.btn-locker-continue.btn-unlock {
+  background: #10B981;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+}
+
+.btn-locker-continue.btn-unlock:hover {
+  background: #059669;
+}
+
+/* Footer / VIP Skip Option */
+.locker-footer {
+  padding: 16px 28px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.locker-footer-text {
+  color: var(--text-muted);
+}
+
+.btn-vip-skip {
+  color: #FBBF24;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-vip-skip:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Success State (Unlocked)
+   ========================================================================== */
+.locker-success-view {
+  padding: 40px 28px;
+  text-align: center;
+  display: none;
+}
+
+.locker-success-view.active {
+  display: block;
+}
+
+.success-check-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: var(--success-surface);
+  border: 2px solid var(--success-border);
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: checkPulse 1.5s infinite;
+}
+
+@keyframes checkPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(16, 185, 129, 0);
+  }
+}
+
+.success-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+.success-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.destination-preview-box {
+  background: var(--bg-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: #38BDF8;
+  word-break: break-all;
+  margin-bottom: 24px;
+}
+
+.btn-access-destination {
+  height: 48px;
+  font-size: 15px;
+  font-weight: 700;
+  background: #10B981;
+  color: #FFFFFF;
+  border-radius: var(--radius-md);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.btn-access-destination:hover {
+  background: #059669;
+}

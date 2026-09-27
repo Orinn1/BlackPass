@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publisher Dashboard &mdash; BlackPass</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="brand-icon" style="width: 30px; height: 30px; background: linear-gradient(135deg, #6366F1, #4338CA); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+            <i data-lucide="shield-check" style="width: 18px; height: 18px;"></i>
+          </div>
+          <span>BlackPass</span>
+        </div>
+        <span class="sidebar-brand-badge">PRO</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-title">Main Menu</span>
+        <button class="sidebar-item active" data-view="overview">
+          <i data-lucide="layout-grid"></i>
+          <span>Overview</span>
+        </button>
+        <button class="sidebar-item" data-view="lockers">
+          <i data-lucide="link-2"></i>
+          <span>My Lockers</span>
+        </button>
+        <button class="sidebar-item" data-view="analytics">
+          <i data-lucide="bar-chart-2"></i>
+          <span>Analytics</span>
+        </button>
+
+        <span class="nav-section-title">Finances</span>
+        <button class="sidebar-item" data-view="payouts">
+          <i data-lucide="credit-card"></i>
+          <span>Payouts &amp; Wallet</span>
+        </button>
+
+        <span class="nav-section-title">System</span>
+        <button class="sidebar-item" data-view="settings">
+          <i data-lucide="sliders"></i>
+          <span>Settings &amp; API</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <div class="user-avatar" id="sidebarAvatar">OR</div>
+          <div class="user-info-text">
+            <span class="user-name" id="sidebarUsername">OrinRankone</span>
+            <span class="user-tier">92% RevShare Tier</span>
+          </div>
+          <a href="index.html" title="Logout / Home" style="color: var(--text-muted); padding: 4px;">
+            <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- Topbar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-page-title" id="pageTitle">Platform Overview</h1>
+        </div>
+
+        <div class="topbar-right">
+          <div class="balance-card-pill">
+            <span class="balance-label">Available:</span>
+            <span class="balance-amount" id="topbarBalance">$74.50</span>
+          </div>
+
+          <button class="btn btn-primary btn-sm" id="btnOpenCreateLocker">
+            <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+            <span>Create Locker</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- View 1: Overview -->
+      <section class="dashboard-view active" id="viewOverview">
+        <!-- 5 Metrics Cards -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Total Clicks</span>
+              <div class="metric-icon"><i data-lucide="mouse-pointer" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" id="statTotalClicks">26,360</div>
+            <div class="metric-trend up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+14.8% this week</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Completed Offers</span>
+              <div class="metric-icon"><i data-lucide="check-circle-2" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" id="statTotalOffers">13,010</div>
+            <div class="metric-trend up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+11.2% this week</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Content Unlocks</span>
+              <div class="metric-icon"><i data-lucide="unlock" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" id="statTotalUnlocks">13,010</div>
+            <div class="metric-trend up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>+11.2% vs last 7d</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Net Revenue</span>
+              <div class="metric-icon"><i data-lucide="dollar-sign" style="width: 14px; height: 14px; color: #10B981;"></i></div>
+            </div>
+            <div class="metric-value" style="color: #10B981;" id="statTotalRevenue">$74.50</div>
+            <div class="metric-trend up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>Ready to withdraw</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-label">Conversion Rate</span>
+              <div class="metric-icon"><i data-lucide="percent" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" id="statConversion">49.4%</div>
+            <div class="metric-trend up">
+              <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+              <span>High-intent traffic</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Chart Card -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <h3 class="chart-title">Weekly Performance Telemetry</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Daily clicks vs completed unlocks across your active link gates.</p>
+            </div>
+            <div class="chart-actions">
+              <button class="chart-tab-btn active" data-chart-metric="clicks">Clicks</button>
+              <button class="chart-tab-btn" data-chart-metric="unlocks">Unlocks</button>
+              <button class="chart-tab-btn" data-chart-metric="revenue">Revenue ($)</button>
+            </div>
+          </div>
+
+          <div class="chart-svg-container" id="chartContainer">
+            <!-- Rendered by dashboard.js SVG engine -->
+          </div>
+        </div>
+
+        <!-- Recent Lockers Table -->
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title-group">
+              <h3 class="table-title">Active Content Lockers</h3>
+              <span class="badge badge-primary" id="lockerCountBadge">3 Active</span>
+            </div>
+
+            <input type="text" class="table-search-input" id="searchLockersInput" placeholder="Search locker name or slug...">
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Locker / Slug</th>
+                  <th>Destination Target</th>
+                  <th>Config</th>
+                  <th>Clicks / Unlocks</th>
+                  <th>Revenue ($)</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="lockersTableBody">
+                <!-- Injected by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: My Lockers (Full View) -->
+      <section class="dashboard-view" id="viewLockers">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 700; color: #FFFFFF;">All Link Lockers</h2>
+            <p style="font-size: 13px; color: var(--text-muted);">Manage your active access gates, edit URLs, or view conversion rates.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openCreateModal()">
+            <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
+            <span>Create New Locker</span>
+          </button>
+        </div>
+
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Locker / Slug</th>
+                  <th>Destination Target</th>
+                  <th>Config</th>
+                  <th>Clicks / Unlocks</th>
+                  <th>Revenue ($)</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="allLockersTableBody">
+                <!-- Injected by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 3: Analytics (Deep Dive) -->
+      <section class="dashboard-view" id="viewAnalytics">
+        <div class="form-grid-2" style="margin-bottom: 28px;">
+          <!-- Geographic Breakdown -->
+          <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="globe" style="width: 18px; height: 18px; color: var(--primary);"></i>
+              <span>Traffic by Geography (Top 5)</span>
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                  <span>🇹🇭 Thailand (TH)</span>
+                  <span style="font-weight: 700; color: #F8FAFC;">64.2% (16,920 visits)</span>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 64.2%;"></div></div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                  <span>🇻🇳 Vietnam (VN)</span>
+                  <span style="font-weight: 700; color: #F8FAFC;">14.8% (3,901 visits)</span>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 14.8%; background: #38BDF8;"></div></div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                  <span>🇺🇸 United States (US - Tier 1)</span>
+                  <span style="font-weight: 700; color: #10B981;">11.5% ($14.20 CPM)</span>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 11.5%; background: #10B981;"></div></div>
+              </div>
+
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+                  <span>🇧🇷 Brazil (BR)</span>
+                  <span style="font-weight: 700; color: #F8FAFC;">5.8% (1,528 visits)</span>
+                </div>
+                <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 5.8%; background: #A855F7;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Device Distribution -->
+          <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="smartphone" style="width: 18px; height: 18px; color: #38BDF8;"></i>
+              <span>Device Split</span>
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: var(--bg-surface-raised); border-radius: var(--radius-md);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i data-lucide="smartphone" style="color: #38BDF8;"></i>
+                  <div>
+                    <div style="font-weight: 600; color: #FFFFFF;">Mobile Devices (Android / iOS)</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Roblox Mobile, Delta &amp; Fluxus players</div>
+                  </div>
+                </div>
+                <div style="font-size: 20px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono);">72.4%</div>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: var(--bg-surface-raised); border-radius: var(--radius-md);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i data-lucide="monitor" style="color: #A5B4FC;"></i>
+                  <div>
+                    <div style="font-weight: 600; color: #FFFFFF;">Desktop (Windows / Mac)</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">PC Executors &amp; Scripthubs</div>
+                  </div>
+                </div>
+                <div style="font-size: 20px; font-weight: 800; color: #A5B4FC; font-family: var(--font-mono);">27.6%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3 class="table-title">Daily Conversion Breakdown (Last 7 Days)</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Raw Clicks</th>
+                  <th>Unique Visitors</th>
+                  <th>Completed Tasks</th>
+                  <th>Unlock Rate</th>
+                  <th>Avg CPM</th>
+                  <th>Net Earnings</th>
+                </tr>
+              </thead>
+              <tbody id="analyticsDailyTbody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 4: Payouts & Wallet -->
+      <section class="dashboard-view" id="viewPayouts">
+        <div class="form-grid-2" style="margin-bottom: 28px;">
+          <!-- Wallet Balance Card -->
+          <div class="card">
+            <span class="badge badge-success" style="margin-bottom: 12px;">Active Balance</span>
+            <div style="font-size: 38px; font-weight: 800; color: #10B981; font-family: var(--font-mono); margin-bottom: 4px;" id="payoutAvailableBalance">$74.50</div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+              Threshold reached (&gt; $5.00). Ready for instant withdrawal.
+            </p>
+
+            <form id="payoutForm">
+              <div class="form-group">
+                <label class="form-label">Withdrawal Destination</label>
+                <select class="form-select" id="payoutMethodSelect">
+                  <option value="truemoney">TrueMoney Wallet (Thailand)</option>
+                  <option value="promptpay">PromptPay / QR (Instant)</option>
+                  <option value="paypal">PayPal Express</option>
+                  <option value="usdt">Crypto USDT (TRC-20)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Account Number / Phone / Wallet Address</label>
+                <input type="text" class="form-input" id="payoutAccountInput" value="081-XXX-XXXX" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block">
+                <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
+                <span>Submit Payout Request ($74.50)</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Payout Policy Notice -->
+          <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="shield-check" style="width: 18px; height: 18px; color: #10B981;"></i>
+              <span>Payout Policy &amp; Security</span>
+            </h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: var(--text-secondary);">
+              <li style="display: flex; gap: 10px;">
+                <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
+                <span><strong>Instant Local Processing:</strong> TrueMoney Wallet &amp; PromptPay payouts process within 10-30 minutes.</span>
+              </li>
+              <li style="display: flex; gap: 10px;">
+                <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
+                <span><strong>Zero Hidden Transaction Fees:</strong> BlackPass absorbs network gas and processing fees for Pro publishers.</span>
+              </li>
+              <li style="display: flex; gap: 10px;">
+                <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
+                <span><strong>Fraud Guard:</strong> Traffic verified against Adsterra &amp; Cloudflare bot-score databases before release.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3 class="table-title">Recent Payout Transactions</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Requested Date</th>
+                  <th>Destination</th>
+                  <th>Amount ($)</th>
+                  <th>Amount (THB)</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family: var(--font-mono);">TXN_9812A</td>
+                  <td>2026-09-20 18:30</td>
+                  <td>TrueMoney (081-XXX-XXXX)</td>
+                  <td style="font-weight: 700; color: #10B981;">$45.00</td>
+                  <td>1,575 THB</td>
+                  <td><span class="badge badge-success">Completed</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: var(--font-mono);">TXN_8731F</td>
+                  <td>2026-09-12 14:15</td>
+                  <td>PromptPay (081-XXX-XXXX)</td>
+                  <td style="font-weight: 700; color: #10B981;">$32.50</td>
+                  <td>1,137 THB</td>
+                  <td><span class="badge badge-success">Completed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 5: Settings -->
+      <section class="dashboard-view" id="viewSettings">
+        <div class="settings-card">
+          <h3 class="settings-card-title">Publisher Profile</h3>
+          <p class="settings-card-desc">Your public publisher profile and revshare tier tier information.</p>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input type="text" class="form-input" id="settingsUsername" value="OrinRankone">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-input" id="settingsEmail" value="admin@blacklisthub.com">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btnSaveProfile">Save Changes</button>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title">Custom Domain (CNAME)</h3>
+          <p class="settings-card-desc">Point your own branded subdomain to BlackPass to bypass ISP and ad-blocker domain blocklists.</p>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Custom Subdomain</label>
+              <input type="text" class="form-input" id="settingsCustomDomain" value="gate.blacklisthub.com">
+              <div class="form-hint">Set CNAME target to <code>cname.blackpass.link</code></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Verification Status</label>
+              <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                <span class="badge badge-success"><i data-lucide="check"></i> DNS Active &amp; SSL Issued</span>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="showToast('DNS verification refreshed. Domain healthy!', 'success')">Verify DNS</button>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title">Developer API &amp; Webhooks</h3>
+          <p class="settings-card-desc">Programmatically generate lockers or receive real-time HTTP postbacks when an access gate is unlocked.</p>
+          <div class="form-group">
+            <label class="form-label">Live API Secret Key</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="password" class="form-input" id="settingsApiKey" value="bp_live_99f2e718bc894d01b972e04fa" readonly>
+              <button class="btn btn-secondary" onclick="toggleApiKeyVisibility()"><i data-lucide="eye"></i></button>
+              <button class="btn btn-secondary" onclick="copyApiKey()"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Unlock Webhook Postback URL</label>
+            <input type="url" class="form-input" id="settingsWebhookUrl" value="https://api.blacklisthub.com/webhooks/blackpass">
+            <div class="form-hint">Sends JSON payload with <code>{ puid, lockerId, ip, timestamp, signature }</code> when a user finishes all tasks.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="btnSaveApiSettings">Update API Config</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal: Create New Locker -->
+  <div class="modal-backdrop" id="createLockerModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Create Content Locker</h3>
+        <button class="modal-close" onclick="closeCreateModal()">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <form id="createLockerForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Locker Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="inputLockerName" placeholder="e.g. Blox Fruits Autofarm Script v4.9" required>
+            <div class="form-hint">Displayed to your visitors on the access gate title.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Destination URL / Content <span class="required">*</span></label>
+            <input type="url" class="form-input" id="inputDestinationUrl" placeholder="https://pastebin.com/raw/..." required>
+            <div class="form-hint">The target script, key, or download file released after completion.</div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label">Custom Slug (Short URL)</label>
+              <input type="text" class="form-input" id="inputLockerSlug" placeholder="blox-fruits-v49">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Gate Step Count</label>
+              <select class="form-select" id="inputLockerSteps">
+                <option value="1">1 Step (Quick Unlock)</option>
+                <option value="2" selected>2 Steps (Balanced Revenue)</option>
+                <option value="3">3 Steps (Maximum Profit)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Countdown Duration per Step</label>
+            <select class="form-select" id="inputLockerTimer">
+              <option value="5">5 Seconds (Very Fast)</option>
+              <option value="8" selected>8 Seconds (Recommended)</option>
+              <option value="10">10 Seconds (Standard)</option>
+              <option value="15">15 Seconds (High Ad Exposure)</option>
+            </select>
+          </div>
+
+          <label class="form-label" style="margin-top: 14px;">Ad Placements &amp; Yield Engine</label>
+          <div class="ad-toggles-grid">
+            <label class="switch-container">
+              <div class="switch-label">
+                <span class="switch-title">Popunder Ad</span>
+                <span class="switch-desc">High-CPM 1st click</span>
+              </div>
+              <input type="checkbox" id="togglePopunder" checked style="display:none;">
+              <span class="toggle-switch"></span>
+            </label>
+
+            <label class="switch-container">
+              <div class="switch-label">
+                <span class="switch-title">Native Banner</span>
+                <span class="switch-desc">Impression reward</span>
+              </div>
+              <input type="checkbox" id="toggleBanner" checked style="display:none;">
+              <span class="toggle-switch"></span>
+            </label>
+          </div>
+
+          <div style="margin-top: 14px;">
+            <label class="switch-container">
+              <div class="switch-label">
+                <span class="switch-title">Anti-Bypass Shield</span>
+                <span class="switch-desc">Block inspect element &amp; bypass extensions</span>
+              </div>
+              <input type="checkbox" id="toggleAntiBypass" checked style="display:none;">
+              <span class="toggle-switch"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeCreateModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i data-lucide="check" style="width: 16px; height: 16px;"></i>
+            <span>Deploy Locker</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Delete Confirmation -->
+  <div class="modal-backdrop" id="deleteModal">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #F87171;">Delete Locker?</h3>
+        <button class="modal-close" onclick="closeDeleteModal()">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+          Are you sure you want to permanently delete this content locker? Any user clicking this link in Discord or YouTube will no longer be able to unlock the content.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete Locker</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
