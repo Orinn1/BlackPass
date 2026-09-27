@@ -305,8 +305,10 @@ const I18N_DICTIONARY = {
     locker_toast_early_return: '⚠️ คุณยังค้างอยู่หน้าโฆษณาไม่ครบ 30 วินาที! (เหลืออีก {sec} วิ) กรุณากลับไปดูต่อจนครบเพื่อปลดล็อค',
     locker_action_ready: '👉 กดเริ่ม (30 วิ)',
     locker_action_dwelling: '⏳ ค้างอีก {sec} วิ',
+    locker_action_paused: '⏸️ หยุดนับ (เหลืออีก {sec} วิ)',
     locker_action_done: '✅ ผ่านแล้ว',
     locker_action_locked: '🔒 รอด่านก่อนหน้า',
+    locker_desc_paused: '⚠️ เวลาหยุดนับ! คลิกเพื่อสลับไปค้างหน้าโฆษณาอีก {sec} วิ',
     locker_bottom_waiting: '🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ผ่านแล้ว {done}/3)',
     locker_bottom_unlock: '🎉 ผ่านครบทั้ง 3 ปุ่มแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓',
 
@@ -644,8 +646,10 @@ const I18N_DICTIONARY = {
     locker_toast_early_return: '⚠️ You returned before 30s! ({sec}s remaining). Please stay on the sponsor page to unlock.',
     locker_action_ready: '👉 Start (30s)',
     locker_action_dwelling: '⏳ {sec}s left',
+    locker_action_paused: '⏸️ Paused ({sec}s left)',
     locker_action_done: '✅ Done',
     locker_action_locked: '🔒 Locked',
+    locker_desc_paused: '⚠️ Timer paused! Click to switch to ad for {sec}s more',
     locker_bottom_waiting: '🔒 Complete all 3 buttons ({done}/3 done)',
     locker_bottom_unlock: '🎉 All 3 Buttons Done! Click to Unlock 🔓',
 

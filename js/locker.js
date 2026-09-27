@@ -1,16 +1,19 @@
 /* ==========================================================================
    BlackPass Content Locker Engine
-   3 Buttons Model — 30 Seconds Dwell Time Each (Clean & Direct)
+   3 Buttons Model — 30 Seconds Dwell Time Each (Anti-Cheat & Strict Away-Detection)
+   RULE: Countdown ONLY runs while the user is actually viewing the sponsor ad!
+   If the user stays on the locker page, countdown is 100% PAUSED / FROZEN.
    ========================================================================== */
 
 let currentLocker = null;
 const totalSteps = 3;
 const requiredDwellSeconds = 30; // 30 seconds dwell time per button
 let completedSteps = { 1: false, 2: false, 3: false };
-let stepAdOpenedAt = { 1: 0, 2: 0, 3: 0 };
+let secondsOnAd = { 1: 0, 2: 0, 3: 0 }; // Accumulated seconds actually spent away on ad tab
+let dwellSessionStart = { 1: null, 2: null, 3: null };
 let activeDwellingStep = null;
-let dwellInterval = null;
-let lastVisibilityWarnTime = 0;
+let backgroundTicker = null;
+let lastToastTime = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadLockerData();
@@ -21,20 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLockerLanguage();
   };
 
-  // Warn user immediately if they switch back to the locker tab before 30s dwell expires
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && activeDwellingStep && !completedSteps[activeDwellingStep]) {
-      const elapsed = Math.floor((Date.now() - stepAdOpenedAt[activeDwellingStep]) / 1000);
-      const remaining = Math.max(0, requiredDwellSeconds - elapsed);
-      if (remaining > 0 && Date.now() - lastVisibilityWarnTime > 3000) {
-        lastVisibilityWarnTime = Date.now();
-        const warnMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-          ? `⚠️ คุณยังค้างอยู่หน้าโฆษณาไม่ครบ 30 วินาที! (เหลืออีก ${remaining} วิ) กรุณากลับไปดูต่อจนครบเพื่อปลดล็อค`
-          : `⚠️ You must stay on the sponsor page for 30s! (${remaining}s remaining).`;
-        showToast(warnMsg, 'warning', 3500);
-      }
-    }
-  });
+  // Watch tab visibility and focus: Pause when on locker tab, run when away on ad tab
+  document.addEventListener('visibilitychange', handleTabStateChange);
+  window.addEventListener('blur', handleTabStateChange);
+  window.addEventListener('focus', handleTabStateChange);
+
+  // Start background ticker
+  startBackgroundTicker();
 });
 
 // Load Locker based on URL params
@@ -106,7 +102,7 @@ function renderTaskButtons() {
           </div>
           <div class="task-info">
             <span class="task-title">${def.title}</span>
-            <span class="task-desc">${def.desc}</span>
+            <span class="task-desc" id="taskDesc_${i}">${def.desc}</span>
           </div>
         </div>
         <div class="task-status-indicator" id="taskPill_${i}">
@@ -121,38 +117,65 @@ function renderTaskButtons() {
   lucide.createIcons();
 }
 
-// Update the visual pill state of the 3 buttons
+// Update the visual state of the 3 buttons
 function updateButtonsVisualState() {
   const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', '👉 กดเริ่ม (30 วิ)') : '👉 กดเริ่ม (30 วิ)';
   const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', '✅ ผ่านแล้ว') : '✅ ผ่านแล้ว';
   const lockedText = typeof getI18nText === 'function' ? getI18nText('locker_action_locked', '🔒 รอด่านก่อนหน้า') : '🔒 รอด่านก่อนหน้า';
+  const pausedTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_paused', '⏸️ หยุดนับ (เหลืออีก {sec} วิ)') : '⏸️ หยุดนับ (เหลืออีก {sec} วิ)';
+
+  const isUserAway = document.hidden || !document.hasFocus();
 
   for (let i = 1; i <= totalSteps; i++) {
     const item = document.getElementById(`taskItem_${i}`);
     const pill = document.getElementById(`taskPill_${i}`);
     const icon = document.getElementById(`taskIcon_${i}`);
+    const desc = document.getElementById(`taskDesc_${i}`);
     if (!item || !pill) continue;
 
     if (completedSteps[i]) {
-      // Completed State
+      // 1. Completed State
       item.className = 'task-item completed';
       pill.innerHTML = `<div class="btn-task-action completed"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> <span>${doneText}</span></div>`;
       if (icon) icon.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i>`;
+      if (desc) desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
+      if (desc) desc.style.color = 'var(--text-muted)';
     } else if (activeDwellingStep === i) {
-      // Currently Dwelling State
-      item.className = 'task-item dwelling';
-      const elapsed = Math.floor((Date.now() - (stepAdOpenedAt[i] || Date.now())) / 1000);
-      const remaining = Math.max(0, requiredDwellSeconds - elapsed);
-      const dwellingTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_dwelling', '⏳ ค้างอีก {sec} วิ') : '⏳ ค้างอีก {sec} วิ';
-      pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>${dwellingTpl.replace('{sec}', remaining)}</span></div>`;
+      const currentSpent = secondsOnAd[i] + (isUserAway && dwellSessionStart[i] ? Math.floor((Date.now() - dwellSessionStart[i]) / 1000) : 0);
+      const remaining = Math.max(0, requiredDwellSeconds - currentSpent);
+
+      if (isUserAway) {
+        // 2. Currently Away on Ad Tab (Active Counting)
+        item.className = 'task-item dwelling';
+        pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>⏳ ค้างอีก ${remaining} วิ</span></div>`;
+      } else {
+        // 3. User is on Locker Tab -> PAUSED! DOES NOT COUNT!
+        item.className = 'task-item paused';
+        pill.innerHTML = `<div class="btn-task-action paused"><i data-lucide="pause-circle" style="width: 14px; height: 14px;"></i> <span>${pausedTpl.replace('{sec}', remaining)}</span></div>`;
+        if (desc) {
+          desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+            ? `⚠️ เวลาหยุดนับ! คลิกที่นี่เพื่อสลับไปค้างหน้าโฆษณาอีก ${remaining} วิ`
+            : `⚠️ Timer paused! Click to switch back to ad for ${remaining}s more`;
+          desc.style.color = '#F87171';
+        }
+      }
     } else if (i === 1 || completedSteps[i - 1]) {
-      // Unlocked / Ready to Click
+      // 4. Unlocked / Ready to Click
       item.className = 'task-item ready-to-click';
       pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span></div>`;
+      if (desc) {
+        desc.textContent = (i === 1)
+          ? ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s')
+          : (i === 2)
+            ? ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s')
+            : ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s');
+        desc.style.color = 'var(--text-muted)';
+      }
     } else {
-      // Locked State
+      // 5. Locked State
       item.className = 'task-item locked';
       pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 12px; height: 12px;"></i> <span>${lockedText}</span></div>`;
+      if (desc) desc.style.color = 'var(--text-muted)';
     }
   }
 
@@ -179,51 +202,95 @@ window.handleTaskButtonClick = function(btnIndex) {
     return;
   }
 
-  // Clicked while currently dwelling on this button -> Re-open/refocus ad
-  if (activeDwellingStep === btnIndex) {
-    triggerSmartlinkAd(btnIndex);
-    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[btnIndex]) / 1000);
-    const remaining = Math.max(0, requiredDwellSeconds - elapsed);
-    const refocusMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-      ? `เปิดหน้าโฆษณาตัวที่ ${btnIndex} ให้ใหม่อีกครั้ง กรุณาค้างไว้อีก ${remaining} วินาที...`
-      : `Re-opened ad ${btnIndex}. Please stay on it for ${remaining}s more...`;
-    showToast(refocusMsg, 'info', 3000);
-    return;
-  }
-
-  // Start new dwell for this button!
+  // Set active step
   activeDwellingStep = btnIndex;
-  stepAdOpenedAt[btnIndex] = Date.now();
-  lastVisibilityWarnTime = 0;
+
+  // If already partially dwelt, re-open ad to continue
+  const remaining = requiredDwellSeconds - (secondsOnAd[btnIndex] || 0);
 
   // Open the ad in a new tab
   triggerSmartlinkAd(btnIndex);
 
+  // Set session start time when leaving
+  dwellSessionStart[btnIndex] = Date.now();
+
   const startMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-    ? `🚀 เปิดโฆษณาปุ่มที่ ${btnIndex} แล้ว! กรุณาค้างอยู่ที่หน้าโฆษณา 30 วินาที...`
-    : `🚀 Opened Ad for Button ${btnIndex}! Please stay on the page for 30 seconds...`;
-  showToast(startMsg, 'info', 4000);
+    ? `🚀 เปิดหน้าโฆษณาแล้ว! กรุณาสลับไปค้างอยู่ที่หน้าโฆษณาอีก ${remaining} วิ (เวลานับเฉพาะตอนเปิดแท็บนั้น)`
+    : `🚀 Ad opened! Please switch to and stay on the ad tab for ${remaining}s (Timer only runs while viewing ad).`;
+  showToast(startMsg, 'info', 4500);
 
   updateButtonsVisualState();
-  startDwellCountdown(btnIndex);
+  updateProgressUI();
 };
 
-// Dwell Countdown (30 seconds)
-function startDwellCountdown(btnIndex) {
-  if (dwellInterval) clearInterval(dwellInterval);
+// Handle Tab Switching (Visibility & Focus)
+function handleTabStateChange() {
+  if (!activeDwellingStep || completedSteps[activeDwellingStep]) return;
+  const step = activeDwellingStep;
+  const isUserAway = document.hidden || !document.hasFocus();
 
-  dwellInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[btnIndex]) / 1000);
-    const remaining = Math.max(0, requiredDwellSeconds - elapsed);
+  if (isUserAway) {
+    // User is on the ad tab! Start or continue measuring time away
+    if (!dwellSessionStart[step]) {
+      dwellSessionStart[step] = Date.now();
+    }
+  } else {
+    // User returned to locker tab!
+    // Commit the time spent on the ad tab
+    if (dwellSessionStart[step]) {
+      const awaySeconds = Math.floor((Date.now() - dwellSessionStart[step]) / 1000);
+      secondsOnAd[step] += awaySeconds;
+      dwellSessionStart[step] = null;
+    }
 
-    if (remaining > 0) {
+    // Check if 30 seconds threshold met
+    if (secondsOnAd[step] >= requiredDwellSeconds) {
+      onButtonDwellVerified(step);
+    } else {
+      // Returned early -> PAUSE TIMER! IT DOES NOT COUNT HERE!
+      const remaining = requiredDwellSeconds - secondsOnAd[step];
+      document.title = `⏸️ (${remaining}s) หยุดนับเวลา! สลับไปหน้าโฆษณาเพื่อให้นับต่อ`;
+
+      if (Date.now() - lastToastTime > 3000) {
+        lastToastTime = Date.now();
+        const toastMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+          ? `⏸️ หยุดนับเวลา! คุณค้างหน้าโฆษณาไปแล้ว ${secondsOnAd[step]}/30 วิ (เหลืออีก ${remaining} วิ) เวลานับต่อเฉพาะตอนเปิดแท็บโฆษณาเท่านั้น`
+          : `⏸️ Timer paused! You spent ${secondsOnAd[step]}/30s. Timer only runs while you are on the ad page.`;
+        showToast(toastMsg, 'warning', 4500);
+      }
+
       updateButtonsVisualState();
       updateProgressUI();
-    } else {
-      // 30 seconds dwell completed!
-      clearInterval(dwellInterval);
-      dwellInterval = null;
-      onButtonDwellVerified(btnIndex);
+    }
+  }
+}
+
+// Background Ticker: Updates document title while away and verifies completion
+function startBackgroundTicker() {
+  if (backgroundTicker) clearInterval(backgroundTicker);
+
+  backgroundTicker = setInterval(() => {
+    if (!activeDwellingStep || completedSteps[activeDwellingStep]) return;
+    const step = activeDwellingStep;
+    const isUserAway = document.hidden || !document.hasFocus();
+
+    if (isUserAway && dwellSessionStart[step]) {
+      const currentAway = Math.floor((Date.now() - dwellSessionStart[step]) / 1000);
+      const total = secondsOnAd[step] + currentAway;
+      const remaining = Math.max(0, requiredDwellSeconds - total);
+
+      if (remaining > 0) {
+        document.title = `⏳ (${remaining}s) ค้างอยู่หน้าโฆษณา...`;
+      } else {
+        document.title = `✅ (ครบ 30 วิแล้ว!) สลับกลับมาหน้านี้ได้เลย`;
+      }
+
+      // If user stayed away full 30 seconds
+      if (remaining <= 0) {
+        secondsOnAd[step] = requiredDwellSeconds;
+        dwellSessionStart[step] = null;
+        onButtonDwellVerified(step);
+      }
     }
   }, 500);
 }
@@ -232,6 +299,10 @@ function startDwellCountdown(btnIndex) {
 function onButtonDwellVerified(btnIndex) {
   completedSteps[btnIndex] = true;
   activeDwellingStep = null;
+  dwellSessionStart[btnIndex] = null;
+  secondsOnAd[btnIndex] = requiredDwellSeconds;
+
+  document.title = `${currentLocker.name} \u2014 BlackPass 30s Verification`;
 
   updateButtonsVisualState();
   updateProgressUI();
@@ -261,8 +332,9 @@ function updateProgressUI() {
   let fraction = doneCount / totalSteps;
 
   if (activeDwellingStep && !completedSteps[activeDwellingStep]) {
-    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[activeDwellingStep]) / 1000);
-    const currentProgress = Math.min(1, elapsed / requiredDwellSeconds);
+    const isUserAway = document.hidden || !document.hasFocus();
+    const currentSpent = secondsOnAd[activeDwellingStep] + (isUserAway && dwellSessionStart[activeDwellingStep] ? Math.floor((Date.now() - dwellSessionStart[activeDwellingStep]) / 1000) : 0);
+    const currentProgress = Math.min(1, currentSpent / requiredDwellSeconds);
     fraction = (doneCount + currentProgress) / totalSteps;
   }
 
@@ -339,11 +411,12 @@ function triggerSmartlinkAd(btnIndex = 1) {
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');
-    if (adWindow) {
-      window.focus();
+    if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
+      showToast('⚠️ เบราว์เซอร์บล็อกป๊อปอัป! กรุณากด "อนุญาตป๊อปอัป" ด้านบนของเบราว์เซอร์เพื่อให้เปิดหน้าโฆษณาได้', 'warning', 5000);
     }
   } catch (e) {
     console.warn('[BlackPass] Popup blocked by browser policy:', e);
+    showToast('⚠️ เบราว์เซอร์บล็อกป๊อปอัป! กรุณาอนุญาตป๊อปอัปในแถบ URL', 'warning', 5000);
   }
 }
 
