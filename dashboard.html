@@ -149,18 +149,13 @@
               </button>
             </div>
 
-            <!-- Single Choice: Clean vs 18+ Ads (All other settings automated) -->
+            <!-- Automated 18+ High CPM Monetization Engine -->
             <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 12px;">
               <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">ประเภทโฆษณา:</span>
-                <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 14px; border-radius: var(--radius-full); background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.25); font-size: 13px; color: #FFFFFF;">
-                  <input type="radio" name="quickAdType" value="clean" checked style="accent-color: #6366F1;">
-                  <span>🛡️ ทั่วไป (Clean SFW &bull; $2.80 CPM)</span>
-                </label>
-                <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 14px; border-radius: var(--radius-full); background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); font-size: 13px; color: #F472B6;">
-                  <input type="radio" name="quickAdType" value="adult" style="accent-color: #EC4899;">
-                  <span>🔞 โฆษณา 18+ (High CPM $3.80 &bull; รายได้ +35%)</span>
-                </label>
+                <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: var(--radius-full); background: rgba(236, 72, 153, 0.15); border: 1px solid rgba(236, 72, 153, 0.35); font-size: 13px; color: #F472B6; font-weight: 600;">
+                  <span>🔞 โฆษณา 18+ (High CPM $3.80 &bull; รายได้ +35% อัตโนมัติทุกทราฟฟิก)</span>
+                </div>
               </div>
 
               <div style="font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
@@ -527,22 +522,22 @@
             <div style="font-size: 11px; color: var(--text-muted);">ประมาณ 18 บาท เริ่มถอนได้เลย</div>
           </div>
 
-          <div class="metric-card" style="padding: 16px;">
+          <div class="metric-card" style="padding: 16px; border-color: rgba(236, 72, 153, 0.3); background: rgba(236, 72, 153, 0.05);">
             <div class="metric-header" style="margin-bottom: 6px;">
-              <span class="metric-label">เรทไทยทั่วไป (Clean)</span>
-              <div class="metric-icon" style="color: #38BDF8;"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></div>
-            </div>
-            <div class="metric-value" style="font-size: 22px; color: #38BDF8;">$2.80</div>
-            <div style="font-size: 11px; color: var(--text-muted);">~100 บาท / 1,000 ครั้ง (กรอง 18+ ออก)</div>
-          </div>
-
-          <div class="metric-card" style="padding: 16px; border-color: rgba(236, 72, 153, 0.3); background: rgba(236, 72, 153, 0.04);">
-            <div class="metric-header" style="margin-bottom: 6px;">
-              <span class="metric-label" style="color: #F472B6;">เรทไทยโหมด 18+ (High CPM)</span>
+              <span class="metric-label" style="color: #F472B6;">เรทไทยมาตรฐาน (18+ High CPM)</span>
               <div class="metric-icon" style="color: #EC4899;"><i data-lucide="trending-up" style="width: 14px; height: 14px;"></i></div>
             </div>
             <div class="metric-value" style="font-size: 22px; color: #EC4899;">$3.80</div>
-            <div style="font-size: 11px; color: #F472B6;">~136 บาท / 1,000 ครั้ง (รายได้ +35%)</div>
+            <div style="font-size: 11px; color: #F472B6;">~136.80 บาท / 1,000 ครั้ง (รายได้ +35% อัตโนมัติ)</div>
+          </div>
+
+          <div class="metric-card" style="padding: 16px;">
+            <div class="metric-header" style="margin-bottom: 6px;">
+              <span class="metric-label">เรทสหรัฐอเมริกา (Tier 1)</span>
+              <div class="metric-icon" style="color: #38BDF8;"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" style="font-size: 22px; color: #38BDF8;">$6.50</div>
+            <div style="font-size: 11px; color: var(--text-muted);">~234 บาท / 1,000 ครั้ง (สูงสุดในระบบ)</div>
           </div>
 
           <div class="metric-card" style="padding: 16px;">
@@ -555,13 +550,13 @@
           </div>
         </div>
 
-        <!-- Notice Bar: 18+ Choice -->
+        <!-- Notice Bar: 18+ High CPM Standard -->
         <div style="background: rgba(236, 72, 153, 0.08); border: 1px solid rgba(236, 72, 153, 0.25); border-radius: var(--radius-md); padding: 12px 18px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 20px;">🔞</span>
             <div>
-              <strong style="color: #F472B6; font-size: 13px;">เลือกเปิดโฆษณา 18+ ได้ตอนย่อลิงก์:</strong>
-              <span style="color: var(--text-secondary); font-size: 13px;"> ปุ่มเดียวง่ายๆ ไม่ซับซ้อน ช่วยดันยอดรายได้ให้คุณเพิ่มขึ้น +35% ทันที</span>
+              <strong style="color: #F472B6; font-size: 13px;">ระบบเปิดโฆษณา 18+ High CPM ให้ทุกลิงก์ทั้งหมด:</strong>
+              <span style="color: var(--text-secondary); font-size: 13px;"> ทราฟฟิกคนไทยได้รับเรท $3.80 CPM (~136.80฿ / 1,000 ครั้ง) อัตโนมัติทันที ดันรายได้เพิ่มขึ้น +35%</span>
             </div>
           </div>
           <span class="badge" style="background: rgba(236, 72, 153, 0.2); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.35);">เรทไทยพุ่งถึง $3.80 CPM</span>
@@ -839,18 +834,18 @@
                 <span>อัตโนมัติตามเรท Payout</span>
               </div>
               <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
-                ไทย $2.80 | ตปท. สูงสุด $5.00 CPM
+                ไทย $3.80 | ตปท. สูงสุด $6.50 CPM
               </div>
             </div>
 
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
-              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">การกรองความปลอดภัย</div>
-              <div style="font-weight: 700; font-size: 15px; color: #38BDF8; display: flex; align-items: center; gap: 6px;">
-                <i data-lucide="shield" style="width: 16px; height: 16px;"></i>
-                <span>Safe for Work (100% SFW)</span>
+            <div style="background: rgba(236, 72, 153, 0.05); border: 1px solid rgba(236, 72, 153, 0.25); border-radius: 8px; padding: 14px;">
+              <div style="font-size: 11px; color: #F472B6; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">ระดับโฆษณาที่เปิด</div>
+              <div style="font-weight: 700; font-size: 15px; color: #EC4899; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+                <span>18+ High CPM (+35%)</span>
               </div>
               <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
-                บล็อกเว็บโป๊ 18+ และไวรัสปลอมทั้งหมด
+                เปิดใช้งานเรท 18+ สูงสุด $3.80 อัตโนมัติทุกทราฟฟิก
               </div>
             </div>
           </div>
@@ -942,43 +937,20 @@
           </div>
 
           <!-- Single Combined Choice: Clean vs 18+ High CPM Ads -->
+          <!-- Automated 18+ High CPM Monetization Engine -->
           <div class="form-group" style="margin-top: 14px;">
             <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 700;">เลือกประเภทโฆษณา (Ad Category)</span>
-              <span style="font-size: 11px; color: var(--text-muted);">เลือกตามกลุ่มผู้ชมของคุณ</span>
+              <span style="font-weight: 700;">ระบบสร้างรายได้ (Monetization Engine)</span>
+              <span class="badge" style="background: rgba(236, 72, 153, 0.2); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.35); font-size: 11px;">เรทสูงสุด $3.80 CPM</span>
             </label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <label style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: var(--radius-md); background: rgba(255,255,255,0.03); border: 2px solid var(--border-default); cursor: pointer; transition: all 0.2s;">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">🛡️</span>
-                    <strong style="color: #FFFFFF; font-size: 14px;">โฆษณาทั่วไป (Clean)</strong>
-                  </div>
-                  <input type="radio" name="modalAdType" value="clean" checked style="accent-color: #6366F1; width: 16px; height: 16px;">
+            <div style="padding: 14px 16px; border-radius: var(--radius-md); background: rgba(236, 72, 153, 0.08); border: 1px solid rgba(236, 72, 153, 0.3); display: flex; align-items: center; gap: 14px;">
+              <span style="font-size: 26px;">🔞</span>
+              <div>
+                <strong style="color: #F472B6; font-size: 14px;">โฆษณา 18+ (High CPM $3.80 &bull; รายได้ +35%)</strong>
+                <div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4;">
+                  เปิดใช้งานเรทสูงสุด $3.80 CPM สำหรับทราฟฟิกคนไทยโดยอัตโนมัติ รวมระบบกั้น 3 ปุ่ม 30 วิ และ Anti-Bypass ครบครัน
                 </div>
-                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
-                  กรอง 18+ ออก 100% ปลอดภัยสำหรับเด็ก ชุมชน Roblox และช่อง YouTube
-                </div>
-                <div style="font-size: 12px; font-weight: 700; color: #10B981; margin-top: 4px;">
-                  เรทปกติ: $2.80 CPM (~100฿ / 1,000 ครั้ง)
-                </div>
-              </label>
-
-              <label style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: var(--radius-md); background: rgba(236,72,153,0.05); border: 2px solid rgba(236,72,153,0.3); cursor: pointer; transition: all 0.2s;">
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 18px;">🔞</span>
-                    <strong style="color: #F472B6; font-size: 14px;">โฆษณา 18+ (High CPM)</strong>
-                  </div>
-                  <input type="radio" name="modalAdType" value="adult" style="accent-color: #EC4899; width: 16px; height: 16px;">
-                </div>
-                <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.4;">
-                  เปิดรับโฆษณาผู้ใหญ่ (Adult/Mainstream) สำหรับผู้ชมอายุ 18 ปีขึ้นไป
-                </div>
-                <div style="font-size: 12px; font-weight: 700; color: #EC4899; margin-top: 4px;">
-                  เรทสูงพิเศษ: $3.80 CPM (+35% รายได้)
-                </div>
-              </label>
+              </div>
             </div>
           </div>
 

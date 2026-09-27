@@ -205,9 +205,7 @@ function renderLockersTable(targetTbodyId = 'lockersTableBody', filterQuery = ''
         </td>
         <td>
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            ${l.adultAds 
-              ? '<span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 11px;">🔞 18+ ($3.80)</span>' 
-              : '<span class="badge badge-primary" style="font-size: 11px;">🛡️ Clean ($2.80)</span>'}
+            <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 11px;">🔞 18+ ($3.80 CPM)</span>
             <span style="font-size: 11px; color: var(--text-muted);">${l.steps || 3} ปุ่ม &bull; ${l.timer || 30}s</span>
           </div>
         </td>
@@ -301,8 +299,6 @@ function initQuickShortener() {
       alias = alias.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
     }
 
-    const isAdult = document.querySelector('input[name="quickAdType"]:checked')?.value === 'adult';
-
     const newLocker = await GateStore.createLocker({
       name: `Locker: ${alias}`,
       destinationUrl: targetUrl,
@@ -310,7 +306,7 @@ function initQuickShortener() {
       steps: 3,
       timer: 30,
       antiBypass: true,
-      adultAds: isAdult,
+      adultAds: true,
       ads: { popunder: true, banner: true, smartlink: true }
     });
 
@@ -337,8 +333,7 @@ function initQuickShortener() {
     renderLockersTable('allLockersTableBody');
     lucide.createIcons();
 
-    const modeText = isAdult ? '🔞 โหมด 18+ (เรท $3.80 CPM)' : '🛡️ โหมดทั่วไป (เรท $2.80 CPM)';
-    showToast(`ย่อลิงก์สำเร็จ! [${modeText}]`, 'success', 5000);
+    showToast('ย่อลิงก์สำเร็จ! [🔞 โหมด 18+ High CPM ($3.80)]', 'success', 5000);
   });
 }
 
@@ -598,7 +593,6 @@ function initCreateLockerForm() {
     const destinationUrl = document.getElementById('inputDestinationUrl').value.trim();
     let name = document.getElementById('inputLockerName')?.value.trim();
     let slug = document.getElementById('inputLockerSlug')?.value.trim();
-    const isAdult = document.querySelector('input[name="modalAdType"]:checked')?.value === 'adult';
 
     if (!destinationUrl) return;
 
@@ -619,7 +613,7 @@ function initCreateLockerForm() {
       steps: 3,
       timer: 30,
       antiBypass: true,
-      adultAds: isAdult,
+      adultAds: true,
       smartlinkUrl: '', // Always enforce central Adsterra direct network
       ads: { popunder: true, banner: true, smartlink: true }
     });
@@ -630,8 +624,7 @@ function initCreateLockerForm() {
     renderLockersTable('lockersTableBody');
     renderLockersTable('allLockersTableBody');
 
-    const modeText = isAdult ? '🔞 โหมด 18+ (เรท $3.80 CPM)' : '🛡️ โหมดทั่วไป (เรท $2.80 CPM)';
-    showToast(`สร้าง Locker "${newLocker.name}" สำเร็จ! [${modeText}]`, 'success', 5000);
+    showToast(`สร้าง Locker "${newLocker.name}" สำเร็จ! [🔞 โหมด 18+ High CPM ($3.80)]`, 'success', 5000);
   });
 }
 

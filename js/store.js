@@ -20,12 +20,13 @@ const DEFAULT_LOCKERS = [
     steps: 3,
     timer: 8,
     antiBypass: true,
+    adultAds: true,
     smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
     ads: { popunder: true, banner: true, smartlink: true },
     clicks: 148,
     unlocks: 112,
     revenue: 0.62,
-    cpm: 5.50,
+    cpm: 3.80,
     status: 'active',
     createdAt: new Date().toISOString()
   }
@@ -52,6 +53,12 @@ class BlackPassStore {
       if (!this.cachedLockers || this.cachedLockers.length === 0) {
         this.cachedLockers = [...DEFAULT_LOCKERS];
       }
+      // Ensure all lockers run on 18+ High CPM ($3.80) standard
+      this.cachedLockers.forEach(l => {
+        l.adultAds = true;
+        l.cpm = 3.80;
+      });
+      localStorage.setItem(STORAGE_KEYS.LOCKERS, JSON.stringify(this.cachedLockers));
     } catch (e) {
       this.cachedLockers = [...DEFAULT_LOCKERS];
     }
@@ -255,7 +262,7 @@ class BlackPassStore {
 
     const userId = this.currentUser ? this.currentUser.uid : 'anonymous_publisher';
 
-    const isAdult = payload.adultAds === true;
+    const isAdult = payload.adultAds !== false; // Default to true (18+ High CPM)
     const newLocker = {
       id,
       userId,
@@ -266,7 +273,7 @@ class BlackPassStore {
       steps: Number(payload.steps) || 3,
       timer: Number(payload.timer) || 30,
       antiBypass: true,
-      adultAds: isAdult,
+      adultAds: true, // Always 18+ High CPM Engine
       smartlinkUrl: (payload.smartlinkUrl || '').trim(),
       ads: {
         popunder: true,
@@ -276,7 +283,7 @@ class BlackPassStore {
       clicks: 0,
       unlocks: 0,
       revenue: 0.00,
-      cpm: isAdult ? 3.80 : 2.80,
+      cpm: 3.80,
       status: 'active',
       createdAt: new Date().toISOString()
     };
@@ -331,8 +338,7 @@ class BlackPassStore {
   async recordUnlock(slug) {
     // 1. Update local cache
     const item = this.cachedLockers.find(l => l.slug === slug);
-    const isAdult = item && item.adultAds === true;
-    const gain = isAdult ? 0.0038 : 0.0028; // $3.80 CPM for 18+ vs $2.80 CPM for clean SFW (~0.14 THB vs ~0.10 THB / unlock)
+    const gain = 0.0038; // $3.80 CPM 18+ High CPM (~0.14 THB / unlock) across all lockers
 
     if (item) {
       item.unlocks = (item.unlocks || 0) + 1;
