@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,30 +24,30 @@
       </div>
 
       <nav class="sidebar-nav">
-        <span class="nav-section-title">Main Menu</span>
+        <span class="nav-section-title" data-i18n="menu_main">เมนูหลัก</span>
         <button class="sidebar-item active" data-view="overview">
           <i data-lucide="layout-grid"></i>
-          <span>Overview</span>
+          <span data-i18n="menu_overview">ภาพรวม</span>
         </button>
         <button class="sidebar-item" data-view="lockers">
           <i data-lucide="link-2"></i>
-          <span>My Lockers</span>
+          <span data-i18n="menu_lockers">Locker ทั้งหมด</span>
         </button>
         <button class="sidebar-item" data-view="analytics">
           <i data-lucide="bar-chart-2"></i>
-          <span>Analytics</span>
+          <span data-i18n="menu_analytics">สถิติเชิงลึก</span>
         </button>
 
-        <span class="nav-section-title">Finances</span>
+        <span class="nav-section-title" data-i18n="menu_finances">การเงิน & กระเป๋า</span>
         <button class="sidebar-item" data-view="payouts">
           <i data-lucide="credit-card"></i>
-          <span>Payouts &amp; Wallet</span>
+          <span data-i18n="menu_payouts">กระเป๋าเงิน & ถอนเงิน</span>
         </button>
 
-        <span class="nav-section-title">System</span>
+        <span class="nav-section-title" data-i18n="menu_system">ระบบ & การตั้งค่า</span>
         <button class="sidebar-item" data-view="settings">
           <i data-lucide="sliders"></i>
-          <span>Settings &amp; API</span>
+          <span data-i18n="menu_settings">ตั้งค่า & API</span>
         </button>
       </nav>
 
@@ -58,7 +58,7 @@
             <span class="user-name" id="sidebarUsername">OrinRankone</span>
             <span class="user-tier">92% RevShare Tier</span>
           </div>
-          <button type="button" onclick="openAuthModal('signin')" title="Switch / Sign In" style="color: var(--text-muted); padding: 4px;">
+          <button type="button" onclick="openAuthModal('signin')" title="Switch / Sign In" style="color: var(--text-muted); padding: 4px; background: none; border: none; cursor: pointer;">
             <i data-lucide="user" style="width: 16px; height: 16px;"></i>
           </button>
           <a href="#" onclick="GateStore.signOut(); showToast('Signed out of BlackPass', 'info'); setTimeout(()=>window.location.href='index.html', 500);" title="Logout" style="color: var(--text-muted); padding: 4px;">
@@ -73,18 +73,24 @@
       <!-- Topbar -->
       <header class="app-topbar">
         <div class="topbar-left">
-          <h1 class="topbar-page-title" id="pageTitle">Platform Overview</h1>
+          <h1 class="topbar-page-title" id="pageTitle" data-i18n="menu_overview">ภาพรวม</h1>
         </div>
 
         <div class="topbar-right">
+          <!-- Language Switcher -->
+          <div class="lang-switcher">
+            <button type="button" class="lang-btn" data-lang="th" onclick="setAppLanguage('th')">🇹🇭 TH</button>
+            <button type="button" class="lang-btn" data-lang="en" onclick="setAppLanguage('en')">🇺🇸 EN</button>
+          </div>
+
           <div class="balance-card-pill">
-            <span class="balance-label">Available:</span>
+            <span class="balance-label" data-i18n="topbar_available">ยอดเงินพร้อมถอน:</span>
             <span class="balance-amount" id="topbarBalance">$74.50</span>
           </div>
 
           <button class="btn btn-primary btn-sm" id="btnOpenCreateLocker">
             <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
-            <span>Create Locker</span>
+            <span data-i18n="btn_create_locker">สร้าง Locker ใหม่</span>
           </button>
         </div>
       </header>
@@ -95,61 +101,61 @@
         <div class="metrics-row">
           <div class="metric-card">
             <div class="metric-header">
-              <span class="metric-label">Total Clicks</span>
+              <span class="metric-label" data-i18n="card_clicks">ยอดคลิกทั้งหมด</span>
               <div class="metric-icon"><i data-lucide="mouse-pointer" style="width: 14px; height: 14px;"></i></div>
             </div>
             <div class="metric-value" id="statTotalClicks">26,360</div>
             <div class="metric-trend up">
               <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-              <span>+14.8% this week</span>
+              <span data-i18n="trend_clicks">+14.8% สัปดาห์นี้</span>
             </div>
           </div>
 
           <div class="metric-card">
             <div class="metric-header">
-              <span class="metric-label">Completed Offers</span>
+              <span class="metric-label" data-i18n="card_offers">ผ่านด่านสำเร็จ</span>
               <div class="metric-icon"><i data-lucide="check-circle-2" style="width: 14px; height: 14px;"></i></div>
             </div>
             <div class="metric-value" id="statTotalOffers">13,010</div>
             <div class="metric-trend up">
               <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-              <span>+11.2% this week</span>
+              <span data-i18n="trend_offers">+11.2% สัปดาห์นี้</span>
             </div>
           </div>
 
           <div class="metric-card">
             <div class="metric-header">
-              <span class="metric-label">Content Unlocks</span>
+              <span class="metric-label" data-i18n="card_unlocks">ปลดล็อคเนื้อหา</span>
               <div class="metric-icon"><i data-lucide="unlock" style="width: 14px; height: 14px;"></i></div>
             </div>
             <div class="metric-value" id="statTotalUnlocks">13,010</div>
             <div class="metric-trend up">
               <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-              <span>+11.2% vs last 7d</span>
+              <span data-i18n="trend_unlocks">+11.2% เทียบ 7 วันก่อน</span>
             </div>
           </div>
 
           <div class="metric-card">
             <div class="metric-header">
-              <span class="metric-label">Net Revenue</span>
+              <span class="metric-label" data-i18n="card_revenue">รายได้สุทธิ</span>
               <div class="metric-icon"><i data-lucide="dollar-sign" style="width: 14px; height: 14px; color: #10B981;"></i></div>
             </div>
             <div class="metric-value" style="color: #10B981;" id="statTotalRevenue">$74.50</div>
             <div class="metric-trend up">
               <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-              <span>Ready to withdraw</span>
+              <span data-i18n="trend_revenue">พร้อมถอนทันที</span>
             </div>
           </div>
 
           <div class="metric-card">
             <div class="metric-header">
-              <span class="metric-label">Conversion Rate</span>
+              <span class="metric-label" data-i18n="card_conversion">อัตราความสำเร็จ</span>
               <div class="metric-icon"><i data-lucide="percent" style="width: 14px; height: 14px;"></i></div>
             </div>
             <div class="metric-value" id="statConversion">49.4%</div>
             <div class="metric-trend up">
               <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-              <span>High-intent traffic</span>
+              <span data-i18n="trend_conversion">ทราฟฟิกคุณภาพสูง</span>
             </div>
           </div>
         </div>
@@ -158,13 +164,13 @@
         <div class="chart-card">
           <div class="chart-header">
             <div>
-              <h3 class="chart-title">Weekly Performance Telemetry</h3>
-              <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Daily clicks vs completed unlocks across your active link gates.</p>
+              <h3 class="chart-title" data-i18n="chart_title">กราฟสถิติประสิทธิภาพย้อนหลัง 7 วัน</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;" data-i18n="chart_desc">เปรียบเทียบยอดคนคลิกเข้าและยอดคนปลดล็อคสคริปต์สำเร็จ</p>
             </div>
             <div class="chart-actions">
-              <button class="chart-tab-btn active" data-chart-metric="clicks">Clicks</button>
-              <button class="chart-tab-btn" data-chart-metric="unlocks">Unlocks</button>
-              <button class="chart-tab-btn" data-chart-metric="revenue">Revenue ($)</button>
+              <button class="chart-tab-btn active" data-chart-metric="clicks" data-i18n="chart_tab_clicks">คลิก</button>
+              <button class="chart-tab-btn" data-chart-metric="unlocks" data-i18n="chart_tab_unlocks">ปลดล็อค</button>
+              <button class="chart-tab-btn" data-chart-metric="revenue" data-i18n="chart_tab_revenue">รายได้ ($)</button>
             </div>
           </div>
 
@@ -177,24 +183,24 @@
         <div class="table-card">
           <div class="table-header">
             <div class="table-title-group">
-              <h3 class="table-title">Active Content Lockers</h3>
-              <span class="badge badge-primary" id="lockerCountBadge">3 Active</span>
+              <h3 class="table-title" data-i18n="table_title">รายการ Content Locker ที่เปิดใช้งาน</h3>
+              <span class="badge badge-primary" id="lockerCountBadge">3 รายการ</span>
             </div>
 
-            <input type="text" class="table-search-input" id="searchLockersInput" placeholder="Search locker name or slug...">
+            <input type="text" class="table-search-input" id="searchLockersInput" placeholder="ค้นหาชื่อ Locker หรือ Slug..." data-i18n-placeholder="table_search_placeholder">
           </div>
 
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Locker / Slug</th>
-                  <th>Destination Target</th>
-                  <th>Config</th>
-                  <th>Clicks / Unlocks</th>
-                  <th>Revenue ($)</th>
-                  <th>Status</th>
-                  <th style="text-align: right;">Actions</th>
+                  <th data-i18n="th_locker">ชื่อ Locker / ลิงก์ย่อ</th>
+                  <th data-i18n="th_dest">ลิงก์ปลายทาง (Target)</th>
+                  <th data-i18n="th_config">การตั้งค่า</th>
+                  <th data-i18n="th_clicks_unlocks">คลิก / ปลดล็อค</th>
+                  <th data-i18n="th_revenue">รายได้ ($)</th>
+                  <th data-i18n="th_status">สถานะ</th>
+                  <th style="text-align: right;" data-i18n="th_actions">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="lockersTableBody">
@@ -209,12 +215,12 @@
       <section class="dashboard-view" id="viewLockers">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
           <div>
-            <h2 style="font-size: 20px; font-weight: 700; color: #FFFFFF;">All Link Lockers</h2>
-            <p style="font-size: 13px; color: var(--text-muted);">Manage your active access gates, edit URLs, or view conversion rates.</p>
+            <h2 style="font-size: 20px; font-weight: 700; color: #FFFFFF;" data-i18n="menu_lockers">Locker ทั้งหมด</h2>
+            <p style="font-size: 13px; color: var(--text-muted);" data-i18n="table_title">จัดการ Content Locker ของคุณ แก้ไขลิงก์ และติดตามผลลัพธ์</p>
           </div>
           <button class="btn btn-primary" onclick="openCreateModal()">
             <i data-lucide="plus" style="width: 16px; height: 16px;"></i>
-            <span>Create New Locker</span>
+            <span data-i18n="btn_create_locker">สร้าง Locker ใหม่</span>
           </button>
         </div>
 
@@ -223,13 +229,13 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Locker / Slug</th>
-                  <th>Destination Target</th>
-                  <th>Config</th>
-                  <th>Clicks / Unlocks</th>
-                  <th>Revenue ($)</th>
-                  <th>Status</th>
-                  <th style="text-align: right;">Actions</th>
+                  <th data-i18n="th_locker">ชื่อ Locker / ลิงก์ย่อ</th>
+                  <th data-i18n="th_dest">ลิงก์ปลายทาง (Target)</th>
+                  <th data-i18n="th_config">การตั้งค่า</th>
+                  <th data-i18n="th_clicks_unlocks">คลิก / ปลดล็อค</th>
+                  <th data-i18n="th_revenue">รายได้ ($)</th>
+                  <th data-i18n="th_status">สถานะ</th>
+                  <th style="text-align: right;" data-i18n="th_actions">จัดการ</th>
                 </tr>
               </thead>
               <tbody id="allLockersTableBody">
@@ -247,7 +253,7 @@
           <div class="card">
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
               <i data-lucide="globe" style="width: 18px; height: 18px; color: var(--primary);"></i>
-              <span>Traffic by Geography (Top 5)</span>
+              <span data-i18n="analytics_geo_title">สถิติผู้ชมตามประเทศ (Top 5)</span>
             </h3>
             <div style="display: flex; flex-direction: column; gap: 14px;">
               <div>
@@ -288,15 +294,15 @@
           <div class="card">
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
               <i data-lucide="smartphone" style="width: 18px; height: 18px; color: #38BDF8;"></i>
-              <span>Device Split</span>
+              <span data-i18n="analytics_device_title">สัดส่วนอุปกรณ์ของผู้เข้าชม</span>
             </h3>
             <div style="display: flex; flex-direction: column; gap: 20px;">
               <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: var(--bg-surface-raised); border-radius: var(--radius-md);">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <i data-lucide="smartphone" style="color: #38BDF8;"></i>
                   <div>
-                    <div style="font-weight: 600; color: #FFFFFF;">Mobile Devices (Android / iOS)</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Roblox Mobile, Delta &amp; Fluxus players</div>
+                    <div style="font-weight: 600; color: #FFFFFF;" data-i18n="analytics_device_mobile">มือถือ (Android / iOS)</div>
+                    <div style="font-size: 12px; color: var(--text-muted);" data-i18n="analytics_device_mobile_sub">ผู้เล่น Roblox Mobile, Delta &amp; Fluxus</div>
                   </div>
                 </div>
                 <div style="font-size: 20px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono);">72.4%</div>
@@ -306,8 +312,8 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <i data-lucide="monitor" style="color: #A5B4FC;"></i>
                   <div>
-                    <div style="font-weight: 600; color: #FFFFFF;">Desktop (Windows / Mac)</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">PC Executors &amp; Scripthubs</div>
+                    <div style="font-weight: 600; color: #FFFFFF;" data-i18n="analytics_device_pc">คอมพิวเตอร์ (Windows / Mac)</div>
+                    <div style="font-size: 12px; color: var(--text-muted);" data-i18n="analytics_device_pc_sub">ผู้เล่น PC Executors &amp; Scripthubs</div>
                   </div>
                 </div>
                 <div style="font-size: 20px; font-weight: 800; color: #A5B4FC; font-family: var(--font-mono);">27.6%</div>
@@ -318,19 +324,19 @@
 
         <div class="table-card">
           <div class="table-header">
-            <h3 class="table-title">Daily Conversion Breakdown (Last 7 Days)</h3>
+            <h3 class="table-title" data-i18n="analytics_daily_title">สถิติรายวันย้อนหลัง 7 วัน</h3>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Raw Clicks</th>
-                  <th>Unique Visitors</th>
-                  <th>Completed Tasks</th>
-                  <th>Unlock Rate</th>
-                  <th>Avg CPM</th>
-                  <th>Net Earnings</th>
+                  <th data-i18n="th_date">วันที่</th>
+                  <th data-i18n="th_raw_clicks">ยอดคลิกดิบ</th>
+                  <th data-i18n="th_unique_visitors">ผู้ชมไม่ซ้ำ</th>
+                  <th data-i18n="th_completed_tasks">ทำภารกิจสำเร็จ</th>
+                  <th data-i18n="th_unlock_rate">อัตราปลดล็อค</th>
+                  <th data-i18n="th_avg_cpm">เรท CPM เฉลี่ย</th>
+                  <th data-i18n="th_net_earnings">รายได้สุทธิ</th>
                 </tr>
               </thead>
               <tbody id="analyticsDailyTbody">
@@ -346,15 +352,15 @@
         <div class="form-grid-2" style="margin-bottom: 28px;">
           <!-- Wallet Balance Card -->
           <div class="card">
-            <span class="badge badge-success" style="margin-bottom: 12px;">Active Balance</span>
+            <span class="badge badge-success" style="margin-bottom: 12px;" data-i18n="payout_active_balance">ยอดเงินคงเหลือในกระเป๋า</span>
             <div style="font-size: 38px; font-weight: 800; color: #10B981; font-family: var(--font-mono); margin-bottom: 4px;" id="payoutAvailableBalance">$74.50</div>
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
-              Threshold reached (&gt; $5.00). Ready for instant withdrawal.
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="payout_ready_desc">
+              ถึงเกณฑ์ถอนเงินขั้นต่ำแล้ว (&gt; $5.00) สามารถกดสั่งถอนได้ทันที
             </p>
 
             <form id="payoutForm">
               <div class="form-group">
-                <label class="form-label">Withdrawal Destination</label>
+                <label class="form-label" data-i18n="payout_dest_label">ช่องทางการรับเงิน</label>
                 <select class="form-select" id="payoutMethodSelect">
                   <option value="truemoney">TrueMoney Wallet (Thailand)</option>
                   <option value="promptpay">PromptPay / QR (Instant)</option>
@@ -364,13 +370,13 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">Account Number / Phone / Wallet Address</label>
+                <label class="form-label" data-i18n="payout_account_label">เบอร์โทรศัพท์ / เลขบัญชี / กระเป๋าเงิน</label>
                 <input type="text" class="form-input" id="payoutAccountInput" value="081-XXX-XXXX" required>
               </div>
 
               <button type="submit" class="btn btn-primary btn-block">
                 <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
-                <span>Submit Payout Request ($74.50)</span>
+                <span data-i18n="payout_btn_submit">ยืนยันคำขอถอนเงิน ($74.50)</span>
               </button>
             </form>
           </div>
@@ -379,20 +385,20 @@
           <div class="card">
             <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
               <i data-lucide="shield-check" style="width: 18px; height: 18px; color: #10B981;"></i>
-              <span>Payout Policy &amp; Security</span>
+              <span data-i18n="payout_policy_title">นโยบายและความปลอดภัยในการจ่ายเงิน</span>
             </h3>
             <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: var(--text-secondary);">
               <li style="display: flex; gap: 10px;">
                 <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
-                <span><strong>Instant Local Processing:</strong> TrueMoney Wallet &amp; PromptPay payouts process within 10-30 minutes.</span>
+                <span><strong data-i18n="payout_policy_1_title">ประมวลผลด่วนในไทย:</strong> <span data-i18n="payout_policy_1_desc">TrueMoney Wallet และ PromptPay เงินเข้าภายใน 10-30 นาที</span></span>
               </li>
               <li style="display: flex; gap: 10px;">
                 <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
-                <span><strong>Zero Hidden Transaction Fees:</strong> BlackPass absorbs network gas and processing fees for Pro publishers.</span>
+                <span><strong data-i18n="payout_policy_2_title">ฟรีค่าธรรมเนียมการโอน:</strong> <span data-i18n="payout_policy_2_desc">BlackPass ออกค่าธรรมเนียมและ Gas fee ให้สมาชิกทั้งหมด</span></span>
               </li>
               <li style="display: flex; gap: 10px;">
                 <i data-lucide="check" style="width: 16px; height: 16px; color: var(--success); flex-shrink: 0;"></i>
-                <span><strong>Fraud Guard:</strong> Traffic verified against Adsterra &amp; Cloudflare bot-score databases before release.</span>
+                <span><strong data-i18n="payout_policy_3_title">ระบบป้องกันการโกง:</strong> <span data-i18n="payout_policy_3_desc">ตรวจสอบทราฟฟิกด้วย AI และ Adsterra Anti-Fraud ก่อนโอนเงิน</span></span>
               </li>
             </ul>
           </div>
@@ -400,18 +406,18 @@
 
         <div class="table-card">
           <div class="table-header">
-            <h3 class="table-title">Recent Payout Transactions</h3>
+            <h3 class="table-title" data-i18n="payout_recent_title">ประวัติการทำรายการถอนเงินล่าสุด</h3>
           </div>
           <div class="table-responsive">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Transaction ID</th>
-                  <th>Requested Date</th>
-                  <th>Destination</th>
-                  <th>Amount ($)</th>
-                  <th>Amount (THB)</th>
-                  <th>Status</th>
+                  <th data-i18n="th_txn_id">รหัสธุรกรรม</th>
+                  <th data-i18n="th_txn_date">วันที่ขอถอน</th>
+                  <th data-i18n="th_txn_dest">ช่องทางรับเงิน</th>
+                  <th data-i18n="th_txn_usd">จำนวน ($)</th>
+                  <th data-i18n="th_txn_thb">จำนวน (บาท)</th>
+                  <th data-i18n="th_txn_status">สถานะ</th>
                 </tr>
               </thead>
               <tbody>
@@ -421,7 +427,7 @@
                   <td>TrueMoney (081-XXX-XXXX)</td>
                   <td style="font-weight: 700; color: #10B981;">$45.00</td>
                   <td>1,575 THB</td>
-                  <td><span class="badge badge-success">Completed</span></td>
+                  <td><span class="badge badge-success" data-i18n="txn_status_completed">โอนสำเร็จ</span></td>
                 </tr>
                 <tr>
                   <td style="font-family: var(--font-mono);">TXN_8731F</td>
@@ -429,7 +435,7 @@
                   <td>PromptPay (081-XXX-XXXX)</td>
                   <td style="font-weight: 700; color: #10B981;">$32.50</td>
                   <td>1,137 THB</td>
-                  <td><span class="badge badge-success">Completed</span></td>
+                  <td><span class="badge badge-success" data-i18n="txn_status_completed">โอนสำเร็จ</span></td>
                 </tr>
               </tbody>
             </table>
@@ -440,45 +446,40 @@
       <!-- View 5: Settings -->
       <section class="dashboard-view" id="viewSettings">
         <div class="settings-card">
-          <h3 class="settings-card-title">Publisher Profile</h3>
-          <p class="settings-card-desc">Your public publisher profile and revshare tier tier information.</p>
+          <h3 class="settings-card-title" data-i18n="settings_profile_title">ข้อมูลบัญชี Publisher</h3>
+          <p class="settings-card-desc" data-i18n="settings_profile_desc">ข้อมูลส่วนตัวและระดับส่วนแบ่งรายได้ของคุณ</p>
           <div class="form-grid-2">
             <div class="form-group">
-              <label class="form-label">Username</label>
+              <label class="form-label" data-i18n="settings_label_user">ชื่อผู้ใช้ (Username)</label>
               <input type="text" class="form-input" id="settingsUsername" value="OrinRankone">
             </div>
             <div class="form-group">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-input" id="settingsEmail" value="admin@blacklisthub.com">
+              <label class="form-label" data-i18n="settings_label_email">อีเมล</label>
+              <input type="email" class="form-input" id="settingsEmail" value="orin@robloxscripts.io" readonly>
             </div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnSaveProfile">Save Changes</button>
-        </div>
-
-        <div class="settings-card">
-          <h3 class="settings-card-title">Custom Domain (CNAME)</h3>
-          <p class="settings-card-desc">Point your own branded subdomain to BlackPass to bypass ISP and ad-blocker domain blocklists.</p>
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label">Custom Subdomain</label>
-              <input type="text" class="form-input" id="settingsCustomDomain" value="gate.blacklisthub.com">
-              <div class="form-hint">Set CNAME target to <code>cname.blackpass.link</code></div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Verification Status</label>
-              <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
-                <span class="badge badge-success"><i data-lucide="check"></i> DNS Active &amp; SSL Issued</span>
-              </div>
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="showToast('DNS verification refreshed. Domain healthy!', 'success')">Verify DNS</button>
-        </div>
-
-        <div class="settings-card">
-          <h3 class="settings-card-title">Developer API &amp; Webhooks</h3>
-          <p class="settings-card-desc">Programmatically generate lockers or receive real-time HTTP postbacks when an access gate is unlocked.</p>
           <div class="form-group">
-            <label class="form-label">Live API Secret Key</label>
+            <label class="form-label" data-i18n="settings_label_tier">ระดับสมาชิก</label>
+            <input type="text" class="form-input" value="Pro Publisher (92% Cut)" readonly>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title" data-i18n="settings_domain_title">เชื่อมต่อ Custom Domain</h3>
+          <p class="settings-card-desc" data-i18n="settings_domain_desc">ใช้โดเมนของคุณเองเพื่อหลบ AdBlock และเพิ่มความน่าเชื่อถือ</p>
+          <div class="form-group">
+            <label class="form-label" data-i18n="settings_label_domain">โดเมนของคุณ (FQDN)</label>
+            <input type="text" class="form-input" id="settingsCustomDomain" placeholder="link.yourscripthub.com" value="getkey.bloxranked.net">
+            <div class="form-hint" data-i18n="settings_cname_hint">ชี้ CNAME ไปที่: <code>cname.blackpass.link</code></div>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btnSaveCustomDomain" data-i18n="settings_btn_save_domain">บันทึกโดเมน</button>
+        </div>
+
+        <div class="settings-card">
+          <h3 class="settings-card-title" data-i18n="settings_api_title">API & Webhook Postback</h3>
+          <p class="settings-card-desc" data-i18n="settings_api_desc">เชื่อมต่อ API Key เข้ากับบอท Discord หรือเว็บไซต์ของคุณ</p>
+          <div class="form-group">
+            <label class="form-label" data-i18n="settings_label_apikey">Live API Secret Key</label>
             <div style="display: flex; gap: 8px;">
               <input type="password" class="form-input" id="settingsApiKey" value="bp_live_99f2e718bc894d01b972e04fa" readonly>
               <button class="btn btn-secondary" onclick="toggleApiKeyVisibility()"><i data-lucide="eye"></i></button>
@@ -487,11 +488,11 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Unlock Webhook Postback URL</label>
+            <label class="form-label" data-i18n="settings_label_webhook">URL รับ Webhook เมื่อผ่านด่าน</label>
             <input type="url" class="form-input" id="settingsWebhookUrl" value="https://api.blacklisthub.com/webhooks/blackpass">
-            <div class="form-hint">Sends JSON payload with <code>{ puid, lockerId, ip, timestamp, signature }</code> when a user finishes all tasks.</div>
+            <div class="form-hint" data-i18n="settings_webhook_hint">ระบบจะยิง JSON payload พร้อมลายเซ็นยืนยันเมื่อผู้ใช้ปลดล็อค</div>
           </div>
-          <button class="btn btn-primary btn-sm" id="btnSaveApiSettings">Update API Config</button>
+          <button class="btn btn-primary btn-sm" id="btnSaveApiSettings" data-i18n="settings_btn_save_api">บันทึกการตั้งค่า API</button>
         </div>
       </section>
     </main>
@@ -501,7 +502,7 @@
   <div class="modal-backdrop" id="createLockerModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3 class="modal-title">Create Content Locker</h3>
+        <h3 class="modal-title" data-i18n="modal_create_title">สร้าง Content Locker ใหม่</h3>
         <button class="modal-close" onclick="closeCreateModal()">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
         </button>
@@ -510,49 +511,49 @@
       <form id="createLockerForm">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Locker Name <span class="required">*</span></label>
-            <input type="text" class="form-input" id="inputLockerName" placeholder="e.g. Blox Fruits Autofarm Script v4.9" required>
-            <div class="form-hint">Displayed to your visitors on the access gate title.</div>
+            <label class="form-label" data-i18n="modal_name_label">ชื่อ Locker *</label>
+            <input type="text" class="form-input" id="inputLockerName" placeholder="เช่น Blox Fruits Autofarm Script v4.9" data-i18n-placeholder="modal_name_placeholder" required>
+            <div class="form-hint" data-i18n="modal_name_hint">ชื่อนี้จะแสดงเป็นหัวข้อในหน้าด่านข้ามโฆษณาของคุณ</div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Destination URL / Content <span class="required">*</span></label>
-            <input type="url" class="form-input" id="inputDestinationUrl" placeholder="https://pastebin.com/raw/..." required>
-            <div class="form-hint">The target script, key, or download file released after completion.</div>
+            <label class="form-label" data-i18n="modal_dest_label">ลิงก์ปลายทาง / สคริปต์ *</label>
+            <input type="url" class="form-input" id="inputDestinationUrl" placeholder="https://pastebin.com/raw/..." data-i18n-placeholder="modal_dest_placeholder" required>
+            <div class="form-hint" data-i18n="modal_dest_hint">สคริปต์, คีย์ หรือไฟล์ที่จะปล่อยให้ผู้ใช้หลังทำภารกิจเสร็จ</div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label class="form-label">Custom Slug (Short URL)</label>
-              <input type="text" class="form-input" id="inputLockerSlug" placeholder="blox-fruits-v49">
+              <label class="form-label" data-i18n="modal_slug_label">ลิงก์ย่อกำหนดเอง (Slug)</label>
+              <input type="text" class="form-input" id="inputLockerSlug" placeholder="blox-fruits-v49" data-i18n-placeholder="modal_slug_placeholder">
             </div>
 
             <div class="form-group">
-              <label class="form-label">Gate Step Count</label>
+              <label class="form-label" data-i18n="modal_steps_label">จำนวนขั้นตอน (Steps)</label>
               <select class="form-select" id="inputLockerSteps">
-                <option value="1">1 Step (Quick Unlock)</option>
-                <option value="2" selected>2 Steps (Balanced Revenue)</option>
-                <option value="3">3 Steps (Maximum Profit)</option>
+                <option value="1" data-i18n="modal_step_1">1 ขั้นตอน (ปลดล็อคไว)</option>
+                <option value="2" selected data-i18n="modal_step_2">2 ขั้นตอน (สมดุล แนะนำ)</option>
+                <option value="3" data-i18n="modal_step_3">3 ขั้นตอน (ผลกำไรสูงสุด)</option>
               </select>
             </div>
           </div>
 
           <div class="form-group">
-            <label class="form-label">Countdown Duration per Step</label>
+            <label class="form-label" data-i18n="modal_timer_label">เวลานับถอยหลังต่อขั้นตอน</label>
             <select class="form-select" id="inputLockerTimer">
-              <option value="5">5 Seconds (Very Fast)</option>
-              <option value="8" selected>8 Seconds (Recommended)</option>
-              <option value="10">10 Seconds (Standard)</option>
-              <option value="15">15 Seconds (High Ad Exposure)</option>
+              <option value="5" data-i18n="modal_timer_5">5 วินาที (เร็วมาก)</option>
+              <option value="8" selected data-i18n="modal_timer_8">8 วินาที (แนะนำ)</option>
+              <option value="10" data-i18n="modal_timer_10">10 วินาที (มาตรฐาน)</option>
+              <option value="15" data-i18n="modal_timer_15">15 วินาที (ดูโฆษณานานสุด)</option>
             </select>
           </div>
 
-          <label class="form-label" style="margin-top: 14px;">Ad Placements &amp; Yield Engine</label>
+          <label class="form-label" style="margin-top: 14px;" data-i18n="modal_ad_settings">ตั้งค่าตำแหน่งโฆษณา & รูปแบบ</label>
           <div class="ad-toggles-grid">
             <label class="switch-container">
               <div class="switch-label">
-                <span class="switch-title">Popunder Ad</span>
-                <span class="switch-desc">High-CPM 1st click</span>
+                <span class="switch-title" data-i18n="modal_popunder_title">โฆษณา Popunder</span>
+                <span class="switch-desc" data-i18n="modal_popunder_desc">CPM สูงจากการคลิกแรก</span>
               </div>
               <input type="checkbox" id="togglePopunder" checked style="display:none;">
               <span class="toggle-switch"></span>
@@ -560,8 +561,8 @@
 
             <label class="switch-container">
               <div class="switch-label">
-                <span class="switch-title">Native Banner</span>
-                <span class="switch-desc">Impression reward</span>
+                <span class="switch-title" data-i18n="modal_banner_title">แบนเนอร์ Native Banner</span>
+                <span class="switch-desc" data-i18n="modal_banner_desc">รับเงินจากการแสดงผลหน้าเว็บ</span>
               </div>
               <input type="checkbox" id="toggleBanner" checked style="display:none;">
               <span class="toggle-switch"></span>
@@ -571,8 +572,8 @@
           <div style="margin-top: 14px;">
             <label class="switch-container">
               <div class="switch-label">
-                <span class="switch-title">Anti-Bypass Shield</span>
-                <span class="switch-desc">Block inspect element &amp; bypass extensions</span>
+                <span class="switch-title" data-i18n="modal_antibypass_title">ระบบคุ้มครอง Anti-Bypass</span>
+                <span class="switch-desc" data-i18n="modal_antibypass_desc">บล็อกการกด Inspect element และส่วนขยายข้ามด่าน</span>
               </div>
               <input type="checkbox" id="toggleAntiBypass" checked style="display:none;">
               <span class="toggle-switch"></span>
@@ -581,10 +582,10 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" onclick="closeCreateModal()">Cancel</button>
+          <button type="button" class="btn btn-ghost" onclick="closeCreateModal()" data-i18n="modal_btn_cancel">ยกเลิก</button>
           <button type="submit" class="btn btn-primary">
             <i data-lucide="check" style="width: 16px; height: 16px;"></i>
-            <span>Deploy Locker</span>
+            <span data-i18n="modal_btn_deploy">สร้างและเปิดใช้งาน Locker</span>
           </button>
         </div>
       </form>
@@ -595,19 +596,19 @@
   <div class="modal-backdrop" id="deleteModal">
     <div class="modal-dialog" style="max-width: 440px;">
       <div class="modal-header">
-        <h3 class="modal-title" style="color: #F87171;">Delete Locker?</h3>
+        <h3 class="modal-title" style="color: #F87171;" data-i18n="modal_delete_title">ยืนยันการลบ Locker?</h3>
         <button class="modal-close" onclick="closeDeleteModal()">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
         </button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
-          Are you sure you want to permanently delete this content locker? Any user clicking this link in Discord or YouTube will no longer be able to unlock the content.
+        <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;" data-i18n="modal_delete_desc">
+          คุณแน่ใจหรือไม่ว่าต้องการลบ Content Locker นี้? ผู้ใช้ที่คลิกลิงก์นี้ใน Discord หรือ YouTube จะไม่สามารถปลดล็อคได้อีกต่อไป
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
-        <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete Locker</button>
+        <button type="button" class="btn btn-ghost" onclick="closeDeleteModal()" data-i18n="modal_btn_cancel">ยกเลิก</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete" data-i18n="modal_btn_confirm_delete">ยืนยันการลบ</button>
       </div>
     </div>
   </div>
@@ -620,6 +621,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/store.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/dashboard.js"></script>

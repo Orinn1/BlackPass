@@ -24,13 +24,13 @@ function initNavigation() {
   const views = document.querySelectorAll('.dashboard-view');
   const pageTitle = document.getElementById('pageTitle');
 
-  const titles = {
-    overview: 'Platform Overview',
-    lockers: 'Locker Management',
-    analytics: 'Performance Analytics',
-    payouts: 'Payouts & Wallet',
-    settings: 'Settings & API Keys'
-  };
+  const getTitles = () => ({
+    overview: typeof getI18nText === 'function' ? getI18nText('menu_overview', 'Platform Overview') : 'Platform Overview',
+    lockers: typeof getI18nText === 'function' ? getI18nText('menu_lockers', 'Locker Management') : 'Locker Management',
+    analytics: typeof getI18nText === 'function' ? getI18nText('menu_analytics', 'Performance Analytics') : 'Performance Analytics',
+    payouts: typeof getI18nText === 'function' ? getI18nText('menu_payouts', 'Payouts & Wallet') : 'Payouts & Wallet',
+    settings: typeof getI18nText === 'function' ? getI18nText('menu_settings', 'Settings & API Keys') : 'Settings & API Keys'
+  });
 
   sidebarItems.forEach(item => {
     item.addEventListener('click', () => {
@@ -42,6 +42,7 @@ function initNavigation() {
       const activeView = document.getElementById(`view${capitalize(viewKey)}`);
       if (activeView) activeView.classList.add('active');
 
+      const titles = getTitles();
       if (pageTitle && titles[viewKey]) {
         pageTitle.textContent = titles[viewKey];
       }
@@ -56,6 +57,20 @@ function initNavigation() {
 
   // Topbar Create button
   document.getElementById('btnOpenCreateLocker')?.addEventListener('click', openCreateModal);
+
+  // Language Change Listener
+  window.onLanguageChanged = (lang) => {
+    renderDashboardStats();
+    renderLockersTable('lockersTableBody');
+    renderLockersTable('allLockersTableBody');
+    const activeItem = document.querySelector('.sidebar-item.active[data-view]');
+    if (activeItem && pageTitle) {
+      const titles = getTitles();
+      if (titles[activeItem.dataset.view]) {
+        pageTitle.textContent = titles[activeItem.dataset.view];
+      }
+    }
+  };
 }
 
 function capitalize(s) {

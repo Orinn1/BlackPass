@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +15,16 @@
     <div id="lockerActiveView">
       <!-- Header -->
       <div class="locker-header">
-        <div class="locker-brand-badge">
-          <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
-          <span>BlackPass Verification</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <div class="locker-brand-badge">
+            <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+            <span data-i18n="locker_brand_badge">BlackPass ระบบยืนยันตัวตน</span>
+          </div>
+
+          <div class="lang-switcher" style="padding: 2px;">
+            <button type="button" class="lang-btn" data-lang="th" onclick="setAppLanguage('th')" style="padding: 2px 8px; font-size: 11px;">🇹🇭 TH</button>
+            <button type="button" class="lang-btn" data-lang="en" onclick="setAppLanguage('en')" style="padding: 2px 8px; font-size: 11px;">🇺🇸 EN</button>
+          </div>
         </div>
 
         <div class="locker-shield-icon">
@@ -25,16 +32,16 @@
         </div>
 
         <h2 class="locker-content-title" id="lockerTitle">Content Access Restricted</h2>
-        <p class="locker-subtitle" id="lockerDesc">
-          Complete the required steps below to verify your session and unlock your destination.
+        <p class="locker-subtitle" id="lockerDesc" data-i18n="locker_default_desc">
+          กรุณาทำตามขั้นตอนด้านล่างเพื่อยืนยันเซสชันและปลดล็อคเนื้อหาสคริปต์ของคุณ
         </p>
       </div>
 
       <!-- Step Progress Bar -->
       <div class="locker-progress-area">
         <div class="progress-header">
-          <span>PROGRESS</span>
-          <span class="progress-step-text" id="progressStepText">Step 1 of 3 (33%)</span>
+          <span data-i18n="locker_progress_label">ความคืบหน้า</span>
+          <span class="progress-step-text" id="progressStepText">ขั้นตอนที่ 1 จาก 3 (33%)</span>
         </div>
         <div class="progress-bar-track">
           <div class="progress-bar-fill" id="progressBarFill" style="width: 33%;"></div>
@@ -49,7 +56,7 @@
 
         <!-- Ad Slot (Native Banner / Sponsor placement) -->
         <div class="locker-ad-slot" id="lockerAdSlot">
-          <span class="locker-ad-badge">SPONSORED VERIFICATION PARTNER</span>
+          <span class="locker-ad-badge" data-i18n="locker_sponsor_badge">ผู้สนับสนุนการปลดล็อคอย่างเป็นทางการ</span>
           <div id="adBannerMock" style="min-height: 70px; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.02); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
             <div style="display: flex; align-items: center; gap: 10px;">
               <i data-lucide="sparkles" style="color: #F59E0B; width: 16px; height: 16px;"></i>
@@ -62,17 +69,17 @@
         <div class="locker-action-area">
           <button type="button" class="btn-locker-continue" id="btnContinue" disabled>
             <i data-lucide="loader-2" class="spin" id="btnIcon" style="width: 18px; height: 18px;"></i>
-            <span id="btnText">Please wait 8 seconds...</span>
+            <span id="btnText">กรุณารออีก 8 วินาที...</span>
           </button>
         </div>
       </div>
 
       <!-- Footer: VIP Bypass -->
       <div class="locker-footer">
-        <span class="locker-footer-text">Protected by Anti-Bypass v2.4</span>
+        <span class="locker-footer-text" data-i18n="locker_footer_shield">คุ้มครองด้วยระบบ Anti-Bypass v2.4</span>
         <button type="button" class="btn-vip-skip" id="btnOpenVipModal">
           <i data-lucide="crown" style="width: 14px; height: 14px;"></i>
-          <span>VIP Key?</span>
+          <span data-i18n="locker_vip_btn">มีคีย์ VIP?</span>
         </button>
       </div>
     </div>
@@ -83,9 +90,9 @@
         <i data-lucide="check" style="width: 32px; height: 32px;"></i>
       </div>
 
-      <h2 class="success-title">Content Unlocked!</h2>
-      <p class="success-desc">
-        Your access has been verified successfully. Your device is remembered for 24 hours.
+      <h2 class="success-title" data-i18n="unlocked_title">ปลดล็อคสำเร็จแล้ว!</h2>
+      <p class="success-desc" data-i18n="unlocked_desc">
+        ยืนยันตัวตนเรียบร้อย ระบบจะจดจำเครื่องนี้ไว้ใช้งานได้ตลอด 24 ชั่วโมง
       </p>
 
       <div class="destination-preview-box" id="destinationUrlDisplay">
@@ -94,18 +101,18 @@
 
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <button type="button" class="btn-access-destination" id="btnAccessDestination">
-          <span>Access Content Now</span>
+          <span data-i18n="unlocked_access_btn">เข้าสู่เนื้อหา / รับสคริปต์</span>
           <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
         </button>
 
         <button type="button" class="btn btn-secondary btn-sm" id="btnCopyDestination">
           <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
-          <span>Copy Destination Link</span>
+          <span data-i18n="unlocked_copy_btn">คัดลอกลิงก์ปลายทาง</span>
         </button>
       </div>
 
       <div style="margin-top: 24px; font-size: 12px; color: var(--text-muted);">
-        Auto-redirecting in <strong id="redirectCountdown" style="color: #FFFFFF;">5</strong> seconds...
+        กำลังพาวาร์ปไปปลายทางในอีก <strong id="redirectCountdown" style="color: #FFFFFF;">5</strong> วินาที...
       </div>
     </div>
   </div>
@@ -116,26 +123,26 @@
       <div class="modal-header">
         <h3 class="modal-title" style="display: flex; align-items: center; gap: 8px;">
           <i data-lucide="crown" style="color: #F59E0B; width: 18px; height: 18px;"></i>
-          <span>VIP Instant Bypass</span>
+          <span data-i18n="vip_modal_title">ข้ามด่านด้วยคีย์ VIP ทันที</span>
         </h3>
         <button class="modal-close" onclick="closeVipModal()">
           <i data-lucide="x" style="width: 18px; height: 18px;"></i>
         </button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">
-          If you have purchased a VIP role in Discord (30 Baht permanent) or hold an access bypass key, enter it below to skip all verification tasks immediately.
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="vip_modal_desc">
+          หากคุณมียศ VIP ใน Discord (30 บาทถาวร) หรือมีคีย์ข้ามด่าน สามารถกรอกรหัสด้านล่างเพื่อปลดล็อคสคริปต์ทันทีโดยไม่ต้องดูโฆษณา
         </p>
 
         <div class="form-group">
-          <label class="form-label">VIP License Key</label>
-          <input type="text" class="form-input" id="inputVipKey" placeholder="e.g. VIP-PASS-2026">
-          <div class="form-hint">Tip: Enter <code>VIP30</code> to test instant bypass.</div>
+          <label class="form-label" data-i18n="vip_input_label">รหัส VIP License Key</label>
+          <input type="text" class="form-input" id="inputVipKey" placeholder="เช่น VIP-PASS-2026" data-i18n-placeholder="vip_input_placeholder">
+          <div class="form-hint" data-i18n="vip_hint">ทิป: พิมพ์ <code>VIP30</code> เพื่อทดสอบการข้ามด่านทันที</div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-ghost" onclick="closeVipModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" id="btnSubmitVipKey">Redeem &amp; Unlock</button>
+        <button type="button" class="btn btn-ghost" onclick="closeVipModal()" data-i18n="modal_btn_cancel">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" id="btnSubmitVipKey" data-i18n="vip_redeem_btn">ยืนยันและปลดล็อค</button>
       </div>
     </div>
   </div>
@@ -146,6 +153,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/store.js"></script>
   <script src="js/locker.js"></script>
   <script>

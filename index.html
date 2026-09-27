@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlackPass — Monetize Every Click | Modern Content Locker Platform</title>
-  <meta name="description" content="Turn your scripts, downloads, and links into high-yield revenue with BlackPass's multi-step ad gates, anti-bypass protection, and instant payouts.">
+  <title>BlackPass — Monetize Every Click | แพลตฟอร์มสร้างรายได้จากลิงก์ & ด่านโฆษณา</title>
+  <meta name="description" content="เปลี่ยนสคริปต์ ลิงก์ดาวน์โหลด และเนื้อหาของคุณให้เป็นรายได้ต่อเนื่อง ด้วยระบบด่านโฆษณาผลตอบแทนสูงสุด 92% ระบบกันบอท Anti-Bypass และถอนเงินเข้า TrueMoney / PromptPay ทันใจ">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/landing.css">
   <!-- Lucide Icons -->
@@ -23,17 +23,23 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#features" class="nav-link">Features</a></li>
-        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
-        <li><a href="#calculator" class="nav-link">Calculator</a></li>
-        <li><a href="#pricing" class="nav-link">RevShare</a></li>
-        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="#features" class="nav-link" data-i18n="nav_features">ฟีเจอร์เด่น</a></li>
+        <li><a href="#how-it-works" class="nav-link" data-i18n="nav_how">ขั้นตอนการทำงาน</a></li>
+        <li><a href="#calculator" class="nav-link" data-i18n="nav_calc">คำนวณรายได้</a></li>
+        <li><a href="#pricing" class="nav-link" data-i18n="nav_pricing">ส่วนแบ่งรายได้</a></li>
+        <li><a href="#faq" class="nav-link" data-i18n="nav_faq">คำถามพบบ่อย</a></li>
       </ul>
 
       <div class="nav-actions">
-        <button type="button" class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')">Sign In</button>
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn" data-lang="th" onclick="setAppLanguage('th')">🇹🇭 TH</button>
+          <button type="button" class="lang-btn" data-lang="en" onclick="setAppLanguage('en')">🇺🇸 EN</button>
+        </div>
+
+        <button type="button" class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')" data-i18n="nav_signin">เข้าสู่ระบบ</button>
         <button type="button" class="btn btn-primary btn-sm" onclick="openAuthModal('signup')">
-          <span>Create Account</span>
+          <span data-i18n="nav_create_account">สมัครสมาชิก</span>
           <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
         </button>
       </div>
@@ -45,26 +51,25 @@
     <div class="container">
       <div class="hero-pill">
         <span class="pill-dot"></span>
-        <span>Version 2.4 Live &mdash; 92% Highest RevShare in Industry</span>
+        <span data-i18n="hero_badge">เวอร์ชัน 2.4 เปิดใช้งานแล้ว &mdash; ส่วนแบ่งรายได้สูงสุด 92%</span>
       </div>
 
-      <h1 class="hero-title">
-        Monetize Every Click With <br>
-        <span class="text-gradient">High-Yield Access Gates</span>
+      <h1 class="hero-title" data-i18n="hero_title">
+        สร้างรายได้จากทุกลิงก์ ด้วยระบบด่านโฆษณาผลตอบแทนสูง
       </h1>
 
-      <p class="hero-subtitle">
-        Turn your Roblox scripts, gaming tools, and exclusive content into recurring revenue. Engineered with multi-step task walls, anti-bypass security, and instant payouts.
+      <p class="hero-subtitle" data-i18n="hero_desc">
+        เปลี่ยนสคริปต์ Roblox, ไฟล์ดาวน์โหลด และลิงก์เนื้อหาของคุณให้เป็นรายได้ต่อเนื่อง ด้วยระบบด่านภารกิจ, ระบบกันบอท Anti-Bypass และระบบถอนเงินเข้า TrueMoney / PromptPay ทันใจ
       </p>
 
       <div class="hero-cta-group">
         <a href="dashboard.html" class="btn btn-primary btn-lg">
           <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
-          <span>Create Your Locker</span>
+          <span data-i18n="hero_btn_create">สร้าง Locker ของคุณ</span>
         </a>
         <a href="locker.html?slug=blox-fruits-v48" target="_blank" class="btn btn-secondary btn-lg">
           <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
-          <span>Test Live Gate Demo</span>
+          <span data-i18n="hero_btn_demo">ทดสอบหน้าด่านตัวอย่าง</span>
         </a>
       </div>
 
@@ -72,17 +77,17 @@
       <div class="calculator-card" id="calculator">
         <div class="calc-header">
           <div>
-            <h3 class="calc-title">Interactive Revenue Estimator</h3>
-            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Calculate your projected monthly earnings based on your current audience volume.</p>
+            <h3 class="calc-title" data-i18n="calc_title">เครื่องคำนวณรายได้แบบ Real-time</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 2px;" data-i18n="calc_subtitle">ประเมินรายได้รายเดือนของคุณตามจำนวนคนเข้าและเรท CPM</p>
           </div>
-          <span class="badge badge-success">Live CPM Formula</span>
+          <span class="badge badge-success" data-i18n="calc_badge">สูตร CPM สด</span>
         </div>
 
         <div class="calc-grid">
           <div class="calc-controls">
             <div class="slider-group">
               <div class="slider-label-row">
-                <span>Daily Link Visitors</span>
+                <span data-i18n="calc_label_visitors">จำนวนคนคลิกต่อวัน</span>
                 <span class="slider-value" id="calcVisitorLabel">2,500 visits</span>
               </div>
               <input type="range" min="300" max="25000" step="100" value="2500" class="custom-range" id="calcVisitorSlider">
@@ -90,7 +95,7 @@
 
             <div class="slider-group">
               <div class="slider-label-row">
-                <span>Expected CPM Rate</span>
+                <span data-i18n="calc_label_cpm">เรท CPM โดยเฉลี่ย</span>
                 <span class="slider-value" id="calcCpmLabel">$5.50 CPM</span>
               </div>
               <input type="range" min="1.5" max="15.0" step="0.5" value="5.5" class="custom-range" id="calcCpmSlider">
@@ -98,7 +103,7 @@
 
             <div class="slider-group">
               <div class="slider-label-row">
-                <span>Gate Step Strategy</span>
+                <span data-i18n="calc_label_steps">จำนวนด่านข้ามโฆษณา</span>
                 <span class="slider-value" id="calcStepLabel">2 Steps (Optimal)</span>
               </div>
               <input type="range" min="1" max="3" step="1" value="2" class="custom-range" id="calcStepSlider">
@@ -106,14 +111,14 @@
           </div>
 
           <div class="calc-result-box">
-            <span class="calc-result-label">Estimated Monthly Revenue</span>
+            <span class="calc-result-label" data-i18n="calc_est_monthly">ประมาณการรายได้ต่อเดือน</span>
             <div class="calc-result-number" id="calcMonthlyRevenue">$412.50</div>
             <div style="font-size: 14px; font-weight: 600; color: #94A3B8;" id="calcThbRevenue">
               &approx; 14,437 THB / month
             </div>
             <div class="calc-result-meta">
-              <span>Daily Average: <strong id="calcDailyRevenue" style="color: #F8FAFC;">$13.75</strong></span>
-              <span>Est. Payout Cut: <strong style="color: #34D399;">92%</strong></span>
+              <span><span data-i18n="calc_daily_avg">เฉลี่ยต่อวัน</span>: <strong id="calcDailyRevenue" style="color: #F8FAFC;">$13.75</strong></span>
+              <span><span data-i18n="calc_payout_cut">ส่วนแบ่งรายได้</span>: <strong style="color: #34D399;">92%</strong></span>
             </div>
           </div>
         </div>
@@ -127,19 +132,19 @@
       <div class="stats-grid">
         <div class="stat-item">
           <div class="stat-item-number">18.4M+</div>
-          <div class="stat-item-label">Content Unlocks Processed</div>
+          <div class="stat-item-label" data-i18n="stat_unlocks">ยอดปลดล็อคทั้งหมด</div>
         </div>
         <div class="stat-item">
           <div class="stat-item-number">$490K+</div>
-          <div class="stat-item-label">Paid Directly to Publishers</div>
+          <div class="stat-item-label" data-i18n="stat_paid">จ่ายเงินให้สมาชิกแล้ว</div>
         </div>
         <div class="stat-item">
           <div class="stat-item-number">&lt; 40ms</div>
-          <div class="stat-item-label">Global Edge Gate Latency</div>
+          <div class="stat-item-label" data-i18n="stat_latency">ความเร็วในการโหลดด่าน</div>
         </div>
         <div class="stat-item">
           <div class="stat-item-number">99.98%</div>
-          <div class="stat-item-label">Anti-Bypass Shield Accuracy</div>
+          <div class="stat-item-label" data-i18n="stat_accuracy">ความแม่นยำระบบกันโกง</div>
         </div>
       </div>
     </div>
@@ -149,9 +154,9 @@
   <section class="features-section" id="features">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Platform Features</span>
-        <h2 class="section-title">Built for Performance and Security</h2>
-        <p class="section-desc">Everything you need to safeguard your intellectual property while maximizing revenue from every viewer.</p>
+        <span class="section-tag" data-i18n="feat_tag">ฟีเจอร์แพลตฟอร์ม</span>
+        <h2 class="section-title" data-i18n="feat_title">ออกแบบเพื่อความปลอดภัยและรายได้สูงสุด</h2>
+        <p class="section-desc" data-i18n="feat_desc">ทุกเครื่องมือถูกสร้างมาเพื่อปกป้องลิงก์สคริปต์ของคุณ พร้อมดันรายได้จากผู้ชมทุกคนให้ได้มากที่สุด</p>
       </div>
 
       <div class="features-grid">
@@ -159,48 +164,48 @@
           <div class="feature-icon-box">
             <i data-lucide="shield-alert"></i>
           </div>
-          <h3 class="feature-name">Anti-Bypass Defense</h3>
-          <p class="feature-desc">Stop Tampermonkey users, inspect element tricks, and automated bypass bots with time-gated server validation and dynamic session tokens.</p>
+          <h3 class="feature-name" data-i18n="feat_1_title">ระบบป้องกัน Anti-Bypass</h3>
+          <p class="feature-desc" data-i18n="feat_1_desc">บล็อกพวกใช้ Tampermonkey, สคริปต์ Bypass และการกด Inspect element ด้วยระบบตรวจสอบเวลาและ Token แบบฝั่งเซิร์ฟเวอร์</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-box">
             <i data-lucide="layers"></i>
           </div>
-          <h3 class="feature-name">Multi-Step Task Walls</h3>
-          <p class="feature-desc">Configure 1, 2, or 3 step gates. Combine countdown timers, sponsor article visits, and captcha verification for maximum payout.</p>
+          <h3 class="feature-name" data-i18n="feat_2_title">ระบบด่าน 1–3 ขั้นตอน</h3>
+          <p class="feature-desc" data-i18n="feat_2_desc">เลือกระบบด่านได้ 1, 2 หรือ 3 สเต็ป ผสมผสานตัวนับเวลา ลิงก์สปอนเซอร์ และ Captcha เพื่อดันยอดเงินสูงสุด</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-box">
             <i data-lucide="zap"></i>
           </div>
-          <h3 class="feature-name">Ad Network Flexibility</h3>
-          <p class="feature-desc">Connect directly to Adsterra, PopAds, Monetag, or your custom smartlinks. Toggle popunders, banners, or direct campaigns in 1 click.</p>
+          <h3 class="feature-name" data-i18n="feat_3_title">รองรับทุกค่ายโฆษณา</h3>
+          <p class="feature-desc" data-i18n="feat_3_desc">เชื่อมต่อ Adsterra, PopAds, Monetag หรือ Smartlink ตรง เปิด-ปิด Popunder, แบนเนอร์ ได้ง่ายในคลิกเดียว</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-box">
             <i data-lucide="wallet"></i>
           </div>
-          <h3 class="feature-name">Instant Local Payouts</h3>
-          <p class="feature-desc">Withdraw your earnings directly to TrueMoney Wallet, PromptPay, PayPal, or Crypto (USDT) with low $5.00 minimum payout thresholds.</p>
+          <h3 class="feature-name" data-i18n="feat_4_title">ถอนเงินผ่านช่องทางไทย</h3>
+          <p class="feature-desc" data-i18n="feat_4_desc">ถอนเงินสะดวกเข้า TrueMoney Wallet, พร้อมเพย์ (PromptPay), PayPal หรือ Crypto (USDT) ขั้นต่ำเพียง $5.00</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-box">
             <i data-lucide="bar-chart-3"></i>
           </div>
-          <h3 class="feature-name">Granular Analytics</h3>
-          <p class="feature-desc">Real-time telemetry showing unique impressions, completion rates, country tier breakdown, and revenue per thousand visits (CPM).</p>
+          <h3 class="feature-name" data-i18n="feat_5_title">ระบบสถิติแบบละเอียด</h3>
+          <p class="feature-desc" data-i18n="feat_5_desc">ดูกราฟยอดวิวสด อัตราการผ่านด่าน แยกตามประเทศ (ไทย, เวียดนาม, อเมริกา) และประเภทอุปกรณ์</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-box">
             <i data-lucide="globe"></i>
           </div>
-          <h3 class="feature-name">Custom Domain Support</h3>
-          <p class="feature-desc">Bring your own custom domain or subdomain to eliminate ad-block penalties and protect your brand reputation with clean links.</p>
+          <h3 class="feature-name" data-i18n="feat_6_title">รองรับ Custom Domain</h3>
+          <p class="feature-desc" data-i18n="feat_6_desc">นำโดเมนของคุณเองมาผูก (CNAME) เพื่อป้องกันการถูก AdBlock บล็อค และสร้างความน่าเชื่อถือให้กับแบรนด์</p>
         </div>
       </div>
     </div>
@@ -210,28 +215,28 @@
   <section class="how-section" id="how-it-works">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Workflow</span>
-        <h2 class="section-title">How BlackPass Works</h2>
-        <p class="section-desc">Start monetizing in less than 60 seconds with our streamlined 3-step locker deployment.</p>
+        <span class="section-tag" data-i18n="how_tag">ขั้นตอนการเริ่มต้น</span>
+        <h2 class="section-title" data-i18n="how_title">เริ่มต้นสร้างรายได้ใน 3 นาที</h2>
+        <p class="section-desc" data-i18n="how_desc">ระบบถูกออกแบบมาให้เรียบง่าย เพียงนำลิงก์มาวาง ตั้งค่าด่าน แล้วแชร์ลง Discord หรือ YouTube ได้ทันที</p>
       </div>
 
       <div class="steps-grid">
         <div class="step-card">
           <span class="step-num">STEP 01</span>
-          <h3 class="step-title">Create Your Locker</h3>
-          <p class="step-desc">Enter your destination URL or code snippet, choose a custom URL slug, and select your preferred task requirements.</p>
+          <h3 class="step-title" data-i18n="how_step_1_title">1. วางลิงก์ปลายทางของคุณ</h3>
+          <p class="step-desc" data-i18n="how_step_1_desc">ใส่ลิงก์สคริปต์ Pastebin, MediaFire หรือคีย์เข้าถึงที่คุณต้องการล็อก</p>
         </div>
 
         <div class="step-card">
           <span class="step-num">STEP 02</span>
-          <h3 class="step-title">Configure Logic &amp; Ads</h3>
-          <p class="step-desc">Set your countdown duration (5-10s), enable high-CPM popunders or native banners, and activate the Anti-Bypass Shield.</p>
+          <h3 class="step-title" data-i18n="how_step_2_title">2. กำหนดด่านและตัวนับเวลา</h3>
+          <p class="step-desc" data-i18n="how_step_2_desc">เลือกระหว่าง 1 ถึง 3 ขั้นตอน ตั้งเวลานับถอยหลัง และเปิดระบบโฆษณาที่ต้องการ</p>
         </div>
 
         <div class="step-card">
           <span class="step-num">STEP 03</span>
-          <h3 class="step-title">Distribute &amp; Collect</h3>
-          <p class="step-desc">Share your BlackPass link on YouTube, Discord, or your website. Track live conversions and withdraw your earnings on demand.</p>
+          <h3 class="step-title" data-i18n="how_step_3_title">3. รับเงินเข้ากระเป๋าต่อเนื่อง</h3>
+          <p class="step-desc" data-i18n="how_step_3_desc">เมื่อผู้ใช้ปลดล็อคผ่านด่าน รายได้จะเข้าวอลเล็ตทันที ถอนเงินได้ทุกวัน</p>
         </div>
       </div>
     </div>
@@ -241,51 +246,51 @@
   <section class="pricing-section" id="pricing">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Transparent Monetization</span>
-        <h2 class="section-title">Industry-Leading Revenue Share</h2>
-        <p class="section-desc">Keep more of what you earn with zero hidden deductions or inflated middlemen fees.</p>
+        <span class="section-tag" data-i18n="pricing_tag">โมเดลส่วนแบ่งรายได้</span>
+        <h2 class="section-title" data-i18n="pricing_title">ส่วนแบ่งรายได้สูงที่สุดในวงการ</h2>
+        <p class="section-desc" data-i18n="pricing_desc">เราเชื่อมั่นว่าครีเอเตอร์ควรได้รับผลตอบแทนที่คุ้มค่ากับผลงานของตนเอง</p>
       </div>
 
       <div class="pricing-grid">
         <div class="pricing-card">
-          <div class="tier-name">Standard Publisher</div>
+          <div class="tier-name" data-i18n="tier_free_title">Standard Publisher</div>
           <div class="tier-revshare">85% <span>Payout</span></div>
-          <p class="tier-desc">Great for creators just starting out with script and link distribution.</p>
+          <p class="tier-desc" data-i18n="tier_free_desc">เหมาะสำหรับผู้เริ่มต้นแชร์สคริปต์และลิงก์ดาวน์โหลดทั่วไป</p>
           <ul class="tier-features">
-            <li class="tier-feature-item"><i data-lucide="check"></i> Up to 10 active lockers</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Standard Anti-Bypass protection</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Weekly payout schedule</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> TrueMoney &amp; PayPal support</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> สร้าง Locker ได้สูงสุด 10 รายการ</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ระบบกันบอท Anti-Bypass มาตรฐาน</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ถอนเงินรอบสัปดาห์</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> รองรับ TrueMoney &amp; PayPal</li>
           </ul>
-          <a href="dashboard.html" class="btn btn-secondary btn-block">Get Started</a>
+          <button type="button" onclick="openAuthModal('signup')" class="btn btn-secondary btn-block">สมัครเริ่มใช้งาน</button>
         </div>
 
         <div class="pricing-card featured">
-          <span class="pricing-badge">Most Popular</span>
-          <div class="tier-name">Pro Publisher</div>
+          <span class="pricing-badge">ยอดนิยมสูงสุด</span>
+          <div class="tier-name" data-i18n="tier_pro_title">Pro Developer</div>
           <div class="tier-revshare">92% <span>Payout</span></div>
-          <p class="tier-desc">Optimized for high-volume content creators, gaming communities, and scripthubs.</p>
+          <p class="tier-desc" data-i18n="tier_pro_desc">สำหรับเจ้าของช่อง YouTube และผู้พัฒนาสคริปต์ยอดนิยม</p>
           <ul class="tier-features">
-            <li class="tier-feature-item"><i data-lucide="check"></i> Unlimited active lockers</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Advanced Anti-Bypass Shield</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Daily automated payouts</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Custom domain CNAME mapping</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Priority direct support</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> สร้าง Locker ได้ไม่จำกัดจำนวน</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ระบบ Anti-Bypass Shield ขั้นสูง</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ถอนเงินได้ทุกวันทันใจ (Instant Payout)</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ผูก Custom Domain ของตนเองได้</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ช่องทางซัพพอร์ตโดยตรง VIP</li>
           </ul>
-          <a href="dashboard.html" class="btn btn-primary btn-block">Start as Pro</a>
+          <button type="button" onclick="openAuthModal('signup')" class="btn btn-primary btn-block">เริ่มระดับ Pro</button>
         </div>
 
         <div class="pricing-card">
-          <div class="tier-name">Enterprise Network</div>
+          <div class="tier-name" data-i18n="tier_ent_title">Network / Enterprise</div>
           <div class="tier-revshare">96% <span>Payout</span></div>
-          <p class="tier-desc">Custom infrastructure for multi-million visit platforms and large gaming networks.</p>
+          <p class="tier-desc" data-i18n="tier_ent_desc">สำหรับทีมงานขนาดใหญ่และเจ้าของฮับสคริปต์ที่มีทราฟฟิกสูง</p>
           <ul class="tier-features">
-            <li class="tier-feature-item"><i data-lucide="check"></i> Custom ad tag integration</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Instant webhook postbacks</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Instant crypto USDT withdrawals</li>
-            <li class="tier-feature-item"><i data-lucide="check"></i> Dedicated account manager</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> เชื่อมต่อ Ad Tag และ Smartlink เฉพาะตัว</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ระบบ Webhook Postback ทันที</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ถอนเงินเข้า Crypto USDT ทันใจ</li>
+            <li class="tier-feature-item"><i data-lucide="check"></i> ผู้ดูแลบัญชีส่วนตัวเฉพาะกลุ่ม</li>
           </ul>
-          <a href="dashboard.html" class="btn btn-secondary btn-block">Contact Enterprise</a>
+          <button type="button" onclick="openAuthModal('signup')" class="btn btn-secondary btn-block">ติดต่อทีมงาน</button>
         </div>
       </div>
     </div>
@@ -295,49 +300,39 @@
   <section class="faq-section" id="faq">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag">Knowledge Base</span>
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <p class="section-desc">Got questions about how BlackPass protects your links and pays you? We have answers.</p>
+        <span class="section-tag" data-i18n="faq_tag">คำถามที่พบบ่อย</span>
+        <h2 class="section-title" data-i18n="faq_title">มีข้อสงสัย? เรามีคำตอบ</h2>
+        <p class="section-desc" data-i18n="faq_desc">ข้อมูลเกี่ยวกับความปลอดภัย การถอนเงิน และระบบป้องกันบอท</p>
       </div>
 
       <div class="faq-list">
         <div class="faq-item">
           <button type="button" class="faq-question">
-            <span>How is BlackPass different from ShrinkEarn or Linkvertise?</span>
+            <span data-i18n="faq_q1">BlackPass ป้องกันบอทและส่วนขยาย Bypass ได้อย่างไร?</span>
             <i data-lucide="chevron-down" class="faq-chevron"></i>
           </button>
-          <div class="faq-answer">
-            Traditional link shorteners keep 40% to 60% of your earnings and pay $0 when a visitor drops off halfway through. BlackPass lets you connect directly to top-tier ad providers (or use our built-in high-yield pool) with up to 92% net payouts. You earn from every valid impression, even on partial journeys.
+          <div class="faq-answer" data-i18n="faq_a1">
+            ระบบของเราไม่เคยแสดงลิงก์ปลายทางในโค้ด HTML หรือฝั่งเบราว์เซอร์ ลิงก์จะถูกเข้ารหัสและส่งมอบเมื่อเซิร์ฟเวอร์ตรวจสอบโทเค็นเวลาที่ถูกต้องเท่านั้น
           </div>
         </div>
 
         <div class="faq-item">
           <button type="button" class="faq-question">
-            <span>How does the Anti-Bypass Shield work?</span>
+            <span data-i18n="faq_q2">รองรับช่องทางการถอนเงินอะไรบ้าง?</span>
             <i data-lucide="chevron-down" class="faq-chevron"></i>
           </button>
-          <div class="faq-answer">
-            Our system never leaks the final destination link inside HTML or client scripts. Destination links are securely stored in the backend and released only after the browser proves a verified time-stamped token signed with cryptographic integrity.
+          <div class="faq-answer" data-i18n="faq_a2">
+            รองรับ TrueMoney Wallet, PromptPay, PayPal และ Crypto (USDT TRC-20) ขั้นต่ำเพียง $5.00 เงินเข้าไวภายใน 10-30 นาที
           </div>
         </div>
 
         <div class="faq-item">
           <button type="button" class="faq-question">
-            <span>What payment methods are supported for withdrawals?</span>
+            <span data-i18n="faq_q3">สามารถล็อกโค้ด Lua สคริปต์ตรงๆ โดยไม่ต้องใช้ลิงก์ภายนอกได้หรือไม่?</span>
             <i data-lucide="chevron-down" class="faq-chevron"></i>
           </button>
-          <div class="faq-answer">
-            We support TrueMoney Wallet, PromptPay, PayPal, Bank Transfer, and Crypto (USDT TRC20 / Polygon) with a minimal $5.00 cashout threshold.
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <button type="button" class="faq-question">
-            <span>Can I lock direct scripts or keys without an external link?</span>
-            <i data-lucide="chevron-down" class="faq-chevron"></i>
-          </button>
-          <div class="faq-answer">
-            Yes! In addition to URLs, BlackPass supports Raw Lua Script and Access Key lockers. The unlocked state displays a one-click copy box directly to your user.
+          <div class="faq-answer" data-i18n="faq_a3">
+            ได้แน่นอน! BlackPass มีระบบแสดงกล่องคัดลอกโค้ดสคริปต์หรือ License Key ให้ผู้ใช้กดคัดลอกได้ทันทีหลังผ่านด่าน
           </div>
         </div>
       </div>
@@ -349,15 +344,15 @@
     <div class="container">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-weight: 700; color: #FFFFFF;">BlackPass</span>
-        <span>&mdash; Monetize Every Click.</span>
+        <span data-i18n="footer_tagline">&mdash; Monetize Every Click.</span>
       </div>
       <ul class="footer-links">
-        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
-        <li><a href="locker.html?slug=blox-fruits-v48" class="nav-link">Live Locker Demo</a></li>
-        <li><a href="#pricing" class="nav-link">RevShare</a></li>
-        <li><a href="#faq" class="nav-link">Support</a></li>
+        <li><a href="dashboard.html" class="nav-link" data-i18n="menu_overview">Dashboard</a></li>
+        <li><a href="locker.html?slug=blox-fruits-v48" class="nav-link" data-i18n="hero_btn_demo">Live Locker Demo</a></li>
+        <li><a href="#pricing" class="nav-link" data-i18n="nav_pricing">RevShare</a></li>
+        <li><a href="#faq" class="nav-link" data-i18n="nav_faq">Support</a></li>
       </ul>
-      <div>&copy; 2026 BlackPass Systems Inc. All rights reserved.</div>
+      <div data-i18n="footer_rights">&copy; 2026 BlackPass Systems Inc. สงวนลิขสิทธิ์ทั้งหมด</div>
     </div>
   </footer>
 
@@ -366,6 +361,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="js/firebase-config.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/store.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/landing.js"></script>

@@ -26,7 +26,7 @@ function injectAuthModal() {
             <div style="width: 28px; height: 28px; background: linear-gradient(135deg, #6366F1, #4338CA); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: white;">
               <i data-lucide="shield-check" style="width: 16px; height: 16px;"></i>
             </div>
-            <h3 class="modal-title" id="authModalTitle">Sign In to BlackPass</h3>
+            <h3 class="modal-title" id="authModalTitle" data-i18n="auth_signin_title">Sign In to BlackPass</h3>
           </div>
           <button class="modal-close" onclick="closeAuthModal()">
             <i data-lucide="x" style="width: 18px; height: 18px;"></i>
@@ -36,10 +36,10 @@ function injectAuthModal() {
         <div class="modal-body" style="padding-top: 16px;">
           <!-- Tabs: Login vs Register -->
           <div id="authTabsContainer" style="display: flex; background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 4px; margin-bottom: 20px;">
-            <button type="button" class="btn btn-sm btn-block active" id="tabBtnSignIn" onclick="switchAuthTab('signin')" style="border-radius: var(--radius-sm); font-weight: 600;">
+            <button type="button" class="btn btn-sm btn-block btn-primary" id="tabBtnSignIn" onclick="switchAuthTab('signin')" style="border-radius: var(--radius-sm); font-weight: 600;" data-i18n="auth_tab_signin">
               Sign In
             </button>
-            <button type="button" class="btn btn-sm btn-block" id="tabBtnSignUp" onclick="switchAuthTab('signup')" style="border-radius: var(--radius-sm); font-weight: 600; color: var(--text-secondary);">
+            <button type="button" class="btn btn-sm btn-block" id="tabBtnSignUp" onclick="switchAuthTab('signup')" style="border-radius: var(--radius-sm); font-weight: 600; color: var(--text-secondary);" data-i18n="auth_tab_signup">
               Create Account
             </button>
           </div>
@@ -47,22 +47,22 @@ function injectAuthModal() {
           <!-- Sign In Form -->
           <form id="formSignIn">
             <div class="form-group">
-              <label class="form-label">Email Address</label>
+              <label class="form-label" data-i18n="auth_label_email">Email Address</label>
               <input type="email" class="form-input" id="signInEmail" placeholder="yourname@gmail.com" required>
             </div>
             <div class="form-group" style="margin-bottom: 10px;">
-              <label class="form-label">Password</label>
+              <label class="form-label" data-i18n="auth_label_pass">Password</label>
               <input type="password" class="form-input" id="signInPassword" placeholder="••••••••" required>
             </div>
 
             <div style="display: flex; justify-content: flex-end; margin-bottom: 18px;">
-              <button type="button" onclick="switchAuthTab('forgot')" style="font-size: 12px; color: #818CF8; font-weight: 600; background: none; border: none; padding: 0; cursor: pointer;">
+              <button type="button" onclick="switchAuthTab('forgot')" style="font-size: 12px; color: #818CF8; font-weight: 600; background: none; border: none; padding: 0; cursor: pointer;" data-i18n="auth_btn_forgot">
                 Forgot Password?
               </button>
             </div>
 
             <button type="submit" class="btn btn-primary btn-block" id="btnSubmitSignIn" style="height: 44px;">
-              <span>Sign In to Dashboard</span>
+              <span data-i18n="auth_btn_signin">Sign In to Dashboard</span>
               <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </button>
           </form>
@@ -70,40 +70,40 @@ function injectAuthModal() {
           <!-- Sign Up Form (Hidden by default) -->
           <form id="formSignUp" style="display: none;">
             <div class="form-group">
-              <label class="form-label">Publisher Username</label>
+              <label class="form-label" data-i18n="auth_label_username">Publisher Username</label>
               <input type="text" class="form-input" id="signUpUsername" placeholder="e.g. OrinScriptz" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Email Address</label>
+              <label class="form-label" data-i18n="auth_label_email">Email Address</label>
               <input type="email" class="form-input" id="signUpEmail" placeholder="yourname@gmail.com" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Password (Min. 6 chars)</label>
+              <label class="form-label" data-i18n="auth_label_pass_min">Password (Min. 6 chars)</label>
               <input type="password" class="form-input" id="signUpPassword" placeholder="••••••••" minlength="6" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="btnSubmitSignUp" style="height: 44px; margin-top: 10px;">
-              <span>Create Publisher Account</span>
+              <span data-i18n="auth_btn_signup">Create Publisher Account</span>
               <i data-lucide="check" style="width: 16px; height: 16px;"></i>
             </button>
           </form>
 
           <!-- Forgot Password Form (Hidden by default) -->
           <form id="formForgot" style="display: none;">
-            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px;">
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px;" data-i18n="auth_forgot_desc">
               Enter your registered email address and we will immediately send a password reset link to your email inbox.
             </p>
             <div class="form-group">
-              <label class="form-label">Account Email Address</label>
+              <label class="form-label" data-i18n="auth_label_email">Account Email Address</label>
               <input type="email" class="form-input" id="forgotEmail" placeholder="yourname@gmail.com" required>
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="btnSubmitForgot" style="height: 44px; margin-top: 10px;">
-              <span>Send Reset Password Link</span>
+              <span data-i18n="auth_btn_send_reset">Send Reset Password Link</span>
               <i data-lucide="send" style="width: 16px; height: 16px;"></i>
             </button>
             <div style="text-align: center; margin-top: 18px;">
               <button type="button" onclick="switchAuthTab('signin')" style="font-size: 13px; color: var(--text-secondary); font-weight: 500; background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                 <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
-                <span>Back to Sign In</span>
+                <span data-i18n="auth_back_to_login">Back to Sign In</span>
               </button>
             </div>
           </form>
@@ -118,6 +118,7 @@ function injectAuthModal() {
 
   document.body.insertAdjacentHTML('beforeend', modalHtml);
   if (typeof lucide !== 'undefined') lucide.createIcons();
+  if (typeof applyI18nToDOM === 'function') applyI18nToDOM();
 
   initAuthForms();
 }
@@ -132,12 +133,14 @@ window.switchAuthTab = function(tab) {
   const tabSignUp = document.getElementById('tabBtnSignUp');
   const modalTitle = document.getElementById('authModalTitle');
 
+  const getText = (k, def) => (typeof getI18nText === 'function' ? getI18nText(k, def) : def);
+
   if (tab === 'forgot') {
     formSignIn.style.display = 'none';
     formSignUp.style.display = 'none';
     formForgot.style.display = 'block';
     if (tabsContainer) tabsContainer.style.display = 'none';
-    modalTitle.textContent = 'Reset Password';
+    modalTitle.textContent = getText('auth_forgot_title', 'Reset Password');
   } else if (tab === 'signup') {
     formForgot.style.display = 'none';
     formSignIn.style.display = 'none';
@@ -147,7 +150,7 @@ window.switchAuthTab = function(tab) {
     tabSignUp.style.color = '#FFFFFF';
     tabSignIn.classList.remove('btn-primary');
     tabSignIn.style.color = 'var(--text-secondary)';
-    modalTitle.textContent = 'Create Publisher Account';
+    modalTitle.textContent = getText('auth_signup_title', 'Create Publisher Account');
   } else {
     // signin
     formForgot.style.display = 'none';
@@ -158,7 +161,7 @@ window.switchAuthTab = function(tab) {
     tabSignIn.style.color = '#FFFFFF';
     tabSignUp.classList.remove('btn-primary');
     tabSignUp.style.color = 'var(--text-secondary)';
-    modalTitle.textContent = 'Sign In to BlackPass';
+    modalTitle.textContent = getText('auth_signin_title', 'Sign In to BlackPass');
   }
 
   if (typeof lucide !== 'undefined') lucide.createIcons();

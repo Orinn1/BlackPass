@@ -33,18 +33,25 @@ function initCalculator() {
     const stepMultiplier = steps === 1 ? 1.0 : steps === 2 ? 1.7 : 2.4;
     const revShare = 0.92; // 92% Pro revshare
 
-    visitorLabel.textContent = `${visits.toLocaleString()} visits`;
+    const visitsText = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'ครั้ง/วัน' : 'visits';
+    visitorLabel.textContent = `${visits.toLocaleString()} ${visitsText}`;
     cpmLabel.textContent = `$${cpm.toFixed(2)} CPM`;
-    stepLabel.textContent = steps === 1 ? '1 Step (Quick)' : steps === 2 ? '2 Steps (Optimal)' : '3 Steps (Maximum Rev)';
+    
+    const step1 = typeof getI18nText === 'function' ? getI18nText('calc_step_1', '1 Step (Quick)') : '1 Step (Quick)';
+    const step2 = typeof getI18nText === 'function' ? getI18nText('calc_step_2', '2 Steps (Optimal)') : '2 Steps (Optimal)';
+    const step3 = typeof getI18nText === 'function' ? getI18nText('calc_step_3', '3 Steps (Maximum Rev)') : '3 Steps (Maximum Rev)';
+    stepLabel.textContent = steps === 1 ? step1 : steps === 2 ? step2 : step3;
 
     // Formula: (Visits / 1000) * CPM * StepMultiplier * RevShare
     const dailyUsd = (visits / 1000) * cpm * stepMultiplier * revShare;
     const monthlyUsd = dailyUsd * 30;
     const monthlyThb = monthlyUsd * 35.5; // Approx USD to THB rate
 
+    const perMonthText = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'บาท / เดือน' : 'THB / month';
+
     dailyRevEl.textContent = `$${dailyUsd.toFixed(2)}`;
     monthlyRevEl.textContent = `$${monthlyUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    thbRevEl.textContent = `≈ ${Math.round(monthlyThb).toLocaleString()} THB / month`;
+    thbRevEl.textContent = `≈ ${Math.round(monthlyThb).toLocaleString()} ${perMonthText}`;
   }
 
   visitorSlider.addEventListener('input', update);
@@ -52,6 +59,13 @@ function initCalculator() {
   stepSlider.addEventListener('input', update);
 
   update();
+
+  window.addEventListener('blackpass_lang_changed', update);
+  const oldLangChange = window.onLanguageChanged;
+  window.onLanguageChanged = (lang) => {
+    if (oldLangChange) oldLangChange(lang);
+    update();
+  };
 }
 
 // FAQ Accordion

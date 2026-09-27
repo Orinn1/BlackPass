@@ -1,6 +1,6 @@
 /* ==========================================================================
-   GateFlow Content Locker Engine
-   Step Progression, Anti-Bypass Validation & Unlock Execution
+   BlackPass Content Locker Engine
+   Step Progression, Anti-Bypass Validation, Bilingual & Unlock Execution
    ========================================================================== */
 
 let currentLocker = null;
@@ -13,6 +13,11 @@ let isStepTaskTriggered = false;
 document.addEventListener('DOMContentLoaded', () => {
   loadLockerData();
   initVipModal();
+
+  // Listen to language change
+  window.onLanguageChanged = (lang) => {
+    updateLockerLanguage();
+  };
 });
 
 // Load Locker based on URL params
@@ -51,15 +56,24 @@ function renderTasks() {
   const container = document.getElementById('tasksList');
   if (!container) return;
 
+  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'Visit Sponsor Article') : 'Visit Sponsor Article';
+  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'Browse sponsored site for a few seconds') : 'Browse sponsored site for a few seconds';
+  const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'Verify Browser Telemetry') : 'Verify Browser Telemetry';
+  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'Ensure active human browser session') : 'Ensure active human browser session';
+  const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'Issue Encrypted Access Key') : 'Issue Encrypted Access Key';
+  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'Generate 24-hour verification token') : 'Generate 24-hour verification token';
+
   const taskDefinitions = [
-    { title: 'Visit Sponsor Article', desc: 'Browse sponsored site for a few seconds' },
-    { title: 'Verify Browser Telemetry', desc: 'Ensure active human browser session' },
-    { title: 'Issue Encrypted Access Key', desc: 'Generate 24-hour verification token' }
+    { title: t1Title, desc: t1Desc },
+    { title: t2Title, desc: t2Desc },
+    { title: t3Title, desc: t3Desc }
   ];
+
+  const pendingText = typeof getI18nText === 'function' ? getI18nText('locker_task_pending', 'Pending') : 'Pending';
 
   let html = '';
   for (let i = 1; i <= totalSteps; i++) {
-    const def = taskDefinitions[i - 1] || { title: `Verification Step ${i}`, desc: 'Complete required checkpoint' };
+    const def = taskDefinitions[i - 1] || { title: `Step ${i}`, desc: 'Complete required checkpoint' };
     html += `
       <div class="task-item" id="taskItem_${i}" onclick="handleTaskItemClick(${i})">
         <div class="task-left">
@@ -73,7 +87,7 @@ function renderTasks() {
         </div>
         <div class="task-status-indicator" id="taskStatus_${i}">
           <i data-lucide="circle" style="width: 14px; height: 14px;"></i>
-          <span>Pending</span>
+          <span>${pendingText}</span>
         </div>
       </div>
     `;
@@ -91,8 +105,17 @@ function startStep(stepNum) {
 
   // Update Progress Bar
   const percent = Math.round((stepNum / totalSteps) * 100);
-  document.getElementById('progressStepText').textContent = `Step ${stepNum} of ${totalSteps} (${percent}%)`;
+  const stepTemplate = typeof getI18nText === 'function' ? getI18nText('locker_step_text', 'Step {current} of {total} ({percent}%)') : 'Step {current} of {total} ({percent}%)';
+  document.getElementById('progressStepText').textContent = stepTemplate
+    .replace('{current}', stepNum)
+    .replace('{total}', totalSteps)
+    .replace('{percent}', percent);
+
   document.getElementById('progressBarFill').style.width = `${percent}%`;
+
+  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_task_done', 'Done') : 'Done';
+  const activeText = typeof getI18nText === 'function' ? getI18nText('locker_task_active', 'Active') : 'Active';
+  const pendingText = typeof getI18nText === 'function' ? getI18nText('locker_task_pending', 'Pending') : 'Pending';
 
   // Update Task Items Classes
   for (let i = 1; i <= totalSteps; i++) {
@@ -103,14 +126,14 @@ function startStep(stepNum) {
 
     if (i < stepNum) {
       item.className = 'task-item completed';
-      if (status) status.innerHTML = `<i data-lucide="check-circle" style="width: 14px; height: 14px; color: #10B981;"></i> <span>Done</span>`;
+      if (status) status.innerHTML = `<i data-lucide="check-circle" style="width: 14px; height: 14px; color: #10B981;"></i> <span>${doneText}</span>`;
       if (icon) icon.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i>`;
     } else if (i === stepNum) {
       item.className = 'task-item active';
-      if (status) status.innerHTML = `<i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px; color: #A5B4FC;"></i> <span>Active</span>`;
+      if (status) status.innerHTML = `<i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px; color: #A5B4FC;"></i> <span>${activeText}</span>`;
     } else {
       item.className = 'task-item';
-      if (status) status.innerHTML = `<i data-lucide="circle" style="width: 14px; height: 14px;"></i> <span>Pending</span>`;
+      if (status) status.innerHTML = `<i data-lucide="circle" style="width: 14px; height: 14px;"></i> <span>${pendingText}</span>`;
     }
   }
   lucide.createIcons();
@@ -126,9 +149,11 @@ function startTimer() {
   const btnText = document.getElementById('btnText');
   const btnIcon = document.getElementById('btnIcon');
 
+  const waitTemplate = typeof getI18nText === 'function' ? getI18nText('locker_wait', 'Please wait {sec} seconds...') : 'Please wait {sec} seconds...';
+
   btn.disabled = true;
   btn.className = 'btn-locker-continue';
-  btnText.textContent = `Please wait ${timerSecondsRemaining} seconds...`;
+  btnText.textContent = waitTemplate.replace('{sec}', timerSecondsRemaining);
   btnIcon.className = 'spin';
   btnIcon.setAttribute('data-lucide', 'loader-2');
   lucide.createIcons();
@@ -140,7 +165,8 @@ function startTimer() {
     timerSecondsRemaining--;
 
     if (timerSecondsRemaining > 0) {
-      btnText.textContent = `Please wait ${timerSecondsRemaining} seconds...`;
+      const waitTpl = typeof getI18nText === 'function' ? getI18nText('locker_wait', 'Please wait {sec} seconds...') : 'Please wait {sec} seconds...';
+      btnText.textContent = waitTpl.replace('{sec}', timerSecondsRemaining);
     } else {
       clearInterval(timerInterval);
       timerInterval = null;
@@ -158,7 +184,8 @@ function onStepTimerFinished() {
   btn.disabled = false;
 
   if (currentStepIndex < totalSteps) {
-    btnText.textContent = `Continue to Step ${currentStepIndex + 1}`;
+    const contTemplate = typeof getI18nText === 'function' ? getI18nText('locker_continue', 'Continue to Step {next}') : 'Continue to Step {next}';
+    btnText.textContent = contTemplate.replace('{next}', currentStepIndex + 1);
     btnIcon.className = '';
     btnIcon.setAttribute('data-lucide', 'arrow-right');
     btn.onclick = () => {
@@ -171,10 +198,56 @@ function onStepTimerFinished() {
   } else {
     // Final Step &rarr; Unlock Button
     btn.className = 'btn-locker-continue btn-unlock';
-    btnText.textContent = 'Unlock Content Now';
+    btnText.textContent = typeof getI18nText === 'function' ? getI18nText('locker_unlock_btn', 'Unlock Content Now') : 'Unlock Content Now';
     btnIcon.className = '';
     btnIcon.setAttribute('data-lucide', 'unlock');
     btn.onclick = unlockContent;
+  }
+
+  lucide.createIcons();
+}
+
+function updateLockerLanguage() {
+  renderTasks();
+
+  const percent = Math.round((currentStepIndex / totalSteps) * 100);
+  const stepTemplate = typeof getI18nText === 'function' ? getI18nText('locker_step_text', 'Step {current} of {total} ({percent}%)') : 'Step {current} of {total} ({percent}%)';
+  document.getElementById('progressStepText').textContent = stepTemplate
+    .replace('{current}', currentStepIndex)
+    .replace('{total}', totalSteps)
+    .replace('{percent}', percent);
+
+  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_task_done', 'Done') : 'Done';
+  const activeText = typeof getI18nText === 'function' ? getI18nText('locker_task_active', 'Active') : 'Active';
+  const pendingText = typeof getI18nText === 'function' ? getI18nText('locker_task_pending', 'Pending') : 'Pending';
+
+  for (let i = 1; i <= totalSteps; i++) {
+    const item = document.getElementById(`taskItem_${i}`);
+    const status = document.getElementById(`taskStatus_${i}`);
+    if (!item || !status) continue;
+    if (i < currentStepIndex) {
+      status.innerHTML = `<i data-lucide="check-circle" style="width: 14px; height: 14px; color: #10B981;"></i> <span>${doneText}</span>`;
+    } else if (i === currentStepIndex) {
+      status.innerHTML = `<i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px; color: #A5B4FC;"></i> <span>${activeText}</span>`;
+    } else {
+      status.innerHTML = `<i data-lucide="circle" style="width: 14px; height: 14px;"></i> <span>${pendingText}</span>`;
+    }
+  }
+
+  const btn = document.getElementById('btnContinue');
+  const btnText = document.getElementById('btnText');
+  if (btn && btnText) {
+    if (timerInterval) {
+      const waitTpl = typeof getI18nText === 'function' ? getI18nText('locker_wait', 'Please wait {sec} seconds...') : 'Please wait {sec} seconds...';
+      btnText.textContent = waitTpl.replace('{sec}', timerSecondsRemaining);
+    } else if (!btn.disabled) {
+      if (currentStepIndex < totalSteps) {
+        const contTemplate = typeof getI18nText === 'function' ? getI18nText('locker_continue', 'Continue to Step {next}') : 'Continue to Step {next}';
+        btnText.textContent = contTemplate.replace('{next}', currentStepIndex + 1);
+      } else {
+        btnText.textContent = typeof getI18nText === 'function' ? getI18nText('locker_unlock_btn', 'Unlock Content Now') : 'Unlock Content Now';
+      }
+    }
   }
 
   lucide.createIcons();
@@ -185,7 +258,8 @@ window.handleTaskItemClick = function(stepNum) {
   if (stepNum === currentStepIndex && !isStepTaskTriggered) {
     isStepTaskTriggered = true;
     simulatePopunderAd();
-    showToast('Sponsor link opened in new tab. Keep this page active.', 'info');
+    const notice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'เปิดหน้าสปอนเซอร์แล้ว กรุณาเปิดหน้านี้ค้างไว้จนกว่าเวลานับถอยหลังจะหมด' : 'Sponsor link opened in new tab. Keep this page active.';
+    showToast(notice, 'info');
   }
 };
 
@@ -194,11 +268,10 @@ function simulatePopunderAd() {
   try {
     const dummyWindow = window.open('https://bellnewyork.org', '_blank');
     if (dummyWindow) {
-      // Focus back to locker
       window.focus();
     }
   } catch (e) {
-    // Popups blocked by browser
+    // Popups blocked
   }
 }
 
@@ -223,7 +296,8 @@ function unlockContent() {
   // Copy Link Button
   document.getElementById('btnCopyDestination').onclick = () => {
     navigator.clipboard.writeText(destUrl).then(() => {
-      showToast('Destination link copied to clipboard!', 'success');
+      const copyNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'คัดลอกลิงก์ปลายทางเรียบร้อยแล้ว!' : 'Destination link copied to clipboard!';
+      showToast(copyNotice, 'success');
     });
   };
 
@@ -261,19 +335,22 @@ function initVipModal() {
     btnSubmit.onclick = () => {
       const key = (input.value || '').trim().toUpperCase();
       if (!key) {
-        showToast('Please enter your VIP Key', 'error');
+        const enterKeyMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กรุณากรอกคีย์ VIP ของคุณ' : 'Please enter your VIP Key';
+        showToast(enterKeyMsg, 'error');
         return;
       }
 
       // Valid test keys
       if (key.includes('VIP') || key === 'ADMIN' || key === 'BYPASS' || key === '30BAHT') {
         closeVipModal();
-        showToast('VIP Key validated! Bypassing all tasks...', 'success', 2000);
+        const successMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'ตรวจสอบคีย์ VIP สำเร็จ! กำลังข้ามด่านทั้งหมด...' : 'VIP Key validated! Bypassing all tasks...';
+        showToast(successMsg, 'success', 2000);
         setTimeout(() => {
           unlockContent();
         }, 600);
       } else {
-        showToast('Invalid or expired VIP key. Contact Discord admin.', 'error');
+        const errorMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'คีย์ VIP ไม่ถูกต้องหรือหมดอายุแล้ว ติดต่อแอดมิน Discord' : 'Invalid or expired VIP key. Contact Discord admin.';
+        showToast(errorMsg, 'error');
       }
     };
   }
