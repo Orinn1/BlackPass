@@ -6,6 +6,7 @@
 const I18N_DICTIONARY = {
   th: {
     // Navigation
+    nav_capabilities: 'เว็บนี้ทำอะไรได้บ้าง',
     nav_features: 'ฟีเจอร์เด่น',
     nav_how: 'ขั้นตอนการทำงาน',
     nav_calc: 'คำนวณรายได้',
@@ -349,6 +350,7 @@ const I18N_DICTIONARY = {
 
   en: {
     // Navigation
+    nav_capabilities: 'Capabilities',
     nav_features: 'Features',
     nav_how: 'How It Works',
     nav_calc: 'Calculator',

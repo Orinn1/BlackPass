@@ -276,6 +276,7 @@ function updateAuthUI(user) {
   const sbAvatar = document.getElementById('sidebarAvatar');
   const settingsUser = document.getElementById('settingsUsername');
   const settingsEmail = document.getElementById('settingsEmail');
+  const guestBanner = document.getElementById('guestModeNoticeBanner');
 
   if (user) {
     const name = user.displayName || user.email.split('@')[0];
@@ -283,5 +284,13 @@ function updateAuthUI(user) {
     if (sbAvatar) sbAvatar.textContent = name.substring(0, 2).toUpperCase();
     if (settingsUser) settingsUser.value = name;
     if (settingsEmail) settingsEmail.value = user.email;
+    if (guestBanner) guestBanner.style.display = 'none';
+  } else {
+    if (sbUsername) sbUsername.textContent = 'Guest User (ยังไม่ได้ล็อกอิน)';
+    if (sbAvatar) sbAvatar.textContent = 'BP';
+    if (guestBanner) {
+      guestBanner.style.display = 'flex';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
   }
 }

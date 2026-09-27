@@ -649,6 +649,16 @@ function initPayoutForm() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+
+    const currentUser = (typeof GateStore !== 'undefined' && GateStore.getCurrentUser) ? GateStore.getCurrentUser() : null;
+    if (!currentUser) {
+      showToast('⚠️ กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนทำการขอถอนเงิน!', 'warning', 5000);
+      if (typeof openAuthModal === 'function') {
+        openAuthModal('signup');
+      }
+      return;
+    }
+
     const settings = GateStore.getSettings();
     const minPayout = 0.50; // allow withdrawal from $0.50
 

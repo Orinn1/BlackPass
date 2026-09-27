@@ -23,11 +23,10 @@
       </a>
 
       <ul class="nav-links">
-        <li><a href="#features" class="nav-link" data-i18n="nav_features">ฟีเจอร์เด่น</a></li>
+        <li><a href="#capabilities" class="nav-link" data-i18n="nav_capabilities">เว็บนี้ทำอะไรได้บ้าง</a></li>
         <li><a href="#how-it-works" class="nav-link" data-i18n="nav_how">ขั้นตอนการทำงาน</a></li>
+        <li><a href="#rates" class="nav-link" data-i18n="nav_rates">อัตราจ่าย CPM</a></li>
         <li><a href="#calculator" class="nav-link" data-i18n="nav_calc">คำนวณรายได้</a></li>
-        <li><a href="#pricing" class="nav-link" data-i18n="nav_pricing">ส่วนแบ่งรายได้</a></li>
-        <li><a href="#rates" class="nav-link" data-i18n="nav_rates">อัตราจ่าย (Rates)</a></li>
         <li><a href="#faq" class="nav-link" data-i18n="nav_faq">คำถามพบบ่อย</a></li>
       </ul>
 
@@ -63,86 +62,40 @@
         เปลี่ยนสคริปต์ Roblox, ไฟล์ดาวน์โหลด และลิงก์เนื้อหาของคุณให้เป็นรายได้ต่อเนื่อง ด้วยระบบด่านภารกิจ, ระบบกันบอท Anti-Bypass และระบบถอนเงินเข้า TrueMoney / PromptPay ทันใจ
       </p>
 
-      <!-- ShrinkEarn-Style Clean Hero Shortener Box (ช่องย่อลิงก์แบบ ShrinkEarn) -->
-      <div class="hero-shortener-container">
-        <form id="publicShortenForm" class="hero-shorten-form">
-          <div class="hero-shorten-bar">
-            <div class="hero-shorten-input-icon">
-              <i data-lucide="link-2" style="width: 22px; height: 22px; color: #6366F1;"></i>
-            </div>
-            <input 
-              type="url" 
-              id="publicTargetUrl" 
-              class="hero-shorten-input" 
-              placeholder="วางลิงก์ของคุณที่นี่... (เช่น https://pastebin.com/... หรือ ลิงก์ดาวน์โหลด)" 
-              required 
-              autocomplete="off"
-            />
-            <button type="submit" class="hero-shorten-btn" id="btnPublicShorten">
-              <span>ย่อลิงก์ทันที</span>
-              <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
-            </button>
-          </div>
-          <!-- Optional custom alias -->
-          <div class="hero-shorten-options">
-            <span style="font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
-              <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #10B981;"></i>
-              <span>ได้เงินสะสมเข้ากระเป๋าทันทีที่คนทำครบ 30 วิ (เรทไทย $2.80 | ตปท. สูงสุด $5.00 | ถอนขั้นต่ำ $0.50)</span>
-            </span>
-            <div class="hero-alias-wrap">
-              <span class="hero-alias-prefix">/l/</span>
-              <input type="text" id="publicAliasInput" class="hero-alias-input" placeholder="ตั้งชื่อย่อเอง (ไม่บังคับ)" pattern="[a-zA-Z0-9-_]+" />
-            </div>
-          </div>
-        </form>
-
-        <!-- Result Box (Hidden by default, shows upon submit) -->
-        <div id="publicShortenResult" class="hero-shorten-result" style="display: none;">
-          <div class="result-top-row">
-            <div class="result-url-badge">
-              <i data-lucide="check-circle-2" style="color: #10B981; width: 22px; height: 22px; flex-shrink: 0;"></i>
-              <span id="publicGeneratedLink" class="result-link-text"></span>
-            </div>
-            <div class="result-btn-group">
-              <button type="button" class="btn btn-primary btn-sm" id="btnCopyPublicShort">
-                <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
-                <span>คัดลอกลิงก์</span>
-              </button>
-              <a href="#" target="_blank" class="btn btn-secondary btn-sm" id="btnTestPublicShort">
-                <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
-                <span>ทดสอบเปิด</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Earnings Notice & Connect to Wallet -->
-          <div class="result-payout-banner">
-            <div class="result-payout-text">
-              <i data-lucide="coins" style="color: #F59E0B; width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px;"></i>
-              <div>
-                <strong>💰 ลิงก์นี้เริ่มนับยอดเงินให้คุณแล้ว!</strong>
-                <p>คนผ่านด่าน 3 ปุ่ม 30 วิ เมื่อไหร่ เงินจะเข้ากระเป๋าคุณอัตโนมัติ ถอนเงินเข้า TrueMoney Wallet หรือ PromptPay ได้ทันที</p>
-              </div>
-            </div>
-            <div class="result-payout-actions">
-              <a href="dashboard.html" class="btn btn-warning btn-sm" style="background: #F59E0B; color: #000; font-weight: 700;">
-                <i data-lucide="wallet" style="width: 15px; height: 15px;"></i>
-                <span>เข้าสู่กระเป๋าเงินเพื่อดูยอด / แจ้งถอนเงิน</span>
-              </a>
-            </div>
-          </div>
-        </div>
+      <!-- Hero CTA Actions (Sign Up & Dashboard) -->
+      <div class="hero-cta-group" style="margin-top: 36px; margin-bottom: 24px;">
+        <button type="button" onclick="openAuthModal('signup')" class="btn btn-primary btn-lg" style="box-shadow: 0 0 35px rgba(99, 102, 241, 0.45); font-weight: 700; padding: 14px 28px;">
+          <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+          <span>สมัครสมาชิกฟรี — เริ่มต้นสร้างรายได้</span>
+        </button>
+        <button type="button" onclick="openAuthModal('signin')" class="btn btn-secondary btn-lg" style="font-weight: 600; padding: 14px 24px;">
+          <i data-lucide="layout-dashboard" style="width: 20px; height: 20px;"></i>
+          <span>เข้าสู่ระบบ Dashboard</span>
+        </button>
+        <a href="locker.html?slug=blox-fruits-v48" target="_blank" class="btn btn-ghost btn-lg" style="color: var(--text-secondary); padding: 14px 20px;">
+          <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
+          <span>ทดสอบหน้าด่านตัวอย่าง (Demo 30s)</span>
+        </a>
       </div>
 
-      <div class="hero-cta-group">
-        <a href="dashboard.html" class="btn btn-primary btn-lg">
-          <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
-          <span data-i18n="hero_btn_create">สร้าง Locker ของคุณ</span>
-        </a>
-        <a href="locker.html?slug=blox-fruits-v48" target="_blank" class="btn btn-secondary btn-lg">
-          <i data-lucide="external-link" style="width: 18px; height: 18px;"></i>
-          <span data-i18n="hero_btn_demo">ทดสอบหน้าด่านตัวอย่าง</span>
-        </a>
+      <!-- Quick Trust Indicators -->
+      <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; font-size: 13px; color: var(--text-secondary);">
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="check-circle-2" style="color: #10B981; width: 16px; height: 16px;"></i>
+          <span>ถอนขั้นต่ำเพียง $0.50 (~18฿)</span>
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="check-circle-2" style="color: #10B981; width: 16px; height: 16px;"></i>
+          <span>โอนไวผ่าน TrueMoney Wallet &amp; PromptPay</span>
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="check-circle-2" style="color: #10B981; width: 16px; height: 16px;"></i>
+          <span>กันบอทโกงข้ามด่าน Anti-Bypass 100%</span>
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+          <i data-lucide="shield-check" style="color: #38BDF8; width: 16px; height: 16px;"></i>
+          <span>กรองโฆษณาโป๊ 18+ ออกหมด ปลอดภัย 100%</span>
+        </span>
       </div>
 
       <!-- Live Earnings Calculator -->
@@ -222,93 +175,217 @@
     </div>
   </section>
 
-  <!-- Features Grid -->
-  <section class="features-section" id="features">
+  <!-- Capabilities Section (เว็บนี้ทำอะไรได้บ้าง) -->
+  <section class="features-section" id="capabilities">
     <div class="container">
       <div class="section-head">
-        <span class="section-tag" data-i18n="feat_tag">ฟีเจอร์แพลตฟอร์ม</span>
-        <h2 class="section-title" data-i18n="feat_title">ออกแบบเพื่อความปลอดภัยและรายได้สูงสุด</h2>
-        <p class="section-desc" data-i18n="feat_desc">ทุกเครื่องมือถูกสร้างมาเพื่อปกป้องลิงก์สคริปต์ของคุณ พร้อมดันรายได้จากผู้ชมทุกคนให้ได้มากที่สุด</p>
+        <span class="section-tag" style="background: rgba(99, 102, 241, 0.12); color: #818CF8; border-color: rgba(99, 102, 241, 0.3); padding: 6px 14px; border-radius: var(--radius-full); display: inline-block;">
+          ⚡ ความสามารถและฟังก์ชันทั้งหมด &bull; PLATFORM CAPABILITIES
+        </span>
+        <h2 class="section-title" style="margin-top: 14px;">BlackPass ทำอะไรได้บ้าง? ครบ จบ ทุกเครื่องมือสร้างรายได้</h2>
+        <p class="section-desc">
+          แพลตฟอร์มย่อลิงก์สร้างรายได้ และระบบด่านภารกิจ (Link Locker) ยุคใหม่ ออกแบบมาเพื่อเปลี่ยนยอดคลิกให้เป็นเงินเข้าบัญชีคุณจริง ป้องกันคนโกงข้ามด่าน 100% พร้อมถอนเงินเข้าไทยได้ทันใจ
+        </p>
       </div>
 
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="shield-alert"></i>
+      <div class="features-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+        <!-- 1. Monetized Link Shortening -->
+        <div class="feature-card" style="border-top: 3px solid #6366F1;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(99, 102, 241, 0.15); color: #818CF8;">
+              <i data-lucide="scissors"></i>
+            </div>
+            <span class="badge badge-primary">ฟังก์ชันหลัก</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_1_title">ระบบป้องกัน Anti-Bypass</h3>
-          <p class="feature-desc" data-i18n="feat_1_desc">บล็อกพวกใช้ Tampermonkey, สคริปต์ Bypass และการกด Inspect element ด้วยระบบตรวจสอบเวลาและ Token แบบฝั่งเซิร์ฟเวอร์</p>
+          <h3 class="feature-name">1. ย่อลิงก์สร้างรายได้ทันที</h3>
+          <p class="feature-desc">
+            นำลิงก์อะไรก็ได้ของคุณมาใส่ เช่น สคริปต์ Roblox, ไฟล์ MediaFire, Google Drive, โค้ด Pastebin หรือเว็บไซต์ใดๆ ระบบจะแปลงเป็นลิงก์สั้นที่สร้างรายได้ให้คุณทุกครั้งที่มีคนกดเข้า
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>กำหนดชื่อลิงก์เองได้ (Custom Alias)</span>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="layers"></i>
+        <!-- 2. 30s 3-Step Smart Locker -->
+        <div class="feature-card" style="border-top: 3px solid #38BDF8;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(56, 189, 248, 0.15); color: #38BDF8;">
+              <i data-lucide="timer"></i>
+            </div>
+            <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3);">ผ่านไว 30 วินาที</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_2_title">ระบบด่าน 1–3 ขั้นตอน</h3>
-          <p class="feature-desc" data-i18n="feat_2_desc">เลือกระบบด่านได้ 1, 2 หรือ 3 สเต็ป ผสมผสานตัวนับเวลา ลิงก์สปอนเซอร์ และ Captcha เพื่อดันยอดเงินสูงสุด</p>
+          <h3 class="feature-name">2. ด่านภารกิจ 3 ปุ่ม 30 วินาที</h3>
+          <p class="feature-desc">
+            ไม่ต้องรอนานจนคนดูรำคาญกดปิดหนี! ด่านมาตรฐาน 3 ขั้นตอน สแกนไว 10 วินาที/ปุ่ม ช่วยเพิ่มอัตราการผ่านด่านสำเร็จ (Conversion Rate) สูงกว่าเว็บอื่นถึง 3 เท่า คนดูแฮปปี้ คุณได้เงินชัวร์
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>ตัวนับเวลาถอยหลังแบบเรียลไทม์ พร้อมเช็คสถานะสด</span>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="zap"></i>
+        <!-- 3. Anti-Bypass Shield 100% -->
+        <div class="feature-card" style="border-top: 3px solid #10B981;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(16, 185, 129, 0.15); color: #10B981;">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <span class="badge badge-success">กันโกง 100%</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_3_title">รองรับทุกค่ายโฆษณา</h3>
-          <p class="feature-desc" data-i18n="feat_3_desc">เชื่อมต่อ Adsterra, PopAds, Monetag หรือ Smartlink ตรง เปิด-ปิด Popunder, แบนเนอร์ ได้ง่ายในคลิกเดียว</p>
+          <h3 class="feature-name">3. ป้องกันบอท &amp; สคริปต์ Bypass</h3>
+          <p class="feature-desc">
+            บล็อกพวกใช้ Tampermonkey, สคริปต์โกง Bypass, บอทข้ามโฆษณา และการกด F12 / Inspect ตรวจสอบโทเค็นฝั่งเซิร์ฟเวอร์ ลิงก์ปลายทางไม่เคยหลุด คนดูต้องทำภารกิจจริงเท่านั้น คุณจึงได้เงินเต็มเม็ดเต็มหน่วย
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>ป้องกันคนแอบขโมยลิงก์สคริปต์ไปใช้ฟรี</span>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="wallet"></i>
+        <!-- 4. High Guaranteed CPM -->
+        <div class="feature-card" style="border-top: 3px solid #F59E0B;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(245, 158, 11, 0.15); color: #F59E0B;">
+              <i data-lucide="trending-up"></i>
+            </div>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3);">$2.80 - $5.00+ CPM</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_4_title">ถอนเงินผ่านช่องทางไทย</h3>
-          <p class="feature-desc" data-i18n="feat_4_desc">ถอนเงินสะดวกเข้า TrueMoney Wallet, พร้อมเพย์ (PromptPay), PayPal หรือ Crypto (USDT) ขั้นต่ำเพียง $5.00</p>
+          <h3 class="feature-name">4. อัตราจ่าย CPM การันตีรายประเทศ</h3>
+          <p class="feature-desc">
+            เรททราฟฟิกคนไทยชัดเจน $2.80 (~100.80 บาท / 1,000 ปลดล็อค หรือประมาณ 0.10฿ ต่อคน) และสูงถึง $5.00 (~180 บาท) สำหรับทราฟฟิกอเมริกา มีตารางแจกแจงโปร่งใส ตรวจสอบได้ตลอดเวลา
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>คำนวณเงินเพิ่มทุกครั้งที่คนปลดล็อคสำเร็จ</span>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="bar-chart-3"></i>
+        <!-- 5. Thai Payouts (TrueMoney & PromptPay) -->
+        <div class="feature-card" style="border-top: 3px solid #EC4899;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(236, 72, 153, 0.15); color: #EC4899;">
+              <i data-lucide="wallet"></i>
+            </div>
+            <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3);">ถอนขั้นต่ำ $0.50</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_5_title">ระบบสถิติแบบละเอียด</h3>
-          <p class="feature-desc" data-i18n="feat_5_desc">ดูกราฟยอดวิวสด อัตราการผ่านด่าน แยกตามประเทศ (ไทย, เวียดนาม, อเมริกา) และประเภทอุปกรณ์</p>
+          <h3 class="feature-name">5. ถอนเงินเข้า TrueMoney &amp; พร้อมเพย์</h3>
+          <p class="feature-desc">
+            ไม่ต้องง้อบัญชีต่างประเทศ ถอนขั้นต่ำเริ่มต้นเพียง $0.50 (ประมาณ 18 บาท) เงินโอนเข้าบัญชีไทยของคุณโดยตรงใน 10–30 นาที ไม่มีหักค่าธรรมเนียมแอบแฝง และยังรองรับ PayPal, Crypto USDT
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>รองรับเบอร์ TrueMoney Wallet &amp; เลขบัญชีพร้อมเพย์</span>
+          </div>
         </div>
 
-        <div class="feature-card">
-          <div class="feature-icon-box">
-            <i data-lucide="globe"></i>
+        <!-- 6. Clean & SFW Ads -->
+        <div class="feature-card" style="border-top: 3px solid #8B5CF6;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(139, 92, 246, 0.15); color: #A78BFA;">
+              <i data-lucide="sparkles"></i>
+            </div>
+            <span class="badge badge-primary">SFW 100%</span>
           </div>
-          <h3 class="feature-name" data-i18n="feat_6_title">รองรับ Custom Domain</h3>
-          <p class="feature-desc" data-i18n="feat_6_desc">นำโดเมนของคุณเองมาผูก (CNAME) เพื่อป้องกันการถูก AdBlock บล็อค และสร้างความน่าเชื่อถือให้กับแบรนด์</p>
+          <h3 class="feature-name">6. โฆษณาสะอาด ปลอดภัย กรอง 18+ ออก</h3>
+          <p class="feature-desc">
+            หมดปัญหาโฆษณาไวรัส เว็บพนันหลอกลวง หรือสื่อลามก โฆษณาทั้งหมดถูกควบคุมผ่านเซิร์ฟเวอร์เครือข่ายส่วนกลาง กรองเนื้อหาไม่เหมาะสมออก 100% ปลอดภัยต่อเด็กและช่อง YouTube / Discord
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>ไม่เสี่ยงโดน YouTube แบนลิงก์ในคำอธิบายคลิป</span>
+          </div>
+        </div>
+
+        <!-- 7. All-in-One Dashboard -->
+        <div class="feature-card" style="border-top: 3px solid #06B6D4;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(6, 182, 212, 0.15); color: #22D3EE;">
+              <i data-lucide="layout-dashboard"></i>
+            </div>
+            <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #22D3EE; border: 1px solid rgba(6, 182, 212, 0.3);">จัดการครบวงจร</span>
+          </div>
+          <h3 class="feature-name">7. แดชบอร์ดจัดการ &amp; สถิติสดละเอียด</h3>
+          <p class="feature-desc">
+            ทุกการดำเนินการทำผ่านหน้า Dashboard: ย่อลิงก์ใหม่, แก้ไขลิงก์ปลายทางได้ตลอดเวลาโดยไม่ต้องเปลี่ยนลิงก์เดิมที่แชร์ไปแล้ว, ดูกราฟยอดวิวสด, อัตราผ่านด่าน (CTR) และประวัติการถอนเงิน
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>อัปเดตสถิติและยอดเงินแบบ Real-time</span>
+          </div>
+        </div>
+
+        <!-- 8. Mobile & Cross Platform -->
+        <div class="feature-card" style="border-top: 3px solid #14B8A6;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+            <div class="feature-icon-box" style="margin-bottom: 0; background: rgba(20, 184, 166, 0.15); color: #2DD4BF;">
+              <i data-lucide="smartphone"></i>
+            </div>
+            <span class="badge" style="background: rgba(20, 184, 166, 0.15); color: #2DD4BF; border: 1px solid rgba(20, 184, 166, 0.3);">Ultra-Fast</span>
+          </div>
+          <h3 class="feature-name">8. รองรับทุกอุปกรณ์ มือถือ &amp; คอมพิวเตอร์</h3>
+          <p class="feature-desc">
+            หน้าด่านและหน้าแดชบอร์ดโหลดเร็วระดับเสี้ยววินาที (&lt; 40ms) แสดงผลสวยงามสมบูรณ์แบบบนมือถือระบบ Android, iOS (iPhone/iPad) รวมถึง PC ทุกระบบ ไม่กินสเปก ไม่กระตุก
+          </p>
+          <div style="margin-top: 14px; font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px;">
+            <i data-lucide="check" style="width: 14px; height: 14px; color: #10B981;"></i>
+            <span>ออกแบบให้ใช้งานง่ายทั้งบนจอสัมผัสและเมาส์</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Banner After Capabilities -->
+      <div style="margin-top: 48px; text-align: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 36px 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        <h3 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin-bottom: 10px;">พร้อมเริ่มต้นสร้างรายได้กับ BlackPass แล้วหรือยัง?</h3>
+        <p style="font-size: 14px; color: var(--text-secondary); max-width: 560px; margin: 0 auto 24px;">
+          สมัครสมาชิกฟรีเพียง 10 วินาที เข้าสู่แดชบอร์ด แล้วเริ่มย่อลิงก์สร้างรายได้เข้า TrueMoney / PromptPay ได้ทันที
+        </p>
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <button type="button" onclick="openAuthModal('signup')" class="btn btn-primary btn-lg" style="box-shadow: 0 0 30px rgba(99, 102, 241, 0.45); font-weight: 700; padding: 14px 28px;">
+            <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+            <span>สมัครสมาชิกฟรี &mdash; เริ่มต้นทันที</span>
+          </button>
+          <button type="button" onclick="openAuthModal('signin')" class="btn btn-secondary btn-lg" style="font-weight: 600; padding: 14px 24px;">
+            <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+            <span>เข้าสู่ระบบ Dashboard</span>
+          </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- How It Works (3 Steps) -->
   <section class="how-section" id="how-it-works">
     <div class="container">
       <div class="section-head">
         <span class="section-tag" data-i18n="how_tag">ขั้นตอนการเริ่มต้น</span>
         <h2 class="section-title" data-i18n="how_title">เริ่มต้นสร้างรายได้ใน 3 นาที</h2>
-        <p class="section-desc" data-i18n="how_desc">ระบบถูกออกแบบมาให้เรียบง่าย เพียงนำลิงก์มาวาง ตั้งค่าด่าน แล้วแชร์ลง Discord หรือ YouTube ได้ทันที</p>
+        <p class="section-desc" data-i18n="how_desc">ระบบถูกออกแบบมาให้เรียบง่าย สมัครสมาชิก เข้าแดชบอร์ด วางลิงก์ แล้วแชร์ได้ทันที</p>
       </div>
 
       <div class="steps-grid">
         <div class="step-card">
           <span class="step-num">STEP 01</span>
-          <h3 class="step-title" data-i18n="how_step_1_title">1. วางลิงก์ปลายทางของคุณ</h3>
-          <p class="step-desc" data-i18n="how_step_1_desc">ใส่ลิงก์สคริปต์ Pastebin, MediaFire หรือคีย์เข้าถึงที่คุณต้องการล็อก</p>
+          <h3 class="step-title">1. สมัครสมาชิก &amp; เข้า Dashboard</h3>
+          <p class="step-desc">
+            สร้างบัญชีฟรีใน 10 วินาที เข้าสู่ระบบแดชบอร์ดส่วนตัวของคุณเพื่อจัดการลิงก์และตรวจสอบยอดเงิน
+          </p>
         </div>
 
         <div class="step-card">
           <span class="step-num">STEP 02</span>
-          <h3 class="step-title" data-i18n="how_step_2_title">2. กำหนดด่านและตัวนับเวลา</h3>
-          <p class="step-desc" data-i18n="how_step_2_desc">เลือกระหว่าง 1 ถึง 3 ขั้นตอน ตั้งเวลานับถอยหลัง และเปิดระบบโฆษณาที่ต้องการ</p>
+          <h3 class="step-title">2. ย่อลิงก์ใน Dashboard</h3>
+          <p class="step-desc">
+            วางลิงก์สคริปต์ Pastebin, MediaFire หรือเนื้อหาที่คุณต้องการล็อก กดปุ่มย่อลิงก์เพื่อรับลิงก์สร้างเงิน
+          </p>
         </div>
 
         <div class="step-card">
           <span class="step-num">STEP 03</span>
-          <h3 class="step-title" data-i18n="how_step_3_title">3. รับเงินเข้ากระเป๋าต่อเนื่อง</h3>
-          <p class="step-desc" data-i18n="how_step_3_desc">เมื่อผู้ใช้ปลดล็อคผ่านด่าน รายได้จะเข้าวอลเล็ตทันที ถอนเงินได้ทุกวัน</p>
+          <h3 class="step-title">3. แชร์ลิงก์ &amp; รับเงินเข้าไทย</h3>
+          <p class="step-desc">
+            นำลิงก์ไปแชร์ลง YouTube หรือ Discord เมื่อมีคนปลดล็อค ยอดเงินจะเข้ากระเป๋า ถอนเข้า TrueMoney ได้ทันที
+          </p>
         </div>
       </div>
     </div>
