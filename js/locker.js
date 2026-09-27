@@ -17,6 +17,12 @@ let lastToastTime = 0;
 let serverSessionTicket = null;
 let isVipBypassed = false;
 
+// Reliable Thai language detector (Defaults to Thai unless explicitly switched to English)
+function isThaiLang() {
+  const lang = (typeof window !== 'undefined' && window.currentAppLanguage) || (typeof localStorage !== 'undefined' && localStorage.getItem('blackpass_lang')) || 'th';
+  return lang !== 'en';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadLockerData();
   initVipModal();
@@ -81,7 +87,7 @@ async function loadLockerData() {
   // Update instruction rule banner
   const instructionEl = document.getElementById('lockerInstructionText');
   if (instructionEl) {
-    instructionEl.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    instructionEl.textContent = isThaiLang()
       ? '⚠️ กติกา: กดทำภารกิจให้ครบทั้ง 3 ปุ่ม โดยต้องค้างอยู่ที่หน้าโฆษณาปุ่มละ 30 วินาที จึงจะปลดล็อคเว็บไซต์'
       : '⚠️ Rule: Complete all 3 buttons by staying on each sponsor ad for 30 seconds to unlock the website.';
   }
@@ -165,7 +171,7 @@ function updateButtonsVisualState() {
       pill.innerHTML = `<div class="btn-task-action completed"><i data-lucide="check" style="width: 14px; height: 14px;"></i> <span>${doneText}</span></div>`;
       if (badge) badge.innerHTML = `<i data-lucide="check" style="width: 14px; height: 14px;"></i>`;
       if (desc) {
-        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
+        desc.textContent = isThaiLang() ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
         desc.style.color = '#34D399';
       }
       if (miniFill) miniFill.style.width = '100%';
@@ -181,7 +187,7 @@ function updateButtonsVisualState() {
         pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 13px; height: 13px;"></i> <span>⏳ ${remaining}s</span></div>`;
         if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
         if (desc) {
-          desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+          desc.textContent = isThaiLang()
             ? `⏳ กำลังนับเวลา... ค้างไว้ในหน้าโฆษณาอีก ${remaining} วิ`
             : `⏳ Counting... Stay on ad for ${remaining}s more`;
           desc.style.color = '#F59E0B';
@@ -192,7 +198,7 @@ function updateButtonsVisualState() {
         pill.innerHTML = `<div class="btn-task-action paused"><i data-lucide="play" style="width: 12px; height: 12px; fill: currentColor;"></i> <span>${pausedTpl.replace('{sec}', remaining)}</span></div>`;
         if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
         if (desc) {
-          desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+          desc.textContent = isThaiLang()
             ? `⚠️ เวลาหยุดนับ! แตะกลับไปค้างหน้าโฆษณาอีก ${remaining} วิ`
             : `⚠️ Timer paused! Tap to return to ad for ${remaining}s`;
           desc.style.color = '#F87171';
@@ -204,7 +210,7 @@ function updateButtonsVisualState() {
       pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span> <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i></div>`;
       if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
       if (desc) {
-        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+        desc.textContent = isThaiLang()
           ? `แตะเพื่อเปิดโฆษณาและค้างไว้ 30 วินาที`
           : `Tap to open ad and stay for 30s`;
         desc.style.color = 'var(--text-muted)';
@@ -216,7 +222,7 @@ function updateButtonsVisualState() {
       pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 11px; height: 11px;"></i> <span>${lockedText}</span></div>`;
       if (badge) badge.innerHTML = `<i data-lucide="lock" style="width: 13px; height: 13px; opacity: 0.6;"></i>`;
       if (desc) {
-        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+        desc.textContent = isThaiLang()
           ? `รอด่านที่ ${i - 1} ผ่านก่อน`
           : `Complete step ${i - 1} first`;
         desc.style.color = 'rgba(255, 255, 255, 0.3)';
@@ -232,7 +238,7 @@ function updateButtonsVisualState() {
 window.handleTaskButtonClick = function(btnIndex) {
   // Check if previous buttons completed
   if (btnIndex > 1 && !completedSteps[btnIndex - 1]) {
-    const prevWarn = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    const prevWarn = isThaiLang()
       ? `⚠️ กรุณากดทำปุ่มที่ ${btnIndex - 1} ให้ผ่านก่อน!`
       : `⚠️ Please complete Button ${btnIndex - 1} first!`;
     showToast(prevWarn, 'warning', 3500);
@@ -241,7 +247,7 @@ window.handleTaskButtonClick = function(btnIndex) {
 
   // Already completed this button
   if (completedSteps[btnIndex]) {
-    const doneNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    const doneNotice = isThaiLang()
       ? `✅ ปุ่มที่ ${btnIndex} ผ่านการยืนยัน 30 วินาทีเรียบร้อยแล้ว!`
       : `✅ Button ${btnIndex} has already completed the 30s dwell!`;
     showToast(doneNotice, 'success', 2500);
@@ -260,7 +266,7 @@ window.handleTaskButtonClick = function(btnIndex) {
   // Set session start time when leaving
   dwellSessionStart[btnIndex] = Date.now();
 
-  const startMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+  const startMsg = isThaiLang()
     ? `🚀 เปิดหน้าโฆษณาแล้ว! กรุณาสลับไปค้างอยู่ที่หน้าโฆษณาอีก ${remaining} วิ (เวลานับเฉพาะตอนเปิดแท็บนั้น)`
     : `🚀 Ad opened! Please switch to and stay on the ad tab for ${remaining}s (Timer only runs while viewing ad).`;
   showToast(startMsg, 'info', 4500);
@@ -299,7 +305,7 @@ function handleTabStateChange() {
 
       if (Date.now() - lastToastTime > 3000) {
         lastToastTime = Date.now();
-        const toastMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+        const toastMsg = isThaiLang()
           ? `⏸️ หยุดนับเวลา! คุณค้างหน้าโฆษณาไปแล้ว ${secondsOnAd[step]}/30 วิ (เหลืออีก ${remaining} วิ) เวลานับต่อเฉพาะตอนเปิดแท็บโฆษณาเท่านั้น`
           : `⏸️ Timer paused! You spent ${secondsOnAd[step]}/30s. Timer only runs while you are on the ad page.`;
         showToast(toastMsg, 'warning', 4500);
@@ -361,14 +367,14 @@ function onButtonDwellVerified(btnIndex) {
   updateProgressUI();
   updateBottomButtonUI();
 
-  const successMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+  const successMsg = isThaiLang()
     ? `✅ ปุ่มที่ ${btnIndex} ผ่านแล้ว! (ดูครบ 30 วินาทีเต็ม)`
     : `✅ Button ${btnIndex} Verified! (30s dwell completed)`;
   showToast(successMsg, 'success', 3500);
 
   // Check if all 3 buttons are completed!
   if (completedSteps[1] && completedSteps[2] && completedSteps[3]) {
-    const allDoneMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    const allDoneMsg = isThaiLang()
       ? '🎉 ผ่านครบ 3 ด่านแล้ว! กำลังเข้าสู่เว็บไซต์ทันที...'
       : '🎉 All 3 steps complete! Redirecting now...';
     showToast(allDoneMsg, 'success', 2000);
@@ -441,7 +447,7 @@ function updateBottomButtonUI() {
     if (hintEl) {
       hintEl.style.display = 'flex';
       const remaining = totalSteps - doneCount;
-      const isTh = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th');
+      const isTh = isThaiLang();
       const hintMsg = isTh
         ? `ค้างหน้าโฆษณาปุ่มละ 30 วินาที เพื่อปลดล็อค (เหลือ ${remaining} ด่าน)`
         : `Stay on each ad for 30s to unlock (${remaining} remaining)`;
@@ -563,7 +569,7 @@ async function unlockContent() {
   // CRITICAL CHECK: Must complete all 3 buttons 30s dwell on client
   for (let s = 1; s <= totalSteps; s++) {
     if (!completedSteps[s]) {
-      const err = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      const err = isThaiLang()
         ? `⛔ ปุ่มที่ ${s} ยังไม่ผ่านการดูโฆษณา 30 วินาที! กรุณากดทำภารกิจให้ครบ`
         : `⛔ Button ${s} not verified for 30s! Please complete all 3 buttons.`;
       showToast(err, 'error', 4000);
@@ -652,7 +658,7 @@ function initVipModal() {
     btnSubmit.onclick = () => {
       const key = (input.value || '').trim().toUpperCase();
       if (!key) {
-        const enterKeyMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กรุณากรอกคีย์ VIP ของคุณ' : 'Please enter your VIP Key';
+        const enterKeyMsg = isThaiLang() ? 'กรุณากรอกคีย์ VIP ของคุณ' : 'Please enter your VIP Key';
         showToast(enterKeyMsg, 'error');
         return;
       }
@@ -661,7 +667,7 @@ function initVipModal() {
       if (key.includes('VIP') || key === 'ADMIN' || key === 'BYPASS' || key === '30BAHT') {
         closeVipModal();
         isVipBypassed = true;
-        const successMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'ตรวจสอบคีย์ VIP สำเร็จ! กำลังข้ามด่านทั้งหมด...' : 'VIP Key validated! Bypassing all tasks...';
+        const successMsg = isThaiLang() ? 'ตรวจสอบคีย์ VIP สำเร็จ! กำลังข้ามด่านทั้งหมด...' : 'VIP Key validated! Bypassing all tasks...';
         showToast(successMsg, 'success', 2000);
         setTimeout(() => {
           // Grant VIP authorization directly
@@ -671,7 +677,7 @@ function initVipModal() {
           unlockContent();
         }, 600);
       } else {
-        const errorMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'คีย์ VIP ไม่ถูกต้องหรือหมดอายุแล้ว ติดต่อแอดมิน Discord' : 'Invalid or expired VIP key. Contact Discord admin.';
+        const errorMsg = isThaiLang() ? 'คีย์ VIP ไม่ถูกต้องหรือหมดอายุแล้ว ติดต่อแอดมิน Discord' : 'Invalid or expired VIP key. Contact Discord admin.';
         showToast(errorMsg, 'error');
       }
     };

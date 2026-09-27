@@ -694,6 +694,7 @@ const I18N_DICTIONARY = {
 };
 
 let currentAppLanguage = localStorage.getItem('blackpass_lang') || 'th';
+window.currentAppLanguage = currentAppLanguage;
 
 function getI18nText(key, fallback = '') {
   const dict = I18N_DICTIONARY[currentAppLanguage] || I18N_DICTIONARY.th;
@@ -703,6 +704,7 @@ function getI18nText(key, fallback = '') {
 function setAppLanguage(lang) {
   if (lang !== 'th' && lang !== 'en') lang = 'th';
   currentAppLanguage = lang;
+  window.currentAppLanguage = lang;
   localStorage.setItem('blackpass_lang', lang);
 
   // Apply to DOM
