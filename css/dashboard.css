@@ -582,6 +582,8 @@
   .metrics-row {
     grid-template-columns: 1fr;
   }
+}
+
 /* Quick Link Shortener Component (ShrinkEarn Style) */
 .quick-shortener-card {
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.09) 0%, rgba(15, 19, 29, 0.95) 100%);
