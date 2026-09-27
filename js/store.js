@@ -21,7 +21,7 @@ const DEFAULT_LOCKERS = [
     timer: 8,
     antiBypass: true,
     adultAds: true,
-    smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+    smartlinkUrl: 'https://omg10.com/4/11905140',
     ads: { popunder: true, banner: true, smartlink: true },
     clicks: 148,
     unlocks: 112,
@@ -406,13 +406,13 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-        step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-        step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
-        step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
+        smartlinkUrl: 'https://omg10.com/4/11905140',
+        step1Url: 'https://omg10.com/4/11905140',
+        step2Url: 'https://omg10.com/4/11905141',
+        step3Url: 'https://omg10.com/4/11905142',
         popunderScript: '',
         bannerCode: '',
-        network: 'adsterra'
+        network: 'monetag'
       }
     };
 
@@ -422,13 +422,13 @@ class BlackPassStore {
       const parsed = JSON.parse(data);
       if (!parsed.ads || !parsed.ads.step1Url) {
         parsed.ads = {
-          smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-          step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-          step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
-          step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
+          smartlinkUrl: 'https://omg10.com/4/11905140',
+          step1Url: 'https://omg10.com/4/11905140',
+          step2Url: 'https://omg10.com/4/11905141',
+          step3Url: 'https://omg10.com/4/11905142',
           popunderScript: parsed.ads?.popunderScript || '',
           bannerCode: parsed.ads?.bannerCode || '',
-          network: 'adsterra'
+          network: 'monetag'
         };
         this.saveSettings(parsed);
       }
@@ -458,13 +458,13 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-        step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
-        step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
-        step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
+        smartlinkUrl: 'https://omg10.com/4/11905140',
+        step1Url: 'https://omg10.com/4/11905140',
+        step2Url: 'https://omg10.com/4/11905141',
+        step3Url: 'https://omg10.com/4/11905142',
         popunderScript: '',
         bannerCode: '',
-        network: 'adsterra'
+        network: 'monetag'
       }
     };
     this.saveSettings(cleanSettings);

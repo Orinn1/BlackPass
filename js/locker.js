@@ -464,13 +464,13 @@ function updateLockerLanguage() {
   updateBottomButtonUI();
 }
 
-// Real Ad Trigger (Links 1, 2, 3) - Strictly Enforce Owner's 3 Adsterra Smartlinks
+// Real Ad Trigger (Links 1, 2, 3) - Monetag High CPM Direct Links
 function triggerSmartlinkAd(btnIndex = 1) {
-  // Owner's verified Adsterra Smartlinks (Non-overridable)
-  let targetSmartlink = 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
-  if (btnIndex === 1) targetSmartlink = 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
-  else if (btnIndex === 2) targetSmartlink = 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
-  else if (btnIndex === 3) targetSmartlink = 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
+  // Owner's verified Monetag Direct Links (High Thai CPM)
+  let targetSmartlink = 'https://omg10.com/4/11905140';
+  if (btnIndex === 1) targetSmartlink = 'https://omg10.com/4/11905140';
+  else if (btnIndex === 2) targetSmartlink = 'https://omg10.com/4/11905141';
+  else if (btnIndex === 3) targetSmartlink = 'https://omg10.com/4/11905142';
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');
