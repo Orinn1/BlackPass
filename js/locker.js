@@ -269,11 +269,11 @@ function triggerSmartlinkAd(stepNum = currentStepIndex) {
   const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
   const globalAds = settings?.ads || {};
 
-  // Check step-specific URLs first (Step 1 -> PopAds, Step 2 -> Adsterra, Step 3 -> Monetag)
+  // Check step-specific URLs first (OrinRankone Adsterra Smartlinks)
   let stepUrl = '';
-  if (stepNum === 1 && globalAds.step1Url) stepUrl = globalAds.step1Url;
-  else if (stepNum === 2 && globalAds.step2Url) stepUrl = globalAds.step2Url;
-  else if (stepNum === 3 && globalAds.step3Url) stepUrl = globalAds.step3Url;
+  if (stepNum === 1) stepUrl = globalAds.step1Url || 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  else if (stepNum === 2) stepUrl = globalAds.step2Url || 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
+  else if (stepNum === 3) stepUrl = globalAds.step3Url || 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
 
   // Prioritize Locker-specific smartlink, then step-specific, then fallback to global smartlink
   const targetSmartlink = (currentLocker?.smartlinkUrl && currentLocker.smartlinkUrl.trim())
@@ -282,7 +282,7 @@ function triggerSmartlinkAd(stepNum = currentStepIndex) {
       ? stepUrl.trim()
       : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
         ? globalAds.smartlinkUrl.trim()
-        : 'https://publishers.adsterra.com/referral/demo';
+        : 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');

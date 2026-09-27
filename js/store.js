@@ -365,7 +365,7 @@ class BlackPassStore {
   getSettings() {
     const defaultSettings = {
       profile: {
-        username: this.currentUser ? this.currentUser.displayName : 'Guest User',
+        username: this.currentUser ? this.currentUser.displayName : 'OrinRankone',
         email: this.currentUser ? this.currentUser.email : '',
         tier: 'Standard (85%)',
         walletMethod: 'TrueMoney Wallet',
@@ -374,10 +374,10 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: '',
-        step1Url: '',
-        step2Url: '',
-        step3Url: '',
+        smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+        step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+        step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
+        step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
         popunderScript: '',
         bannerCode: '',
         network: 'adsterra'
@@ -388,16 +388,17 @@ class BlackPassStore {
       const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
       if (!data) return defaultSettings;
       const parsed = JSON.parse(data);
-      if (!parsed.ads) {
+      if (!parsed.ads || !parsed.ads.step1Url) {
         parsed.ads = {
-          smartlinkUrl: '',
-          step1Url: '',
-          step2Url: '',
-          step3Url: '',
-          popunderScript: '',
-          bannerCode: '',
+          smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+          step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+          step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
+          step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
+          popunderScript: parsed.ads?.popunderScript || '',
+          bannerCode: parsed.ads?.bannerCode || '',
           network: 'adsterra'
         };
+        this.saveSettings(parsed);
       }
       return parsed;
     } catch (e) {
@@ -416,7 +417,7 @@ class BlackPassStore {
 
     const cleanSettings = {
       profile: {
-        username: this.currentUser ? this.currentUser.displayName : 'Guest User',
+        username: this.currentUser ? this.currentUser.displayName : 'OrinRankone',
         email: this.currentUser ? this.currentUser.email : '',
         tier: 'Standard (85%)',
         walletMethod: 'TrueMoney Wallet',
@@ -425,10 +426,10 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: '',
-        step1Url: '',
-        step2Url: '',
-        step3Url: '',
+        smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+        step1Url: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+        step2Url: 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3',
+        step3Url: 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d',
         popunderScript: '',
         bannerCode: '',
         network: 'adsterra'
