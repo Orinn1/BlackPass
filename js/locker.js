@@ -369,13 +369,13 @@ function onButtonDwellVerified(btnIndex) {
   // Check if all 3 buttons are completed!
   if (completedSteps[1] && completedSteps[2] && completedSteps[3]) {
     const allDoneMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-      ? '🎉 ยอดเยี่ยม! ผ่านครบทั้ง 3 ปุ่มแล้ว กำลังปลดล็อคเข้าสู่เว็บไซต์...'
-      : '🎉 Excellent! All 3 buttons verified! Unlocking website...';
-    showToast(allDoneMsg, 'success', 4000);
+      ? '🎉 ผ่านครบ 3 ด่านแล้ว! กำลังเข้าสู่เว็บไซต์ทันที...'
+      : '🎉 All 3 steps complete! Redirecting now...';
+    showToast(allDoneMsg, 'success', 2000);
 
     setTimeout(() => {
       unlockContent();
-    }, 1200);
+    }, 250);
   }
 }
 
@@ -598,12 +598,7 @@ async function unlockContent() {
   }
 
   // Record unlock in store
-  GateStore.recordUnlock(currentLocker.slug);
-
-  // Switch to success view
-  document.getElementById('lockerActiveView').style.display = 'none';
-  const successView = document.getElementById('lockerSuccessView');
-  successView.classList.add('active');
+  GateStore.recordUnlock(currentLocker?.slug || 'hub-access');
 
   // Resolve destination URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -631,35 +626,11 @@ async function unlockContent() {
     window.dispatchEvent(new Event('storage'));
   } catch(e) {}
 
-  document.getElementById('destinationUrlDisplay').textContent = destUrl;
-
-  // Access Destination Button
-  document.getElementById('btnAccessDestination').onclick = () => {
+  // INSTANT REDIRECT DIRECTLY TO DESTINATION! (พาไปเลย ไม่ต้องแวะหน้าปลดล็อค)
+  window.location.replace(destUrl);
+  setTimeout(() => {
     window.location.href = destUrl;
-  };
-
-  // Copy Link Button
-  document.getElementById('btnCopyDestination').onclick = () => {
-    navigator.clipboard.writeText(destUrl).then(() => {
-      const copyNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'คัดลอกลิงก์ปลายทางเรียบร้อยแล้ว!' : 'Destination link copied to clipboard!';
-      showToast(copyNotice, 'success');
-    });
-  };
-
-  // 3 Second Auto-Redirect Countdown
-  let redirectSec = 3;
-  const redirectEl = document.getElementById('redirectCountdown');
-  if (redirectEl) redirectEl.textContent = redirectSec;
-  const redirectInterval = setInterval(() => {
-    redirectSec--;
-    if (redirectEl) redirectEl.textContent = redirectSec;
-    if (redirectSec <= 0) {
-      clearInterval(redirectInterval);
-      window.location.href = destUrl;
-    }
-  }, 1000);
-
-  lucide.createIcons();
+  }, 100);
 }
 
 // VIP Modal Logic

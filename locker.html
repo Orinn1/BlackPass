@@ -95,36 +95,16 @@
       </div>
     </div>
 
-    <!-- Success Unlocked State -->
-    <div class="locker-success-view" id="lockerSuccessView">
-      <div class="success-check-icon">
-        <i data-lucide="check" style="width: 32px; height: 32px;"></i>
+    <!-- Instant Redirect Loading State -->
+    <div class="locker-success-view" id="lockerSuccessView" style="padding: 40px 24px; text-align: center;">
+      <div class="success-check-icon" style="margin: 0 auto 16px;">
+        <i data-lucide="check" style="width: 32px; height: 32px; color: #10B981;"></i>
       </div>
 
-      <h2 class="success-title" data-i18n="unlocked_title">ปลดล็อคสำเร็จแล้ว!</h2>
-      <p class="success-desc" data-i18n="unlocked_desc">
-        ยืนยันตัวตนเรียบร้อย ระบบจะจดจำเครื่องนี้ไว้ใช้งานได้ตลอด 24 ชั่วโมง
+      <h2 class="success-title" style="font-size: 19px; margin-bottom: 6px;">กำลังพาวาร์ปเข้าสู่เว็บไซต์...</h2>
+      <p class="success-desc" style="font-size: 13px; color: #94A3B8; margin-bottom: 0;">
+        ปลดล็อคสำเร็จเรียบร้อย กรุณารอสักครู่
       </p>
-
-      <div class="destination-preview-box" id="destinationUrlDisplay">
-        https://pastebin.com/raw/Bf87k2Nq
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button type="button" class="btn-access-destination" id="btnAccessDestination">
-          <span data-i18n="unlocked_access_btn">เข้าสู่เนื้อหา / รับสคริปต์</span>
-          <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
-        </button>
-
-        <button type="button" class="btn btn-secondary btn-sm" id="btnCopyDestination">
-          <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
-          <span data-i18n="unlocked_copy_btn">คัดลอกลิงก์ปลายทาง</span>
-        </button>
-      </div>
-
-      <div style="margin-top: 24px; font-size: 12px; color: var(--text-muted);">
-        กำลังพาวาร์ปไปปลายทางในอีก <strong id="redirectCountdown" style="color: #FFFFFF;">5</strong> วินาที...
-      </div>
     </div>
   </div>
 
