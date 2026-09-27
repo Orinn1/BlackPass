@@ -275,10 +275,75 @@
   cursor: not-allowed;
 }
 
+/* Instruction Banner */
+.locker-instruction-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #BAE6FD;
+}
+
+.locker-instruction-banner.warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #FDE68A;
+}
+
+.btn-locker-continue.btn-need-action {
+  background: linear-gradient(135deg, #6366F1, #4F46E5);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.45);
+  animation: pulseActionBtn 2s infinite ease-in-out;
+  cursor: pointer;
+}
+
+.btn-locker-continue.btn-need-action:hover {
+  background: linear-gradient(135deg, #4F46E5, #4338CA);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.6);
+}
+
+@keyframes pulseActionBtn {
+  0%, 100% {
+    box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 26px rgba(99, 102, 241, 0.8), 0 0 0 3px rgba(99, 102, 241, 0.25);
+  }
+}
+
+.btn-locker-continue.btn-dwelling {
+  background: linear-gradient(135deg, #D97706, #B45309);
+  color: #FFFFFF;
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.35);
+  cursor: pointer;
+}
+
+.btn-locker-continue.btn-step-done {
+  background: linear-gradient(135deg, #059669, #10B981);
+  color: #FFFFFF;
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+  cursor: pointer;
+}
+
+.btn-locker-continue.btn-step-done:hover {
+  background: linear-gradient(135deg, #047857, #059669);
+  transform: translateY(-1px);
+}
+
 .btn-locker-continue.btn-unlock {
   background: #10B981;
   border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+  cursor: pointer;
 }
 
 .btn-locker-continue.btn-unlock:hover {

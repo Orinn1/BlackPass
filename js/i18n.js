@@ -294,6 +294,15 @@ const I18N_DICTIONARY = {
     locker_unlock_btn: 'ปลดล็อคเนื้อหาทันที',
     locker_vip_btn: 'มีคีย์ VIP?',
     locker_footer_shield: 'คุ้มครองด้วยระบบ Anti-Bypass v2.4',
+    locker_btn_open_ad: '👉 คลิกเปิดหน้าโฆษณา (ด่านที่ {step}/{total})',
+    locker_btn_dwelling: '⏳ กำลังดูโฆษณา... เหลืออีก {sec} วิ',
+    locker_btn_return_too_soon: '⚠️ กรุณาค้างอยู่หน้าโฆษณาอีก {sec} วิ (คลิกกลับไปดู)',
+    locker_btn_step_passed: '✅ ผ่านด่านที่ {step} แล้ว! ไปต่อด่านที่ {next} ➔',
+    locker_btn_all_passed: '🎉 ยืนยันครบทุกด่านแล้ว! คลิกปลดล็อคเว็บไซต์ 🔓',
+    locker_instruction_dwell: '⚠️ กติกา: ต้องคลิกเปิดหน้าสปอนเซอร์ และค้างอยู่ที่หน้านั้นอย่างน้อย {sec} วินาที (หากปิดก่อนเวลาจะไม่ปลดล็อค)',
+    locker_task_status_waiting: 'รอเปิดโฆษณา',
+    locker_task_status_dwelling: 'กำลังดู ({sec} วิ)',
+    locker_toast_early_return: '⚠️ คุณยังค้างอยู่หน้าโฆษณาไม่ครบเวลา! (เหลืออีก {sec} วินาที) กรุณากลับไปดูต่อจนครบเพื่อปลดล็อค',
 
     // Unlocked Success Page
     unlocked_title: 'ปลดล็อคสำเร็จแล้ว!',
@@ -618,6 +627,15 @@ const I18N_DICTIONARY = {
     locker_unlock_btn: 'Unlock Content Now',
     locker_vip_btn: 'VIP Key?',
     locker_footer_shield: 'Protected by Anti-Bypass v2.4',
+    locker_btn_open_ad: '👉 Click to Open Sponsor Ad (Step {step}/{total})',
+    locker_btn_dwelling: '⏳ Viewing Sponsor Ad... {sec}s left',
+    locker_btn_return_too_soon: '⚠️ Stay on sponsor page for {sec}s (Click to return)',
+    locker_btn_step_passed: '✅ Step {step} Verified! Proceed to Step {next} ➔',
+    locker_btn_all_passed: '🎉 All Tasks Complete! Click to Unlock 🔓',
+    locker_instruction_dwell: '⚠️ Unlock Rule: You must click the sponsor link and stay on the ad tab for at least {sec} seconds to unlock.',
+    locker_task_status_waiting: 'Waiting to Open',
+    locker_task_status_dwelling: 'Viewing Ad ({sec}s)',
+    locker_toast_early_return: '⚠️ You returned too early! ({sec}s remaining). Please stay on the sponsor page to unlock.',
 
     // Unlocked Success Page
     unlocked_title: 'Content Unlocked!',
