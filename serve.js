@@ -18,6 +18,9 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
+  if (reqPath.startsWith('/gateflow/')) {
+    reqPath = reqPath.replace('/gateflow', '');
+  }
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
   }
