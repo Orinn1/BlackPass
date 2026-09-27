@@ -320,7 +320,7 @@
                     <div style="font-size: 12px; color: var(--text-muted);" data-i18n="analytics_device_mobile_sub">ผู้เล่น Roblox Mobile, Delta &amp; Fluxus</div>
                   </div>
                 </div>
-                <div style="font-size: 20px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono);">0.0%</div>
+                <div style="font-size: 20px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono);" id="deviceMobilePercent">0.0%</div>
               </div>
 
               <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px; background: var(--bg-surface-raised); border-radius: var(--radius-md);">
@@ -331,7 +331,7 @@
                     <div style="font-size: 12px; color: var(--text-muted);" data-i18n="analytics_device_pc_sub">ผู้เล่น PC Executors &amp; Scripthubs</div>
                   </div>
                 </div>
-                <div style="font-size: 20px; font-weight: 800; color: #A5B4FC; font-family: var(--font-mono);">0.0%</div>
+                <div style="font-size: 20px; font-weight: 800; color: #A5B4FC; font-family: var(--font-mono);" id="devicePcPercent">0.0%</div>
               </div>
             </div>
           </div>
@@ -369,7 +369,7 @@
           <div class="card">
             <span class="badge badge-success" style="margin-bottom: 12px;" data-i18n="payout_active_balance">ยอดเงินคงเหลือในกระเป๋า</span>
             <div style="font-size: 38px; font-weight: 800; color: #10B981; font-family: var(--font-mono); margin-bottom: 4px;" id="payoutAvailableBalance">$0.00</div>
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="payout_ready_desc">
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" id="payoutReadyDesc" data-i18n="payout_ready_desc">
               ยอดเงินยังไม่ถึงเกณฑ์ถอนขั้นต่ำ ($5.00)
             </p>
 
@@ -389,9 +389,9 @@
                 <input type="text" class="form-input" id="payoutAccountInput" placeholder="เช่น 081-XXX-XXXX หรือ ที่อยู่วอลเล็ต" required>
               </div>
 
-              <button type="submit" class="btn btn-primary btn-block" disabled style="opacity: 0.6; cursor: not-allowed;">
-                <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
-                <span data-i18n="payout_btn_submit">ยอดเงินไม่เพียงพอสำหรับถอน ($0.00)</span>
+              <button type="submit" class="btn btn-primary btn-block" id="btnSubmitPayout" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <i data-lucide="lock" id="payoutLockIcon" style="width: 16px; height: 16px;"></i>
+                <span id="payoutBtnText" data-i18n="payout_btn_submit">ยอดเงินไม่เพียงพอสำหรับถอน ($0.00)</span>
               </button>
             </form>
           </div>
