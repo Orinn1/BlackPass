@@ -205,7 +205,7 @@ function renderLockersTable(targetTbodyId = 'lockersTableBody', filterQuery = ''
         </td>
         <td>
           <div style="display: flex; flex-direction: column; gap: 4px;">
-            <span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 11px;">🔞 18+ ($3.80 CPM)</span>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 11px;">$3.80 CPM</span>
             <span style="font-size: 11px; color: var(--text-muted);">${l.steps || 3} ปุ่ม &bull; ${l.timer || 30}s</span>
           </div>
         </td>
@@ -333,7 +333,7 @@ function initQuickShortener() {
     renderLockersTable('allLockersTableBody');
     lucide.createIcons();
 
-    showToast('ย่อลิงก์สำเร็จ! [🔞 โหมด 18+ High CPM ($3.80)]', 'success', 5000);
+    showToast('ย่อลิงก์สำเร็จ!', 'success', 4000);
   });
 }
 
@@ -624,7 +624,7 @@ function initCreateLockerForm() {
     renderLockersTable('lockersTableBody');
     renderLockersTable('allLockersTableBody');
 
-    showToast(`สร้าง Locker "${newLocker.name}" สำเร็จ! [🔞 โหมด 18+ High CPM ($3.80)]`, 'success', 5000);
+    showToast(`สร้าง Locker "${newLocker.name}" สำเร็จ!`, 'success', 4000);
   });
 }
 
