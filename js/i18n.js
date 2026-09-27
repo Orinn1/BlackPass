@@ -118,11 +118,11 @@ const I18N_DICTIONARY = {
     card_unlocks: 'ปลดล็อคเนื้อหา',
     card_revenue: 'รายได้สุทธิ',
     card_conversion: 'อัตราความสำเร็จ',
-    trend_clicks: '+14.8% สัปดาห์นี้',
-    trend_offers: '+11.2% สัปดาห์นี้',
-    trend_unlocks: '+11.2% เทียบ 7 วันก่อน',
-    trend_revenue: 'พร้อมถอนทันที',
-    trend_conversion: 'ทราฟฟิกคุณภาพสูง',
+    trend_clicks: '0% สัปดาห์นี้',
+    trend_offers: '0% สัปดาห์นี้',
+    trend_unlocks: '0% เทียบ 7 วันก่อน',
+    trend_revenue: 'รอการสร้างรายได้',
+    trend_conversion: 'ยังไม่มีข้อมูล',
 
     // Chart
     chart_title: 'กราฟสถิติประสิทธิภาพย้อนหลัง 7 วัน',
@@ -130,6 +130,7 @@ const I18N_DICTIONARY = {
     chart_tab_clicks: 'คลิก',
     chart_tab_unlocks: 'ปลดล็อค',
     chart_tab_revenue: 'รายได้ ($)',
+    chart_empty_note: 'ยังไม่มีข้อมูลสถิติ (ระบบพร้อมรับทราฟฟิกเมื่อมีคนเข้าลิงก์)',
 
     // Table
     table_title: 'รายการ Content Locker ที่เปิดใช้งาน',
@@ -148,12 +149,14 @@ const I18N_DICTIONARY = {
 
     // Analytics Deep Dive
     analytics_geo_title: 'สถิติผู้ชมตามประเทศ (Top 5)',
+    geo_no_data: 'ยังไม่มีทราฟฟิกแยกตามประเทศ (ระบบจะประมวลผลทันทีเมื่อมีผู้เข้าชม)',
     analytics_device_title: 'สัดส่วนอุปกรณ์ของผู้เข้าชม',
     analytics_device_mobile: 'มือถือ (Android / iOS)',
     analytics_device_mobile_sub: 'ผู้เล่น Roblox Mobile, Delta & Fluxus',
     analytics_device_pc: 'คอมพิวเตอร์ (Windows / Mac)',
     analytics_device_pc_sub: 'ผู้เล่น PC Executors & Script Hubs',
     analytics_daily_title: 'สถิติรายวันย้อนหลัง 7 วัน',
+    table_no_data: 'ยังไม่มีข้อมูลสถิติรายวัน (ระบบจะเริ่มบันทึกอัตโนมัติเมื่อมีคนคลิกเข้าสู่ Locker)',
     th_date: 'วันที่',
     th_raw_clicks: 'ยอดคลิกดิบ',
     th_unique_visitors: 'ผู้ชมไม่ซ้ำ',
@@ -164,10 +167,10 @@ const I18N_DICTIONARY = {
 
     // Payouts View
     payout_active_balance: 'ยอดเงินคงเหลือในกระเป๋า',
-    payout_ready_desc: 'ถึงเกณฑ์ถอนเงินขั้นต่ำแล้ว (> $5.00) สามารถกดสั่งถอนได้ทันที',
+    payout_ready_desc: 'ยอดเงินยังไม่ถึงเกณฑ์ถอนขั้นต่ำ ($5.00)',
     payout_dest_label: 'ช่องทางการรับเงิน',
     payout_account_label: 'เบอร์โทรศัพท์ / เลขบัญชี / กระเป๋าเงิน',
-    payout_btn_submit: 'ยืนยันคำขอถอนเงิน ($74.50)',
+    payout_btn_submit: 'ยอดเงินไม่เพียงพอสำหรับถอน ($0.00)',
     payout_policy_title: 'นโยบายและความปลอดภัยในการจ่ายเงิน',
     payout_policy_1_title: 'ประมวลผลด่วนในไทย:',
     payout_policy_1_desc: 'TrueMoney Wallet และ PromptPay เงินเข้าภายใน 10-30 นาที',
@@ -176,6 +179,7 @@ const I18N_DICTIONARY = {
     payout_policy_3_title: 'ระบบป้องกันการโกง:',
     payout_policy_3_desc: 'ตรวจสอบทราฟฟิกด้วย AI และ Adsterra Anti-Fraud ก่อนโอนเงิน',
     payout_recent_title: 'ประวัติการทำรายการถอนเงินล่าสุด',
+    table_no_payouts: 'ยังไม่มีประวัติการทำรายการถอนเงิน',
     th_txn_id: 'รหัสธุรกรรม',
     th_txn_date: 'วันที่ขอถอน',
     th_txn_dest: 'ช่องทางรับเงิน',
@@ -202,6 +206,11 @@ const I18N_DICTIONARY = {
     settings_label_webhook: 'URL รับ Webhook เมื่อผ่านด่าน',
     settings_webhook_hint: 'ระบบจะยิง JSON payload พร้อมลายเซ็นยืนยันเมื่อผู้ใช้ปลดล็อค',
     settings_btn_save_api: 'บันทึกการตั้งค่า API',
+    settings_danger_title: 'จัดการข้อมูลระบบ (Data Reset)',
+    settings_danger_desc: 'รีเซ็ตสถิติ ยอดเงิน และรายการ Locker ทั้งหมดในเครื่องให้เป็นค่าว่างเปล่า (0)',
+    btn_reset_data: 'ล้างข้อมูลทั้งหมดให้ว่างเปล่า',
+    reset_confirm_msg: 'คุณต้องการรีเซ็ตข้อมูลทั้งหมดในระบบให้เป็นค่าว่างเปล่า (0) ใช่หรือไม่?',
+    reset_success_msg: 'รีเซ็ตข้อมูลทั้งหมดเป็นค่าว่างเรียบร้อยแล้ว!',
 
     // Create Locker Modal
     modal_create_title: 'สร้าง Content Locker ใหม่',
@@ -406,11 +415,11 @@ const I18N_DICTIONARY = {
     card_unlocks: 'Content Unlocks',
     card_revenue: 'Net Revenue',
     card_conversion: 'Conversion Rate',
-    trend_clicks: '+14.8% this week',
-    trend_offers: '+11.2% this week',
-    trend_unlocks: '+11.2% vs last 7d',
-    trend_revenue: 'Ready to withdraw',
-    trend_conversion: 'High-intent traffic',
+    trend_clicks: '0% this week',
+    trend_offers: '0% this week',
+    trend_unlocks: '0% vs last 7d',
+    trend_revenue: 'Awaiting traffic',
+    trend_conversion: 'No data yet',
 
     // Chart
     chart_title: 'Weekly Performance Telemetry',
@@ -418,6 +427,7 @@ const I18N_DICTIONARY = {
     chart_tab_clicks: 'Clicks',
     chart_tab_unlocks: 'Unlocks',
     chart_tab_revenue: 'Revenue ($)',
+    chart_empty_note: 'No traffic activity recorded yet (Ready to capture link clicks)',
 
     // Table
     table_title: 'Active Content Lockers',
@@ -436,12 +446,14 @@ const I18N_DICTIONARY = {
 
     // Analytics Deep Dive
     analytics_geo_title: 'Traffic by Geography (Top 5)',
+    geo_no_data: 'No country breakdown data yet. Telemetry resolves automatically on user visits.',
     analytics_device_title: 'Device Split',
     analytics_device_mobile: 'Mobile Devices (Android / iOS)',
     analytics_device_mobile_sub: 'Roblox Mobile, Delta & Fluxus players',
     analytics_device_pc: 'Desktop (Windows / Mac)',
     analytics_device_pc_sub: 'PC Executors & Scripthubs',
     analytics_daily_title: 'Daily Conversion Breakdown (Last 7 Days)',
+    table_no_data: 'No daily telemetry recorded yet. Live traffic will appear here as users engage.',
     th_date: 'Date',
     th_raw_clicks: 'Raw Clicks',
     th_unique_visitors: 'Unique Visitors',
@@ -452,10 +464,10 @@ const I18N_DICTIONARY = {
 
     // Payouts View
     payout_active_balance: 'Active Balance',
-    payout_ready_desc: 'Threshold reached (> $5.00). Ready for instant withdrawal.',
+    payout_ready_desc: 'Minimum threshold not reached yet (< $5.00)',
     payout_dest_label: 'Withdrawal Destination',
     payout_account_label: 'Account Number / Phone / Wallet Address',
-    payout_btn_submit: 'Submit Payout Request ($74.50)',
+    payout_btn_submit: 'Insufficient balance to cash out ($0.00)',
     payout_policy_title: 'Payout Policy & Security',
     payout_policy_1_title: 'Instant Local Processing:',
     payout_policy_1_desc: 'TrueMoney Wallet & PromptPay payouts process within 10-30 minutes.',
@@ -464,6 +476,7 @@ const I18N_DICTIONARY = {
     payout_policy_3_title: 'Fraud Guard:',
     payout_policy_3_desc: 'Traffic verified against Adsterra & Cloudflare bot-score databases before release.',
     payout_recent_title: 'Recent Payout Transactions',
+    table_no_payouts: 'No payout transactions recorded yet.',
     th_txn_id: 'Transaction ID',
     th_txn_date: 'Requested Date',
     th_txn_dest: 'Destination',
@@ -490,6 +503,11 @@ const I18N_DICTIONARY = {
     settings_label_webhook: 'Unlock Webhook Postback URL',
     settings_webhook_hint: 'Sends signed JSON payload when a user successfully finishes all tasks.',
     settings_btn_save_api: 'Update API Config',
+    settings_danger_title: 'System Data Reset',
+    settings_danger_desc: 'Reset all local stats, balances, and locker items to clean 0.',
+    btn_reset_data: 'Reset All Platform Data',
+    reset_confirm_msg: 'Are you sure you want to reset all platform data to completely empty (0)?',
+    reset_success_msg: 'All platform data reset to blank successfully!',
 
     // Create Locker Modal
     modal_create_title: 'Create Content Locker',

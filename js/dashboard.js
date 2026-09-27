@@ -226,16 +226,18 @@ function drawChart() {
   const container = document.getElementById('chartContainer');
   if (!container) return;
 
-  // Mock 7-day data
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const metrics = GateStore.getMetrics();
+  const hasData = Number(metrics.totalClicks) > 0 || Number(metrics.totalRevenue) > 0;
+
   const dataMap = {
-    clicks: [2840, 3120, 3950, 4200, 4890, 5600, 6120],
-    unlocks: [1420, 1590, 1980, 2150, 2480, 2810, 3090],
-    revenue: [8.50, 9.40, 11.20, 12.80, 14.50, 16.20, 17.90]
+    clicks: hasData ? [0, 0, 0, 0, 0, 0, Number(metrics.totalClicks)] : [0, 0, 0, 0, 0, 0, 0],
+    unlocks: hasData ? [0, 0, 0, 0, 0, 0, Number(metrics.totalUnlocks)] : [0, 0, 0, 0, 0, 0, 0],
+    revenue: hasData ? [0, 0, 0, 0, 0, 0, Number(metrics.totalRevenue)] : [0, 0, 0, 0, 0, 0, 0]
   };
 
-  const values = dataMap[currentChartMetric];
-  const maxVal = Math.max(...values) * 1.15;
+  const values = dataMap[currentChartMetric] || [0, 0, 0, 0, 0, 0, 0];
+  const maxVal = Math.max(...values, 10);
   const width = container.clientWidth || 700;
   const height = 220;
   const padBottom = 30;
@@ -299,27 +301,19 @@ function renderAnalyticsDailyTable() {
   const tbody = document.getElementById('analyticsDailyTbody');
   if (!tbody) return;
 
-  const mockRows = [
-    { date: '2026-09-26', clicks: 6120, visitors: 4890, tasks: 3090, rate: '50.4%', cpm: '$5.80', rev: '$17.90' },
-    { date: '2026-09-25', clicks: 5600, visitors: 4420, tasks: 2810, rate: '50.1%', cpm: '$5.76', rev: '$16.20' },
-    { date: '2026-09-24', clicks: 4890, visitors: 3910, tasks: 2480, rate: '50.7%', cpm: '$5.84', rev: '$14.50' },
-    { date: '2026-09-23', clicks: 4200, visitors: 3350, tasks: 2150, rate: '51.1%', cpm: '$5.95', rev: '$12.80' },
-    { date: '2026-09-22', clicks: 3950, visitors: 3120, tasks: 1980, rate: '50.1%', cpm: '$5.65', rev: '$11.20' },
-    { date: '2026-09-21', clicks: 3120, visitors: 2510, tasks: 1590, rate: '50.9%', cpm: '$5.91', rev: '$9.40' },
-    { date: '2026-09-20', clicks: 2840, visitors: 2280, tasks: 1420, rate: '50.0%', cpm: '$5.98', rev: '$8.50' }
-  ];
+  const emptyText = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    ? 'ยังไม่มีข้อมูลสถิติรายวัน (ระบบจะเริ่มบันทึกอัตโนมัติเมื่อมีคนคลิกเข้าสู่ Locker)'
+    : 'No daily telemetry recorded yet. Live traffic will appear here as users engage.';
 
-  tbody.innerHTML = mockRows.map(r => `
+  tbody.innerHTML = `
     <tr>
-      <td style="font-family: var(--font-mono); font-weight: 500;">${r.date}</td>
-      <td>${r.clicks.toLocaleString()}</td>
-      <td>${r.visitors.toLocaleString()}</td>
-      <td><strong style="color: #F8FAFC;">${r.tasks.toLocaleString()}</strong></td>
-      <td><span class="badge badge-success">${r.rate}</span></td>
-      <td>${r.cpm}</td>
-      <td><strong style="color: #10B981; font-family: var(--font-mono);">${r.rev}</strong></td>
+      <td colspan="7" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+        <i data-lucide="inbox" style="width: 24px; height: 24px; margin: 0 auto 8px; display: block; opacity: 0.4;"></i>
+        <span>${emptyText}</span>
+      </td>
     </tr>
-  `).join('');
+  `;
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 // Modal Management: Create Locker
@@ -443,9 +437,24 @@ function initSettingsForm() {
   document.getElementById('btnSaveApiSettings')?.addEventListener('click', () => {
     const webhookUrl = document.getElementById('settingsWebhookUrl').value;
     const settings = GateStore.getSettings();
+    settings.api = settings.api || {};
     settings.api.webhookUrl = webhookUrl;
     GateStore.saveSettings(settings);
     showToast('Webhook endpoint and API parameters updated.', 'success');
+  });
+
+  document.getElementById('btnResetAllData')?.addEventListener('click', () => {
+    const confirmMsg = typeof getI18nText === 'function' ? getI18nText('reset_confirm_msg', 'คุณต้องการรีเซ็ตข้อมูลทั้งหมดในระบบให้เป็นค่าว่างเปล่า (0) ใช่หรือไม่?') : 'Are you sure you want to reset all platform data to completely empty (0)?';
+    if (confirm(confirmMsg)) {
+      GateStore.resetAllData();
+      renderDashboardStats();
+      renderLockersTable('lockersTableBody');
+      renderLockersTable('allLockersTableBody');
+      drawChart();
+      renderAnalyticsDailyTable();
+      const successMsg = typeof getI18nText === 'function' ? getI18nText('reset_success_msg', 'รีเซ็ตข้อมูลทั้งหมดเป็นค่าว่างเรียบร้อยแล้ว!') : 'All platform data reset to blank successfully!';
+      showToast(successMsg, 'success');
+    }
   });
 }
 

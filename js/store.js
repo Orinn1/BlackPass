@@ -4,49 +4,12 @@
    ========================================================================== */
 
 const STORAGE_KEYS = {
-  LOCKERS: 'blackpass_lockers_v1',
-  SETTINGS: 'blackpass_settings_v1',
-  AUTH_USER: 'blackpass_auth_user_v1'
+  LOCKERS: 'blackpass_lockers_v2',
+  SETTINGS: 'blackpass_settings_v2',
+  AUTH_USER: 'blackpass_auth_user_v2'
 };
 
-const DEFAULT_LOCKERS = [
-  {
-    id: 'bp_blox48',
-    userId: 'default_admin',
-    name: 'Blox Fruits Hub v4.8 Script',
-    slug: 'blox-fruits-v48',
-    destinationUrl: 'https://pastebin.com/raw/Bf87k2Nq',
-    type: 'multistep',
-    steps: 3,
-    timer: 8,
-    antiBypass: true,
-    ads: { popunder: true, banner: true, smartlink: true },
-    clicks: 14820,
-    unlocks: 6940,
-    revenue: 41.25,
-    cpm: 5.94,
-    status: 'active',
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: 'bp_delta24',
-    userId: 'default_admin',
-    name: 'Delta Android Key Checkpoint',
-    slug: 'delta-key-pass',
-    destinationUrl: 'https://key.delta-executor.com/api/redeem?token=bp_valid',
-    type: 'multistep',
-    steps: 2,
-    timer: 6,
-    antiBypass: true,
-    ads: { popunder: true, banner: true, smartlink: false },
-    clicks: 8420,
-    unlocks: 4180,
-    revenue: 23.40,
-    cpm: 5.60,
-    status: 'active',
-    createdAt: new Date().toISOString()
-  }
-];
+const DEFAULT_LOCKERS = [];
 
 class BlackPassStore {
   constructor() {
@@ -56,12 +19,18 @@ class BlackPassStore {
   }
 
   init() {
-    // Load local cache first
+    // Clear old mock v1 caches
+    try {
+      localStorage.removeItem('blackpass_lockers_v1');
+      localStorage.removeItem('blackpass_settings_v1');
+    } catch (e) {}
+
+    // Load local cache
     try {
       const localData = localStorage.getItem(STORAGE_KEYS.LOCKERS);
-      this.cachedLockers = localData ? JSON.parse(localData) : DEFAULT_LOCKERS;
+      this.cachedLockers = localData ? JSON.parse(localData) : [];
     } catch (e) {
-      this.cachedLockers = DEFAULT_LOCKERS;
+      this.cachedLockers = [];
     }
 
     // Load cached user session
@@ -395,12 +364,12 @@ class BlackPassStore {
   getSettings() {
     const defaultSettings = {
       profile: {
-        username: this.currentUser ? this.currentUser.displayName : 'OrinRankone',
-        email: this.currentUser ? this.currentUser.email : 'admin@blacklisthub.com',
-        tier: 'Pro Publisher (92% RevShare)',
+        username: this.currentUser ? this.currentUser.displayName : 'Guest User',
+        email: this.currentUser ? this.currentUser.email : '',
+        tier: 'Standard (85%)',
         walletMethod: 'TrueMoney Wallet',
-        walletAccount: '081-XXX-XXXX',
-        balance: 74.50,
+        walletAccount: '',
+        balance: 0.00,
         pendingPayout: 0.00
       }
     };
@@ -411,6 +380,30 @@ class BlackPassStore {
     } catch (e) {
       return defaultSettings;
     }
+  }
+
+  resetAllData() {
+    this.cachedLockers = [];
+    try {
+      localStorage.removeItem(STORAGE_KEYS.LOCKERS);
+      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+      localStorage.removeItem('blackpass_lockers_v1');
+      localStorage.removeItem('blackpass_settings_v1');
+    } catch (e) {}
+
+    const cleanSettings = {
+      profile: {
+        username: this.currentUser ? this.currentUser.displayName : 'Guest User',
+        email: this.currentUser ? this.currentUser.email : '',
+        tier: 'Standard (85%)',
+        walletMethod: 'TrueMoney Wallet',
+        walletAccount: '',
+        balance: 0.00,
+        pendingPayout: 0.00
+      }
+    };
+    this.saveSettings(cleanSettings);
+    return true;
   }
 
   saveSettings(newSettings) {
