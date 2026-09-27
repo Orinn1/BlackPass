@@ -9,7 +9,27 @@ const STORAGE_KEYS = {
   AUTH_USER: 'blackpass_auth_user_v2'
 };
 
-const DEFAULT_LOCKERS = [];
+const DEFAULT_LOCKERS = [
+  {
+    id: 'bp_hub_access',
+    userId: 'orin_rankone',
+    name: 'Blacklist Script Hub Access',
+    slug: 'hub-access',
+    destinationUrl: 'https://th.blacklisthub.workers.dev/?auth_success=1',
+    type: 'multistep',
+    steps: 3,
+    timer: 8,
+    antiBypass: true,
+    smartlinkUrl: 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53',
+    ads: { popunder: true, banner: true, smartlink: true },
+    clicks: 148,
+    unlocks: 112,
+    revenue: 0.62,
+    cpm: 5.50,
+    status: 'active',
+    createdAt: new Date().toISOString()
+  }
+];
 
 class BlackPassStore {
   constructor() {
@@ -25,12 +45,15 @@ class BlackPassStore {
       localStorage.removeItem('blackpass_settings_v1');
     } catch (e) {}
 
-    // Load local cache
+    // Load local cache with DEFAULT_LOCKERS fallback
     try {
       const localData = localStorage.getItem(STORAGE_KEYS.LOCKERS);
-      this.cachedLockers = localData ? JSON.parse(localData) : [];
+      this.cachedLockers = localData ? JSON.parse(localData) : [...DEFAULT_LOCKERS];
+      if (!this.cachedLockers || this.cachedLockers.length === 0) {
+        this.cachedLockers = [...DEFAULT_LOCKERS];
+      }
     } catch (e) {
-      this.cachedLockers = [];
+      this.cachedLockers = [...DEFAULT_LOCKERS];
     }
 
     // Load cached user session

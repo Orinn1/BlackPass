@@ -23,17 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // Load Locker based on URL params
 async function loadLockerData() {
   const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get('slug') || urlParams.get('id') || 'blox-fruits-v48';
+  const slug = urlParams.get('slug') || urlParams.get('id') || 'hub-access';
 
   currentLocker = await GateStore.getLocker(slug);
 
   if (!currentLocker) {
-    // Fallback default
+    // Fallback default for Blacklist Script Hub
     currentLocker = {
-      id: 'gf_fallback',
-      name: 'Blox Fruits Hub v4.8 Script',
-      slug: 'blox-fruits-v48',
-      destinationUrl: 'https://pastebin.com/raw/Bf87k2Nq',
+      id: 'gf_hub_access',
+      name: 'Blacklist Script Hub Access',
+      slug: 'hub-access',
+      destinationUrl: 'https://th.blacklisthub.workers.dev/?auth_success=1',
       steps: 3,
       timer: 8,
       ads: { popunder: true, banner: true, smartlink: true }
@@ -45,7 +45,7 @@ async function loadLockerData() {
 
   totalSteps = currentLocker.steps || 3;
   document.getElementById('lockerTitle').textContent = currentLocker.name;
-  document.title = `${currentLocker.name} &mdash; BlackPass Verification`;
+  document.title = `${currentLocker.name} \u2014 BlackPass Verification`;
 
   renderTasks();
   initAdInjectors();
@@ -351,7 +351,24 @@ function unlockContent() {
   const successView = document.getElementById('lockerSuccessView');
   successView.classList.add('active');
 
-  const destUrl = currentLocker.destinationUrl || 'https://pastebin.com/raw/Bf87k2Nq';
+  // Resolve destination URL (Support return_to or currentLocker destination)
+  const urlParams = new URLSearchParams(window.location.search);
+  const returnTo = urlParams.get('return_to') || urlParams.get('redirect') || '';
+
+  let destUrl = returnTo || currentLocker?.destinationUrl || 'https://th.blacklisthub.workers.dev/?auth_success=1';
+  if (!destUrl.includes('auth_success=1')) {
+    destUrl = destUrl.includes('?') ? `${destUrl}&auth_success=1` : `${destUrl}?auth_success=1`;
+  }
+
+  // Set 24-Hour Authorization immediately across localStorage & sessionStorage
+  try {
+    const expiry24h = Date.now() + (24 * 60 * 60 * 1000);
+    localStorage.setItem('blacklist_lootlabs_auth_expiry', String(expiry24h));
+    sessionStorage.setItem('blacklist_lootlabs_auth', 'true');
+    localStorage.setItem('blacklist_lootlabs_unlocked_event', String(Date.now()));
+    window.dispatchEvent(new Event('storage'));
+  } catch(e) {}
+
   document.getElementById('destinationUrlDisplay').textContent = destUrl;
 
   // Access Destination Button
@@ -367,9 +384,10 @@ function unlockContent() {
     });
   };
 
-  // 5 Second Auto-Redirect Countdown
-  let redirectSec = 5;
+  // 3 Second Auto-Redirect Countdown (Quick & snappy)
+  let redirectSec = 3;
   const redirectEl = document.getElementById('redirectCountdown');
+  if (redirectEl) redirectEl.textContent = redirectSec;
   const redirectInterval = setInterval(() => {
     redirectSec--;
     if (redirectEl) redirectEl.textContent = redirectSec;
