@@ -18,6 +18,7 @@ let lastToastTime = 0;
 document.addEventListener('DOMContentLoaded', () => {
   loadLockerData();
   initVipModal();
+  checkInAppBrowser();
 
   // Listen to language change
   window.onLanguageChanged = (lang) => {
@@ -78,12 +79,12 @@ function renderTaskButtons() {
   const container = document.getElementById('tasksList');
   if (!container) return;
 
-  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'ปุ่มที่ 1: สปอนเซอร์เซิร์ฟเวอร์หลัก (30 วิ)') : 'ปุ่มที่ 1: สปอนเซอร์เซิร์ฟเวอร์หลัก (30 วิ)';
-  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที';
+  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'ปุ่มที่ 1: สปอนเซอร์หลัก (30 วิ)') : 'ปุ่มที่ 1: สปอนเซอร์หลัก (30 วิ)';
+  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'แตะเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที';
   const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)') : 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)';
-  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที';
+  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'แตะเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที';
   const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)') : 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)';
-  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที';
+  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'แตะเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที';
 
   const taskDefinitions = [
     { title: t1Title, desc: t1Desc, icon: 'eye' },
@@ -96,17 +97,23 @@ function renderTaskButtons() {
     const def = taskDefinitions[i - 1];
     html += `
       <div class="task-item" id="taskItem_${i}" onclick="handleTaskButtonClick(${i})">
-        <div class="task-left">
-          <div class="task-icon" id="taskIcon_${i}">
-            <i data-lucide="${def.icon}" style="width: 16px; height: 16px;"></i>
+        <div class="task-top-row">
+          <div class="task-left">
+            <div class="task-icon" id="taskIcon_${i}">
+              <i data-lucide="${def.icon}" style="width: 16px; height: 16px;"></i>
+            </div>
+            <div class="task-info">
+              <span class="task-title">${def.title}</span>
+              <span class="task-desc" id="taskDesc_${i}">${def.desc}</span>
+            </div>
           </div>
-          <div class="task-info">
-            <span class="task-title">${def.title}</span>
-            <span class="task-desc" id="taskDesc_${i}">${def.desc}</span>
+          <div class="task-status-indicator" id="taskPill_${i}">
+            <!-- Pill action injected dynamically -->
           </div>
         </div>
-        <div class="task-status-indicator" id="taskPill_${i}">
-          <!-- Pill action injected dynamically -->
+        <!-- Mini Progress Bar on Active Step -->
+        <div class="task-mini-progress-track" id="taskMiniProgress_${i}">
+          <div class="task-mini-progress-fill" id="taskMiniFill_${i}" style="width: 0%;"></div>
         </div>
       </div>
     `;
@@ -119,10 +126,10 @@ function renderTaskButtons() {
 
 // Update the visual state of the 3 buttons
 function updateButtonsVisualState() {
-  const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', '👉 กดเริ่ม (30 วิ)') : '👉 กดเริ่ม (30 วิ)';
-  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', '✅ ผ่านแล้ว') : '✅ ผ่านแล้ว';
+  const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', '👉 แตะเพื่อเริ่ม (ค้างไว้ 30 วิ)') : '👉 แตะเพื่อเริ่ม (ค้างไว้ 30 วิ)';
+  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', '✅ ผ่านแล้ว (ดูครบ 30 วิ)') : '✅ ผ่านแล้ว (ดูครบ 30 วิ)';
   const lockedText = typeof getI18nText === 'function' ? getI18nText('locker_action_locked', '🔒 รอด่านก่อนหน้า') : '🔒 รอด่านก่อนหน้า';
-  const pausedTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_paused', '⏸️ หยุดนับ (เหลืออีก {sec} วิ)') : '⏸️ หยุดนับ (เหลืออีก {sec} วิ)';
+  const pausedTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_paused', '⏸️ หยุดนับ! แตะกลับไปโฆษณา (เหลือ {sec} วิ)') : '⏸️ หยุดนับ! แตะกลับไปโฆษณา (เหลือ {sec} วิ)';
 
   const isUserAway = document.hidden || !document.hasFocus();
 
@@ -131,6 +138,7 @@ function updateButtonsVisualState() {
     const pill = document.getElementById(`taskPill_${i}`);
     const icon = document.getElementById(`taskIcon_${i}`);
     const desc = document.getElementById(`taskDesc_${i}`);
+    const miniFill = document.getElementById(`taskMiniFill_${i}`);
     if (!item || !pill) continue;
 
     if (completedSteps[i]) {
@@ -140,22 +148,31 @@ function updateButtonsVisualState() {
       if (icon) icon.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i>`;
       if (desc) desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
       if (desc) desc.style.color = 'var(--text-muted)';
+      if (miniFill) miniFill.style.width = '100%';
     } else if (activeDwellingStep === i) {
       const currentSpent = secondsOnAd[i] + (isUserAway && dwellSessionStart[i] ? Math.floor((Date.now() - dwellSessionStart[i]) / 1000) : 0);
       const remaining = Math.max(0, requiredDwellSeconds - currentSpent);
+      const pct = Math.min(100, Math.round((currentSpent / requiredDwellSeconds) * 100));
+      if (miniFill) miniFill.style.width = `${pct}%`;
 
       if (isUserAway) {
         // 2. Currently Away on Ad Tab (Active Counting)
         item.className = 'task-item dwelling';
-        pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>⏳ ค้างอีก ${remaining} วิ</span></div>`;
+        pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>⏳ ค้างหน้าโฆษณาอีก ${remaining} วิ...</span></div>`;
+        if (desc) {
+          desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+            ? `⏳ กำลังนับเวลา... ค้างไว้ในหน้าโฆษณาอีก ${remaining} วิ (${pct}%)`
+            : `⏳ Counting... Stay on ad tab for ${remaining}s more (${pct}%)`;
+          desc.style.color = '#F59E0B';
+        }
       } else {
         // 3. User is on Locker Tab -> PAUSED! DOES NOT COUNT!
         item.className = 'task-item paused';
         pill.innerHTML = `<div class="btn-task-action paused"><i data-lucide="pause-circle" style="width: 14px; height: 14px;"></i> <span>${pausedTpl.replace('{sec}', remaining)}</span></div>`;
         if (desc) {
           desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-            ? `⚠️ เวลาหยุดนับ! คลิกที่นี่เพื่อสลับไปค้างหน้าโฆษณาอีก ${remaining} วิ`
-            : `⚠️ Timer paused! Click to switch back to ad for ${remaining}s more`;
+            ? `⚠️ เวลาหยุดนับ! แตะที่ปุ่มนี้เพื่อสลับไปค้างหน้าโฆษณาต่ออีก ${remaining} วิ (${pct}%)`
+            : `⚠️ Timer paused! Tap to return to ad for ${remaining}s more (${pct}%)`;
           desc.style.color = '#F87171';
         }
       }
@@ -164,18 +181,23 @@ function updateButtonsVisualState() {
       item.className = 'task-item ready-to-click';
       pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span></div>`;
       if (desc) {
-        desc.textContent = (i === 1)
-          ? ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s')
-          : (i === 2)
-            ? ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s')
-            : ((typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที' : 'Click to open ad and dwell for 30s');
+        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+          ? `แตะเพื่อเปิดโฆษณาตัวที่ ${i} และค้างไว้ 30 วินาที`
+          : `Tap to open ad #${i} and stay for 30s`;
         desc.style.color = 'var(--text-muted)';
       }
+      if (miniFill) miniFill.style.width = '0%';
     } else {
       // 5. Locked State
       item.className = 'task-item locked';
       pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 12px; height: 12px;"></i> <span>${lockedText}</span></div>`;
-      if (desc) desc.style.color = 'var(--text-muted)';
+      if (desc) {
+        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+          ? `รอด่านที่ ${i - 1} ผ่านก่อน จึงจะปลดล็อคปุ่มนี้`
+          : `Complete step ${i - 1} first to unlock`;
+        desc.style.color = 'var(--text-muted)';
+      }
+      if (miniFill) miniFill.style.width = '0%';
     }
   }
 
@@ -302,6 +324,13 @@ function onButtonDwellVerified(btnIndex) {
   dwellSessionStart[btnIndex] = null;
   secondsOnAd[btnIndex] = requiredDwellSeconds;
 
+  // Mobile haptic vibration if supported (Gentle buzz when 30s dwell is done)
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try { navigator.vibrate([160, 90, 160]); } catch(e) {}
+  }
+
+  hidePopupFallback();
+
   document.title = `${currentLocker.name} \u2014 BlackPass 30s Verification`;
 
   updateButtonsVisualState();
@@ -412,11 +441,49 @@ function triggerSmartlinkAd(btnIndex = 1) {
   try {
     const adWindow = window.open(targetSmartlink, '_blank');
     if (!adWindow || adWindow.closed || typeof adWindow.closed === 'undefined') {
-      showToast('⚠️ เบราว์เซอร์บล็อกป๊อปอัป! กรุณากด "อนุญาตป๊อปอัป" ด้านบนของเบราว์เซอร์เพื่อให้เปิดหน้าโฆษณาได้', 'warning', 5000);
+      showPopupFallback(targetSmartlink, btnIndex);
+      showToast('⚠️ เบราว์เซอร์บล็อกป๊อปอัป! ได้แสดงปุ่มเปิดโดยตรงด้านบนแล้ว', 'warning', 4500);
+    } else {
+      hidePopupFallback();
     }
   } catch (e) {
     console.warn('[BlackPass] Popup blocked by browser policy:', e);
-    showToast('⚠️ เบราว์เซอร์บล็อกป๊อปอัป! กรุณาอนุญาตป๊อปอัปในแถบ URL', 'warning', 5000);
+    showPopupFallback(targetSmartlink, btnIndex);
+  }
+}
+
+// Mobile Popup Fallback Helpers
+function showPopupFallback(targetUrl, btnIndex) {
+  const banner = document.getElementById('popupFallbackBanner');
+  const link = document.getElementById('btnPopupFallback');
+  const text = document.getElementById('popupFallbackText');
+  if (banner && link) {
+    link.href = targetUrl;
+    if (text) text.innerHTML = `⚠️ เบราว์เซอร์บล็อกหน้าต่างใหม่สำหรับ <strong>ปุ่มที่ ${btnIndex}</strong>:`;
+    banner.style.display = 'flex';
+    link.onclick = () => {
+      dwellSessionStart[btnIndex] = Date.now();
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 1000);
+    };
+    lucide.createIcons();
+  }
+}
+
+function hidePopupFallback() {
+  const banner = document.getElementById('popupFallbackBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+// Detect Discord / In-App Browser on Mobile
+function checkInAppBrowser() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+  const isInApp = /Discord|Line\/|FBAN|FBAV|Instagram|TikTok|MicroMessenger/i.test(ua);
+  const noticeEl = document.getElementById('inAppBrowserNotice');
+  if (noticeEl && isInApp) {
+    noticeEl.style.display = 'flex';
+    lucide.createIcons();
   }
 }
 

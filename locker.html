@@ -50,11 +50,42 @@
 
       <!-- Body / Current Task -->
       <div class="locker-body">
+        <!-- In-App Browser Notice (For Discord / Line / Mobile In-App Webviews) -->
+        <div class="inapp-browser-notice" id="inAppBrowserNotice" style="display: none;">
+          <i data-lucide="compass" style="width: 16px; height: 16px; color: #F59E0B; flex-shrink: 0; margin-top: 1px;"></i>
+          <span>💡 <strong>เปิดใน Discord/แอป?</strong> หากสลับแท็บไม่สะดวก แนะนำกดปุ่ม <strong>⋯</strong> มุมบนขวา แล้วเลือก <em>"เปิดในเบราว์เซอร์หลัก (Chrome/Safari)"</em></span>
+        </div>
+
+        <!-- Mobile Popup Fallback Banner (If browser blocks popup window) -->
+        <div class="popup-fallback-banner" id="popupFallbackBanner" style="display: none;">
+          <div class="fallback-info">
+            <i data-lucide="external-link" style="width: 16px; height: 16px; color: #F59E0B; flex-shrink: 0;"></i>
+            <span id="popupFallbackText">⚠️ เบราว์เซอร์บล็อกหน้าต่างใหม่:</span>
+          </div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-popup-fallback" id="btnPopupFallback">
+            <span>แตะตรงนี้เพื่อเปิดหน้าโฆษณา</span>
+            <i data-lucide="arrow-up-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+
+        <!-- Mobile Quick Guide Banner -->
+        <div class="mobile-guide-banner" id="mobileGuideBanner">
+          <div class="mobile-guide-head">
+            <i data-lucide="smartphone" style="width: 15px; height: 15px; color: #38BDF8;"></i>
+            <span>📱 วิธีผ่านด่านบนมือถือง่ายๆ</span>
+          </div>
+          <div class="mobile-guide-chips">
+            <span class="m-chip"><strong class="m-num">1</strong> แตะปุ่มเริ่ม</span>
+            <span class="m-chip"><strong class="m-num">2</strong> ค้างไว้ 30 วิ</span>
+            <span class="m-chip"><strong class="m-num">3</strong> สลับกลับมา ✅</span>
+          </div>
+        </div>
+
         <!-- Instruction Banner -->
         <div class="locker-instruction-banner" id="lockerInstructionBanner">
           <i data-lucide="info" id="instructionIcon" style="width: 16px; height: 16px; color: #38bdf8; flex-shrink: 0; margin-top: 1px;"></i>
           <span id="lockerInstructionText" data-i18n="locker_instruction_dwell">
-            ⚠️ กติกา: ต้องคลิกเปิดหน้าสปอนเซอร์ และค้างอยู่ที่หน้านั้นอย่างน้อย 10 วินาที (หากปิดก่อนเวลาจะไม่ปลดล็อค)
+            ⚠️ กติกา: กดทำภารกิจให้ครบทั้ง 3 ปุ่ม โดยต้องค้างอยู่ที่หน้าโฆษณาปุ่มละ 30 วินาที จึงจะปลดล็อคเว็บไซต์
           </span>
         </div>
 
