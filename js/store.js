@@ -255,6 +255,7 @@ class BlackPassStore {
 
     const userId = this.currentUser ? this.currentUser.uid : 'anonymous_publisher';
 
+    const isAdult = payload.adultAds === true;
     const newLocker = {
       id,
       userId,
@@ -263,18 +264,19 @@ class BlackPassStore {
       destinationUrl: payload.destinationUrl.trim(),
       type: payload.type || 'multistep',
       steps: Number(payload.steps) || 3,
-      timer: Number(payload.timer) || 8,
-      antiBypass: payload.antiBypass !== false,
+      timer: Number(payload.timer) || 30,
+      antiBypass: true,
+      adultAds: isAdult,
       smartlinkUrl: (payload.smartlinkUrl || '').trim(),
       ads: {
-        popunder: payload.ads?.popunder !== false,
-        banner: payload.ads?.banner !== false,
-        smartlink: payload.ads?.smartlink !== false
+        popunder: true,
+        banner: true,
+        smartlink: true
       },
       clicks: 0,
       unlocks: 0,
       revenue: 0.00,
-      cpm: 2.80,
+      cpm: isAdult ? 3.80 : 2.80,
       status: 'active',
       createdAt: new Date().toISOString()
     };
@@ -327,10 +329,11 @@ class BlackPassStore {
   }
 
   async recordUnlock(slug) {
-    const gain = 0.0028; // conservative rate ~$2.80 CPM (approx 0.10 THB / unlock)
-
     // 1. Update local cache
     const item = this.cachedLockers.find(l => l.slug === slug);
+    const isAdult = item && item.adultAds === true;
+    const gain = isAdult ? 0.0038 : 0.0028; // $3.80 CPM for 18+ vs $2.80 CPM for clean SFW (~0.14 THB vs ~0.10 THB / unlock)
+
     if (item) {
       item.unlocks = (item.unlocks || 0) + 1;
       item.revenue = Number(((item.revenue || 0) + gain).toFixed(4));

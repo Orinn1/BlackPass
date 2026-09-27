@@ -204,9 +204,12 @@ function renderLockersTable(targetTbodyId = 'lockersTableBody', filterQuery = ''
           </span>
         </td>
         <td>
-          <span class="badge badge-muted">
-            ${l.steps} Step${l.steps > 1 ? 's' : ''} &bull; ${l.timer}s
-          </span>
+          <div style="display: flex; flex-direction: column; gap: 4px;">
+            ${l.adultAds 
+              ? '<span class="badge" style="background: rgba(236, 72, 153, 0.15); color: #F472B6; border: 1px solid rgba(236, 72, 153, 0.3); font-size: 11px;">🔞 18+ ($3.80)</span>' 
+              : '<span class="badge badge-primary" style="font-size: 11px;">🛡️ Clean ($2.80)</span>'}
+            <span style="font-size: 11px; color: var(--text-muted);">${l.steps || 3} ปุ่ม &bull; ${l.timer || 30}s</span>
+          </div>
         </td>
         <td>
           <strong style="color: #F8FAFC;">${(l.clicks || 0).toLocaleString()}</strong>
@@ -298,6 +301,8 @@ function initQuickShortener() {
       alias = alias.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
     }
 
+    const isAdult = document.querySelector('input[name="quickAdType"]:checked')?.value === 'adult';
+
     const newLocker = await GateStore.createLocker({
       name: `Locker: ${alias}`,
       destinationUrl: targetUrl,
@@ -305,7 +310,8 @@ function initQuickShortener() {
       steps: 3,
       timer: 30,
       antiBypass: true,
-      ads: { popunder: false, banner: true, smartlink: true }
+      adultAds: isAdult,
+      ads: { popunder: true, banner: true, smartlink: true }
     });
 
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
@@ -331,7 +337,8 @@ function initQuickShortener() {
     renderLockersTable('allLockersTableBody');
     lucide.createIcons();
 
-    showToast(`ย่อลิงก์สำเร็จ! ได้ลิงก์ ${generatedUrl}`, 'success');
+    const modeText = isAdult ? '🔞 โหมด 18+ (เรท $3.80 CPM)' : '🛡️ โหมดทั่วไป (เรท $2.80 CPM)';
+    showToast(`ย่อลิงก์สำเร็จ! [${modeText}]`, 'success', 5000);
   });
 }
 
@@ -588,24 +595,33 @@ function initCreateLockerForm() {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('inputLockerName').value;
-    const destinationUrl = document.getElementById('inputDestinationUrl').value;
-    const slug = document.getElementById('inputLockerSlug').value;
-    const steps = document.getElementById('inputLockerSteps').value;
-    const timer = document.getElementById('inputLockerTimer').value;
-    const popunder = document.getElementById('togglePopunder').checked;
-    const banner = document.getElementById('toggleBanner').checked;
-    const antiBypass = document.getElementById('toggleAntiBypass').checked;
+    const destinationUrl = document.getElementById('inputDestinationUrl').value.trim();
+    let name = document.getElementById('inputLockerName')?.value.trim();
+    let slug = document.getElementById('inputLockerSlug')?.value.trim();
+    const isAdult = document.querySelector('input[name="modalAdType"]:checked')?.value === 'adult';
+
+    if (!destinationUrl) return;
+
+    if (!name) {
+      name = slug ? `Locker: ${slug}` : 'My Short Link';
+    }
+
+    if (!slug) {
+      slug = 'bp-' + Math.random().toString(36).substring(2, 7);
+    } else {
+      slug = slug.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
+    }
 
     const newLocker = await GateStore.createLocker({
       name,
       destinationUrl,
       slug,
-      steps: Number(steps),
-      timer: Number(timer),
-      antiBypass,
+      steps: 3,
+      timer: 30,
+      antiBypass: true,
+      adultAds: isAdult,
       smartlinkUrl: '', // Always enforce central Adsterra direct network
-      ads: { popunder, banner, smartlink: true }
+      ads: { popunder: true, banner: true, smartlink: true }
     });
 
     closeCreateModal();
@@ -614,7 +630,8 @@ function initCreateLockerForm() {
     renderLockersTable('lockersTableBody');
     renderLockersTable('allLockersTableBody');
 
-    showToast(`Content Locker "${newLocker.name}" created and synced online!`, 'success');
+    const modeText = isAdult ? '🔞 โหมด 18+ (เรท $3.80 CPM)' : '🛡️ โหมดทั่วไป (เรท $2.80 CPM)';
+    showToast(`สร้าง Locker "${newLocker.name}" สำเร็จ! [${modeText}]`, 'success', 5000);
   });
 }
 
