@@ -327,42 +327,6 @@
   50% { transform: scale(1.03); }
 }
 
-/* Adsterra Clean Banner Slot */
-.locker-banner-wrap {
-  margin: 10px auto 14px;
-  max-width: 320px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 16px;
-  padding: 8px;
-  text-align: center;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-.locker-banner-tag {
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  color: #64748B;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.locker-banner-frame {
-  min-height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.locker-banner-frame iframe {
-  max-width: 100%;
-  border: none;
-}
 
 /* Action Area & Subtle Hint */
 .locker-action-area {
