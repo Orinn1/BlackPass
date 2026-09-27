@@ -439,22 +439,13 @@ function updateLockerLanguage() {
   updateBottomButtonUI();
 }
 
-// Real Ad Trigger (Links 1, 2, 3)
+// Real Ad Trigger (Links 1, 2, 3) - Strictly Enforce Owner's 3 Adsterra Smartlinks
 function triggerSmartlinkAd(btnIndex = 1) {
-  const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
-  const globalAds = settings?.ads || {};
-
-  // Check step-specific URLs (OrinRankone 3 Adsterra Smartlinks)
-  let stepUrl = '';
-  if (btnIndex === 1) stepUrl = globalAds.step1Url || 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
-  else if (btnIndex === 2) stepUrl = globalAds.step2Url || 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
-  else if (btnIndex === 3) stepUrl = globalAds.step3Url || 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
-
-  const targetSmartlink = (stepUrl && stepUrl.trim())
-    ? stepUrl.trim()
-    : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
-      ? globalAds.smartlinkUrl.trim()
-      : 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  // Owner's verified Adsterra Smartlinks (Non-overridable)
+  let targetSmartlink = 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  if (btnIndex === 1) targetSmartlink = 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  else if (btnIndex === 2) targetSmartlink = 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
+  else if (btnIndex === 3) targetSmartlink = 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');

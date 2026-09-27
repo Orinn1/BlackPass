@@ -28,28 +28,34 @@ function initHeroShortener() {
 
     if (!targetUrl) return;
 
+    // Enforce Registration/Login: User must sign up before shortening
+    const currentUser = (typeof GateStore !== 'undefined' && GateStore.getCurrentUser) ? GateStore.getCurrentUser() : null;
+    if (!currentUser) {
+      localStorage.setItem('blackpass_pending_target', targetUrl);
+      if (alias) localStorage.setItem('blackpass_pending_alias', alias);
+      
+      showToast('⚠️ กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อน เพื่อเริ่มย่อลิงก์และสะสมรายได้เข้ากระเป๋าของคุณ!', 'warning', 6000);
+      if (typeof openAuthModal === 'function') {
+        openAuthModal('signup');
+      }
+      return;
+    }
+
     if (!alias) {
       alias = 'bp-' + Math.random().toString(36).substring(2, 7);
     } else {
       alias = alias.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
     }
 
-    // Ensure user has a tracking ID in localStorage if not logged in
-    let anonId = localStorage.getItem('blackpass_creator_uid');
-    if (!anonId) {
-      anonId = 'creator_' + Math.random().toString(36).substring(2, 9);
-      localStorage.setItem('blackpass_creator_uid', anonId);
-    }
-
     const newLocker = await GateStore.createLocker({
-      name: `Public Link: ${alias}`,
+      name: `Link: ${alias}`,
       destinationUrl: targetUrl,
       slug: alias,
       steps: 3,
       timer: 30,
       antiBypass: true,
       ads: { popunder: false, banner: true, smartlink: true },
-      userId: GateStore.currentUser ? GateStore.currentUser.uid : anonId
+      userId: currentUser.uid
     });
 
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';

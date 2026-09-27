@@ -43,6 +43,10 @@
           <i data-lucide="credit-card"></i>
           <span data-i18n="menu_payouts">กระเป๋าเงิน & ถอนเงิน</span>
         </button>
+        <button class="sidebar-item" data-view="rates">
+          <i data-lucide="badge-dollar-sign"></i>
+          <span>อัตราจ่าย CPM (Payout Rates)</span>
+        </button>
 
         <span class="nav-section-title" data-i18n="menu_system">ระบบ & การตั้งค่า</span>
         <button class="sidebar-item" data-view="settings">
@@ -447,6 +451,284 @@
         </div>
       </section>
 
+      <!-- View: Payout Rates (CPM) -->
+      <section class="dashboard-view" id="viewRates">
+        <!-- Header Banner -->
+        <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(16, 185, 129, 0.1) 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <span class="badge badge-primary" style="font-size: 11px;">Fixed Guaranteed Rates</span>
+              <span class="badge badge-success" style="font-size: 11px;">ถอนขั้นต่ำสุดเพียง $0.50</span>
+            </div>
+            <h2 style="font-size: 22px; font-weight: 800; color: #FFFFFF; margin: 0 0 4px 0;">อัตราจ่ายต่อ 1,000 ครั้ง (Publisher Payout Rates)</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin: 0;">เรทคำนวณต่อ 1,000 การปลดล็อคสำเร็จ (Unlocks) การันตีจ่ายตรง จ่ายจริง ไม่มีลดเรทแอบแฝง</p>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="text-align: right;">
+              <div style="font-size: 11px; color: var(--text-muted);">รอบการประมวลผล</div>
+              <div style="font-size: 14px; font-weight: 700; color: #10B981;">ทุกวัน (Daily Payout)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Highlights Cards -->
+        <div class="metrics-row" style="margin-bottom: 24px;">
+          <div class="metric-card" style="padding: 16px;">
+            <div class="metric-header" style="margin-bottom: 6px;">
+              <span class="metric-label">ถอนขั้นต่ำสุด</span>
+              <div class="metric-icon" style="color: #10B981;"><i data-lucide="zap" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" style="font-size: 22px; color: #10B981;">$0.50</div>
+            <div style="font-size: 11px; color: var(--text-muted);">ประมาณ 18 บาท เริ่มถอนได้เลย</div>
+          </div>
+
+          <div class="metric-card" style="padding: 16px;">
+            <div class="metric-header" style="margin-bottom: 6px;">
+              <span class="metric-label">เรทไทย (Thailand)</span>
+              <div class="metric-icon" style="color: #38BDF8;"><i data-lucide="flag" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" style="font-size: 22px; color: #38BDF8;">$2.80</div>
+            <div style="font-size: 11px; color: var(--text-muted);">~100 บาท / 1,000 Unlocks (~0.10฿/คน)</div>
+          </div>
+
+          <div class="metric-card" style="padding: 16px;">
+            <div class="metric-header" style="margin-bottom: 6px;">
+              <span class="metric-label">เรทสูงสุด (Tier 1)</span>
+              <div class="metric-icon" style="color: #A5B4FC;"><i data-lucide="trending-up" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" style="font-size: 22px; color: #A5B4FC;">$5.00</div>
+            <div style="font-size: 11px; color: var(--text-muted);">สหรัฐอเมริกา &amp; ยุโรปตะวันตก</div>
+          </div>
+
+          <div class="metric-card" style="padding: 16px;">
+            <div class="metric-header" style="margin-bottom: 6px;">
+              <span class="metric-label">ช่องทางรับเงินไทย</span>
+              <div class="metric-icon" style="color: #F59E0B;"><i data-lucide="wallet" style="width: 14px; height: 14px;"></i></div>
+            </div>
+            <div class="metric-value" style="font-size: 18px; color: #F59E0B; margin-top: 4px;">TrueMoney / QR</div>
+            <div style="font-size: 11px; color: var(--text-muted);">โอนไวใน 10-30 นาที ฟรีค่าธรรมเนียม</div>
+          </div>
+        </div>
+
+        <!-- CPM Rates Table Card -->
+        <div class="table-card">
+          <div class="table-header">
+            <div class="table-title-group">
+              <h3 class="table-title">ตารางอัตราค่าตอบแทนรายประเทศ (Country Payout Rates)</h3>
+              <span class="badge badge-primary">อัปเดตล่าสุด 2026</span>
+            </div>
+
+            <input type="text" class="table-search-input" id="searchRatesInput" placeholder="ค้นหาชื่อประเทศ เช่น Thailand, USA..." style="max-width: 260px;">
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="ratesTable">
+              <thead>
+                <tr>
+                  <th>ประเทศ / ภูมิภาค</th>
+                  <th>กลุ่มระดับ (Tier)</th>
+                  <th>อัตราต่อ 1,000 Unlocks (USD)</th>
+                  <th>เทียบเงินไทย (ประมาณ)</th>
+                  <th>เฉลี่ยต่อ 1 คนปลดล็อค</th>
+                  <th>ช่องทางรับเงินแนะนำ</th>
+                </tr>
+              </thead>
+              <tbody id="ratesTableBody">
+                <tr style="background: rgba(99, 102, 241, 0.05);">
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇹🇭</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Thailand (ประเทศไทย)</strong>
+                        <div style="font-size: 11px; color: #34D399;">★ ทราฟฟิกหลักคนไทย &bull; ยอดนิยมสูงสุด</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-success">Top Popular</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$2.80</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~100.80 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.10 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">TrueMoney / PromptPay</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇺🇸</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">United States (สหรัฐอเมริกา)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Tier 1</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$5.00</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~180.00 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.18 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PayPal / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇬🇧</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">United Kingdom (สหราชอาณาจักร)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Tier 1</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.50</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~162.00 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.16 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PayPal / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇨🇦</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Canada &amp; Australia (แคนาดา / ออสเตรเลีย)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Tier 1</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.20</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~151.20 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.15 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PayPal / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇩🇪</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Germany &amp; Western Europe (เยอรมนี / ยุโรป)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Tier 1</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.00</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~144.00 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.14 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PayPal / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇸🇬</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Singapore (สิงคโปร์)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-muted">Tier 2</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$3.00</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~108.00 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.11 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PromptPay / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇲🇾</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Malaysia (มาเลเซีย)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-muted">Tier 2</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$2.20</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~79.20 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.08 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PromptPay / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🇻🇳</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Vietnam, Philippines &amp; Indonesia</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-muted">Tier 3</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$1.80</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~64.80 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.065 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PromptPay / USDT</span></td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span style="font-size: 20px;">🌐</span>
+                      <div>
+                        <strong style="color: #FFFFFF;">Worldwide / Other (ประเทศอื่นๆ ทั่วโลก)</strong>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-muted">All Countries</span></td>
+                  <td><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$1.60</strong></td>
+                  <td><span style="color: #F8FAFC; font-weight: 600;">~57.60 บาท</span></td>
+                  <td><span style="color: #A5B4FC; font-weight: 600;">~0.058 บาท / คน</span></td>
+                  <td><span class="badge badge-muted">PromptPay / USDT</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rules & Quality Standards -->
+        <div class="form-grid-2" style="margin-top: 24px;">
+          <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="check-circle" style="color: #10B981; width: 18px; height: 18px;"></i>
+              <span>เงื่อนไขการนับยอดเงินที่ถูกต้อง</span>
+            </h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-secondary);">
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="check" style="width: 15px; height: 15px; color: var(--success); flex-shrink: 0; margin-top: 2px;"></i>
+                <span><strong>นับต่อ 1 ผู้ชม (Unique 24 ชม.):</strong> ผู้ใช้ 1 คน (1 IP) ถูกนับ 1 ครั้งต่อวัน</span>
+              </li>
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="check" style="width: 15px; height: 15px; color: var(--success); flex-shrink: 0; margin-top: 2px;"></i>
+                <span><strong>ต้องดูโฆษณาครบ 30 วิ:</strong> มีระบบจับเวลาและตรวจจับความปลอดภัย ป้องกันการกดข้ามปลอม</span>
+              </li>
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="check" style="width: 15px; height: 15px; color: var(--success); flex-shrink: 0; margin-top: 2px;"></i>
+                <span><strong>เรทการันตีถาวร:</strong> เรทนี้เป็นอัตราคงที่ที่ผู้ดูแลคำนวณไว้เผื่อความมั่นคง การันตีจ่ายได้จริง 100% ไม่มีปิดหนี</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+              <i data-lucide="alert-triangle" style="color: #EF4444; width: 18px; height: 18px;"></i>
+              <span>ข้อห้ามที่ทำให้ถูกระงับบัญชี (Anti-Fraud)</span>
+            </h3>
+            <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--text-secondary);">
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="x" style="width: 15px; height: 15px; color: #EF4444; flex-shrink: 0; margin-top: 2px;"></i>
+                <span>ห้ามใช้โปรแกรมบอท, คลิกฟาร์ม (Click Farm) หรือสคริปต์รีเฟรชหน้าเว็บอัตโนมัติ</span>
+              </li>
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="x" style="width: 15px; height: 15px; color: #EF4444; flex-shrink: 0; margin-top: 2px;"></i>
+                <span>ห้ามใช้บริการแลกเปลี่ยนทราฟฟิก (Traffic Exchange) หรือ VPN ปลอม IP</span>
+              </li>
+              <li style="display: flex; gap: 8px;">
+                <i data-lucide="x" style="width: 15px; height: 15px; color: #EF4444; flex-shrink: 0; margin-top: 2px;"></i>
+                <span>ทราฟฟิกแท้จาก YouTube, TikTok, Discord, Roblox Scripthub ถอนเงินได้ 100% ตรวจสอบผ่านทันที</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <!-- View 5: Settings -->
       <section class="dashboard-view" id="viewSettings">
         <div class="settings-card">
@@ -469,137 +751,67 @@
           <button class="btn btn-secondary btn-sm" id="btnSaveProfile">บันทึกข้อมูลส่วนตัว</button>
         </div>
 
-        <!-- Ad Network & Monetization Settings -->
-        <div class="settings-card" style="border: 1px solid rgba(99, 102, 241, 0.3); background: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.08) 0%, rgba(17, 24, 39, 0.4) 100%);">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; flex-wrap: wrap; gap: 8px;">
+        <!-- Ad Network & Monetization (System Managed & Locked) -->
+        <div class="settings-card" style="border: 1px solid rgba(99, 102, 241, 0.35); background: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.08) 0%, rgba(17, 24, 39, 0.5) 100%);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
             <div>
-              <h3 class="settings-card-title" style="display: flex; align-items: center; gap: 8px;" data-i18n="settings_ads_title">
-                <i data-lucide="sparkles" style="width: 18px; height: 18px; color: #A5B4FC;"></i>
-                <span>ตั้งค่าเครือข่ายโฆษณา (Ad Network & Monetization)</span>
+              <h3 class="settings-card-title" style="display: flex; align-items: center; gap: 8px;">
+                <i data-lucide="shield-check" style="width: 20px; height: 20px; color: #10B981;"></i>
+                <span>ระบบเครือข่ายโฆษณาส่วนกลาง (Central Ad Network &amp; Monetization)</span>
               </h3>
-              <p class="settings-card-desc" data-i18n="settings_ads_desc">เชื่อมต่อ Smartlink / Direct Link หรือสคริปต์โฆษณา (Adsterra, Monetag) เพื่อรับเงินเข้าบัญชีคุณโดยตรง</p>
+              <p class="settings-card-desc">จัดการโฆษณาอัตโนมัติโดย BlackPass Network ลิงก์ทุกตัวเชื่อมตรงกับระบบสปอนเซอร์รายใหญ่ เพื่อรายได้สูงสุดและป้องกันลิงก์เสีย</p>
             </div>
-            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 11px; padding: 4px 10px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px;">
-              <i data-lucide="check-circle" style="width: 12px; height: 12px;"></i> 100% Revenue to You
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); font-size: 12px; padding: 5px 12px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 6px;">
+              <i data-lucide="lock" style="width: 13px; height: 13px;"></i> ระบบล็อคส่วนกลาง (Managed by Network)
             </span>
           </div>
 
-          <!-- Quick Network Guides -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0 20px;">
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 12px 14px; position: relative; overflow: hidden;">
-              <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between;">
-                <span style="color: #34D399; display: flex; align-items: center; gap: 4px;">
-                  <i data-lucide="zap" style="width: 14px; height: 14px;"></i> PopAds (ถอนตอนไหนก็ได้)
-                </span>
-                <a href="https://www.popads.net/" target="_blank" rel="noopener noreferrer" style="color: #34D399; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 2px; font-weight: 600;">
-                  สมัครฟรี <i data-lucide="external-link" style="width: 11px; height: 11px;"></i>
-                </a>
+          <!-- Status Information Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 18px 0;">
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 14px;">
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">สถานะระบบโฆษณา</div>
+              <div style="font-weight: 700; font-size: 15px; color: #34D399; display: flex; align-items: center; gap: 6px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span>
+                <span>ทำงานปกติ (Active &amp; Optimized)</span>
               </div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                <strong>ถอนเงินได้ทันที (On-Demand)</strong> &bull; ขั้นต่ำแค่ $5.00 &bull; โอนไวใน 24 ชม. ผ่าน PayPal / Crypto
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+                เชื่อมต่อ Adsterra Smartlink 3 ระดับ
               </div>
             </div>
 
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px 14px;">
-              <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between;">
-                <span>Adsterra (CPM สูงสุด)</span>
-                <a href="https://publishers.adsterra.com/" target="_blank" rel="noopener noreferrer" style="color: #818CF8; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 2px;">
-                  สมัครฟรี <i data-lucide="external-link" style="width: 11px; height: 11px;"></i>
-                </a>
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">การคำนวณรายได้</div>
+              <div style="font-weight: 700; font-size: 15px; color: #FFFFFF; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="badge-dollar-sign" style="width: 16px; height: 16px; color: #F59E0B;"></i>
+                <span>อัตโนมัติตามเรท Payout</span>
               </div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                อนุมัติทันทีใน 1 นาที &bull; สร้าง Direct Link ปุ๊บ ใช้ได้ปั๊บ &bull; รอบจ่ายเดือนละ 2 ครั้ง
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+                ไทย $2.80 | ตปท. สูงสุด $5.00 CPM
               </div>
             </div>
 
-            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 12px 14px;">
-              <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; justify-content: space-between;">
-                <span>Monetag (PropellerAds)</span>
-                <a href="https://monetag.com/" target="_blank" rel="noopener noreferrer" style="color: #818CF8; font-size: 11px; text-decoration: none; display: inline-flex; align-items: center; gap: 2px;">
-                  สมัครฟรี <i data-lucide="external-link" style="width: 11px; height: 11px;"></i>
-                </a>
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+              <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">การกรองความปลอดภัย</div>
+              <div style="font-weight: 700; font-size: 15px; color: #38BDF8; display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="shield" style="width: 16px; height: 16px;"></i>
+                <span>Safe for Work (100% SFW)</span>
               </div>
-              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                ค่ายโฆษณาระดับโลก &bull; Popunder & Smartlink เรทสูง &bull; รอบจ่ายทุกสัปดาห์
+              <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+                บล็อกเว็บโป๊ 18+ และไวรัสปลอมทั้งหมด
               </div>
             </div>
           </div>
 
-          <div class="form-grid-2">
-            <div class="form-group">
-              <label class="form-label" data-i18n="settings_ads_network_label">เครือข่ายโฆษณาหลัก</label>
-              <select class="form-select" id="settingsAdNetwork">
-                <option value="adsterra" selected>Adsterra (Direct Link / Smartlink)</option>
-                <option value="monetag">Monetag (Smartlink / Popunder)</option>
-                <option value="popads">PopAds / Other Popunder</option>
-                <option value="custom">Custom / Other Network</option>
-              </select>
+          <!-- Explanation box -->
+          <div style="background: rgba(0, 0, 0, 0.3); border: 1px dashed rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 14px 18px; margin-top: 14px;">
+            <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+              <i data-lucide="info" style="width: 16px; height: 16px; color: #818CF8;"></i>
+              <span>ทำไมระบบจึงล็อคการแก้ไขลิงก์โฆษณา?</span>
             </div>
-            <div class="form-group">
-              <label class="form-label" data-i18n="settings_ads_smartlink_label">ลิงก์ Smartlink / Direct Link หลัก (แนะนำอันดับ 1)</label>
-              <input type="url" class="form-input" id="settingsSmartlinkUrl" value="https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53" placeholder="https://www.profitablecpmrate.com/xxxxx..." data-i18n-placeholder="settings_ads_smartlink_placeholder">
-              <div class="form-hint" data-i18n="settings_ads_smartlink_hint">เมื่อผู้ใช้คลิกทำภารกิจหรือกดต่อไป ระบบจะเปิด Smartlink นี้เพื่อสร้างรายได้ CPM ให้คุณทันที</div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" data-i18n="settings_ads_popunder_label">สคริปต์ Popunder (ตัวเลือกเสริม)</label>
-            <input type="text" class="form-input" id="settingsPopunderScript" placeholder="วางแท็ก &lt;script&gt; หรือ URL สคริปต์ Popunder จากค่ายโฆษณา" data-i18n-placeholder="settings_ads_popunder_placeholder">
-            <div class="form-hint" data-i18n="settings_ads_popunder_hint">โฆษณาหน้าต่างซ้อนหลัง จะทำงานอัตโนมัติเมื่อผู้ใช้คลิกหน้า Locker</div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" data-i18n="settings_ads_banner_label">โค้ด Native Banner (กล่องสปอนเซอร์)</label>
-            <textarea class="form-input" id="settingsBannerCode" rows="2" placeholder="วางโค้ด HTML / Script แบนเนอร์ขนาด 300x250 หรือ 468x60" data-i18n-placeholder="settings_ads_banner_placeholder" style="resize: vertical; font-family: monospace; font-size: 12px;"></textarea>
-            <div class="form-hint" data-i18n="settings_ads_banner_hint">โค้ดนี้จะไปแสดงในกล่องสปอนเซอร์ของหน้า Locker แทนข้อความเริ่มต้น</div>
-          </div>
-
-          <!-- 3-Step Stacking Setup -->
-          <div style="background: rgba(0, 0, 0, 0.25); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: 8px; padding: 14px; margin: 18px 0;">
-            <div style="font-weight: 700; font-size: 13px; color: #FFFFFF; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-              <i data-lucide="layers" style="width: 15px; height: 15px; color: #818CF8;"></i>
-              <span data-i18n="settings_ads_split_title">สูตรผสม 3 ค่ายแยกตาม 3 ด่าน (รายได้คูณ 3)</span>
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;" data-i18n="settings_ads_split_desc">
-              แยกค่ายโฆษณาคนละค่ายในแต่ละด่าน เพื่อให้ผู้ใช้ไม่ถูกนับเป็น IP ซ้ำ และสร้างรายได้เต็ม 100% ทั้ง 3 ด่าน
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+              เพื่อความปลอดภัยสูงสุดของแพลตฟอร์มและการันตีว่าสมาชิกจะได้รับเงินโอนจริง 100% ระบบได้ทำการเชื่อมต่อ Adsterra Direct Smartlink ส่วนกลางและบริหารจัดการทราฟฟิกให้ทั้งหมด สมาชิกไม่ต้องยุ่งยากกับการสมัครบัญชีโฆษณาเอง ไม่เสี่ยงโดนแบนบัญชี และสามารถถอนเงินเข้า <strong>TrueMoney Wallet</strong> หรือ <strong>PromptPay</strong> ได้ทันทีเมื่อมียอดถึงขั้นต่ำ $0.50
             </p>
-
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step1_label">ด่านที่ 1 (แนะนำ: PopAds — ถอนตอนไหนก็ได้)</label>
-                <input type="url" class="form-input" id="settingsStep1Url" value="https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53" placeholder="https://... ลิงก์ PopAds หรือ Direct Link ด่าน 1" data-i18n-placeholder="settings_ads_step1_placeholder">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step2_label">ด่านที่ 2 (แนะนำ: Adsterra — CPM สูงสุด)</label>
-                <input type="url" class="form-input" id="settingsStep2Url" value="https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3" placeholder="https://... ลิงก์ Adsterra Smartlink ด่าน 2" data-i18n-placeholder="settings_ads_step2_placeholder">
-              </div>
-              <div class="form-group" style="margin-bottom: 0;">
-                <label class="form-label" style="font-size: 12px;" data-i18n="settings_ads_step3_label">ด่านที่ 3 (แนะนำ: Monetag — โหลดไว)</label>
-                <input type="url" class="form-input" id="settingsStep3Url" value="https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d" placeholder="https://... ลิงก์ Monetag Smartlink ด่าน 3" data-i18n-placeholder="settings_ads_step3_placeholder">
-              </div>
-            </div>
           </div>
-
-          <!-- Anti-18+ Adsterra Filter Guide Banner -->
-          <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; padding: 14px 16px; margin: 18px 0;">
-            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #F87171; font-size: 13px; margin-bottom: 6px;">
-              <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i>
-              <span>🛡️ วิธีปิดโฆษณาสแปม 18+ / Erotica ใน Adsterra (ลบโฆษณาลามก 100%)</span>
-            </div>
-            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px;">
-              สำหรับผู้ใช้ Adsterra Direct Link: หากมีโฆษณา 18+ หรือสแปมเด้งขึ้นมา ในหน้าเว็บ Adsterra ให้ตั้งค่า Direct Link ดังนี้:
-            </p>
-            <ul style="font-size: 12px; color: #E2E8F0; margin: 0 0 10px 18px; line-height: 1.6;">
-              <li>✅ ในหัวข้อ <strong>"Remove campaigns with:"</strong> ให้ติ๊กถูกที่ <strong>⛔ Erotica (18+)</strong> เพื่อบล็อกโฆษณาผู้ใหญ่/ลามกทั้งหมด</li>
-              <li>✅ ติ๊กถูกที่ <strong>⛔ Software alerts</strong> เพื่อบล็อกโฆษณาแจ้งเตือนไวรัสปลอม</li>
-              <li>✅ ติ๊กถูกที่ <strong>⛔ Ads with sound</strong> เพื่อบล็อกโฆษณาเสียงดังตกใจ</li>
-            </ul>
-            <div style="font-size: 11px; color: #94A3B8; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px;">
-              💡 <strong>ข้อดี:</strong> โฆษณาจะถูกกรองเหลือเฉพาะเกมมือถือ, Shopee, Lazada, สินค้าแบรนด์เนม สะอาด ปลอดภัย ไม่โดนแบน และได้เงิน CPM สูงเท่าเดิม
-            </div>
-          </div>
-
-          <button class="btn btn-primary btn-sm" id="btnSaveAdSettings" data-i18n="settings_btn_save_ads">บันทึกการตั้งค่าโฆษณา</button>
         </div>
 
         <div class="settings-card">
@@ -670,10 +882,11 @@
             <div class="form-hint" data-i18n="modal_dest_hint">สคริปต์, คีย์ หรือไฟล์ที่จะปล่อยให้ผู้ใช้หลังทำภารกิจเสร็จ</div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" data-i18n="modal_smartlink_label">ลิงก์ Smartlink เฉพาะ Locker นี้ (ทางเลือก)</label>
-            <input type="url" class="form-input" id="inputLockerSmartlink" placeholder="เว้นว่างไว้เพื่อใช้ Smartlink หลักจากหน้า Settings" data-i18n-placeholder="modal_smartlink_placeholder">
-            <div class="form-hint" data-i18n="modal_smartlink_hint">หากใส่ ลิงก์นี้จะถูกเปิดแทน Smartlink หลักเมื่อผู้ใช้ทำด่านนี้</div>
+          <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px;">
+            <i data-lucide="shield-check" style="color: #818CF8; width: 20px; height: 20px; flex-shrink: 0;"></i>
+            <div style="font-size: 12px; color: #CBD5E1; line-height: 1.4;">
+              <strong>ระบบโฆษณาส่วนกลาง (Adsterra Direct):</strong> ลิงก์นี้จะเชื่อมระบบโฆษณาเครือข่ายกลางอัตโนมัติ เพื่อสร้างรายได้ CPM และสะสมเงินเข้ากระเป๋าของคุณทันที
+            </div>
           </div>
 
           <div class="form-grid-2">

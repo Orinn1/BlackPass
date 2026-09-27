@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initPayoutForm();
   initSettingsForm();
   initSearch();
+  initRatesSearch();
 });
 
 // Navigation Handling
@@ -31,6 +32,7 @@ function initNavigation() {
     lockers: typeof getI18nText === 'function' ? getI18nText('menu_lockers', 'Locker Management') : 'Locker Management',
     analytics: typeof getI18nText === 'function' ? getI18nText('menu_analytics', 'Performance Analytics') : 'Performance Analytics',
     payouts: typeof getI18nText === 'function' ? getI18nText('menu_payouts', 'Payouts & Wallet') : 'Payouts & Wallet',
+    rates: typeof getI18nText === 'function' ? getI18nText('menu_rates', 'อัตราจ่าย CPM (Payout Rates)') : 'อัตราจ่าย CPM (Payout Rates)',
     settings: typeof getI18nText === 'function' ? getI18nText('menu_settings', 'Settings & API Keys') : 'Settings & API Keys'
   });
 
@@ -258,12 +260,37 @@ function initQuickShortener() {
 
   if (!form) return;
 
+  // Auto-fill pending URL if user came from landing page shortener
+  const pendingTarget = localStorage.getItem('blackpass_pending_target');
+  const pendingAlias = localStorage.getItem('blackpass_pending_alias');
+  if (pendingTarget) {
+    const urlInput = document.getElementById('quickTargetUrl');
+    const aliasInput = document.getElementById('quickAlias');
+    if (urlInput) urlInput.value = pendingTarget;
+    if (aliasInput && pendingAlias) aliasInput.value = pendingAlias;
+    localStorage.removeItem('blackpass_pending_target');
+    localStorage.removeItem('blackpass_pending_alias');
+    showToast('✨ ดึงลิงก์ที่คุณต้องการย่อมาให้แล้ว! กด "ย่อลิงก์ทันที" เพื่อรับลิงก์สร้างรายได้', 'info', 6000);
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const targetUrl = document.getElementById('quickTargetUrl').value.trim();
     let alias = (document.getElementById('quickAlias')?.value || '').trim();
 
     if (!targetUrl) return;
+
+    // Check if user is logged in
+    const currentUser = (typeof GateStore !== 'undefined' && GateStore.getCurrentUser) ? GateStore.getCurrentUser() : null;
+    if (!currentUser) {
+      localStorage.setItem('blackpass_pending_target', targetUrl);
+      if (alias) localStorage.setItem('blackpass_pending_alias', alias);
+      showToast('⚠️ กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อน เพื่อเริ่มย่อลิงก์และสะสมรายได้เข้ากระเป๋าของคุณ!', 'warning', 5000);
+      if (typeof openAuthModal === 'function') {
+        openAuthModal('signup');
+      }
+      return;
+    }
 
     if (!alias) {
       alias = 'bp-' + Math.random().toString(36).substring(2, 7);
@@ -530,6 +557,14 @@ function renderAnalyticsDailyTable() {
 
 // Modal Management: Create Locker
 window.openCreateModal = function() {
+  const currentUser = (typeof GateStore !== 'undefined' && GateStore.getCurrentUser) ? GateStore.getCurrentUser() : null;
+  if (!currentUser) {
+    showToast('⚠️ กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนสร้าง Locker!', 'warning', 5000);
+    if (typeof openAuthModal === 'function') {
+      openAuthModal('signup');
+    }
+    return;
+  }
   const modal = document.getElementById('createLockerModal');
   if (modal) modal.classList.add('active');
 };
@@ -561,7 +596,6 @@ function initCreateLockerForm() {
     const popunder = document.getElementById('togglePopunder').checked;
     const banner = document.getElementById('toggleBanner').checked;
     const antiBypass = document.getElementById('toggleAntiBypass').checked;
-    const smartlinkUrl = document.getElementById('inputLockerSmartlink')?.value || '';
 
     const newLocker = await GateStore.createLocker({
       name,
@@ -570,7 +604,7 @@ function initCreateLockerForm() {
       steps: Number(steps),
       timer: Number(timer),
       antiBypass,
-      smartlinkUrl,
+      smartlinkUrl: '', // Always enforce central Adsterra direct network
       ads: { popunder, banner, smartlink: true }
     });
 
@@ -879,3 +913,20 @@ function escapeHtml(str) {
     "'": '&#39;'
   }[m]));
 }
+
+// Rates Table Country Filter
+function initRatesSearch() {
+  const searchInput = document.getElementById('searchRatesInput');
+  const tableBody = document.getElementById('ratesTableBody');
+  if (!searchInput || !tableBody) return;
+
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+    const rows = tableBody.querySelectorAll('tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(term) ? '' : 'none';
+    });
+  });
+}
+

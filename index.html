@@ -27,6 +27,7 @@
         <li><a href="#how-it-works" class="nav-link" data-i18n="nav_how">ขั้นตอนการทำงาน</a></li>
         <li><a href="#calculator" class="nav-link" data-i18n="nav_calc">คำนวณรายได้</a></li>
         <li><a href="#pricing" class="nav-link" data-i18n="nav_pricing">ส่วนแบ่งรายได้</a></li>
+        <li><a href="#rates" class="nav-link" data-i18n="nav_rates">อัตราจ่าย (Rates)</a></li>
         <li><a href="#faq" class="nav-link" data-i18n="nav_faq">คำถามพบบ่อย</a></li>
       </ul>
 
@@ -86,7 +87,7 @@
           <div class="hero-shorten-options">
             <span style="font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
               <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #10B981;"></i>
-              <span>ได้เงินค่าคลิกสะสมเข้ากระเป๋าทันทีที่คนทำครบ 30 วิ (เรท $5.50 CPM)</span>
+              <span>ได้เงินสะสมเข้ากระเป๋าทันทีที่คนทำครบ 30 วิ (เรทไทย $2.80 | ตปท. สูงสุด $5.00 | ถอนขั้นต่ำ $0.50)</span>
             </span>
             <div class="hero-alias-wrap">
               <span class="hero-alias-prefix">/l/</span>
@@ -363,6 +364,139 @@
           </ul>
           <button type="button" onclick="openAuthModal('signup')" class="btn btn-secondary btn-block">ติดต่อทีมงาน</button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Payout Rates Section -->
+  <section class="pricing-section" id="rates" style="padding-top: 50px; border-top: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" style="background: rgba(16, 185, 129, 0.1); color: #10B981; border-color: rgba(16, 185, 129, 0.25);">อัตราจ่ายการันตี (Payout Rates)</span>
+        <h2 class="section-title">อัตราค่าตอบแทนต่อ 1,000 ครั้งตามประเทศ (CPM)</h2>
+        <p class="section-desc">คำนวณตามจำนวนการปลดล็อคสำเร็จ (Unlocks) การันตีจ่ายตรง จ่ายจริง ถอนขั้นต่ำเริ่มต้นเพียง $0.50 (ประมาณ 18 บาท)</p>
+      </div>
+
+      <!-- Highlights -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; text-align: center;">
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">ถอนขั้นต่ำสุด</div>
+          <div style="font-size: 26px; font-weight: 800; color: #10B981; font-family: var(--font-mono); margin: 4px 0;">$0.50</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">~18 บาท เริ่มถอนได้ทันที</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: var(--radius-md); padding: 18px; text-align: center; background: rgba(99, 102, 241, 0.05);">
+          <div style="font-size: 12px; color: #A5B4FC; font-weight: 600; text-transform: uppercase;">เรทไทย (Thailand) 🇹🇭</div>
+          <div style="font-size: 26px; font-weight: 800; color: #38BDF8; font-family: var(--font-mono); margin: 4px 0;">$2.80</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">~100 บาท / 1,000 ครั้ง (~0.10฿/คน)</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; text-align: center;">
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">เรทสูงสุด (Tier 1) 🇺🇸</div>
+          <div style="font-size: 26px; font-weight: 800; color: #F59E0B; font-family: var(--font-mono); margin: 4px 0;">$5.00</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">สหรัฐอเมริกา &amp; ยุโรปตะวันตก</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; text-align: center;">
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">ช่องทางรับเงินไทย</div>
+          <div style="font-size: 20px; font-weight: 800; color: #FFFFFF; margin: 8px 0 4px;">TrueMoney / QR</div>
+          <div style="font-size: 12px; color: #10B981;">โอนไวใน 10-30 นาที ฟรีค่าธรรมเนียม</div>
+        </div>
+      </div>
+
+      <!-- Clean Rates Table -->
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 28px;">
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+            <thead>
+              <tr style="background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: 12px; text-transform: uppercase;">
+                <th style="padding: 14px 20px;">ประเทศ / ทราฟฟิก</th>
+                <th style="padding: 14px 20px;">กลุ่ม (Tier)</th>
+                <th style="padding: 14px 20px;">อัตราต่อ 1,000 Unlocks</th>
+                <th style="padding: 14px 20px;">ประมาณการเป็นเงินบาท</th>
+                <th style="padding: 14px 20px;">เฉลี่ยต่อ 1 คนดู</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-subtle); background: rgba(99, 102, 241, 0.06);">
+                <td style="padding: 16px 20px; font-weight: 700; color: #FFFFFF; display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 22px;">🇹🇭</span>
+                  <div>
+                    <div>Thailand (ประเทศไทย)</div>
+                    <span style="font-size: 11px; color: #34D399; font-weight: 500;">★ ทราฟฟิกหลักคนไทย &bull; โอนไวผ่าน TrueMoney / PromptPay</span>
+                  </div>
+                </td>
+                <td style="padding: 16px 20px;"><span class="badge badge-success">Top Popular</span></td>
+                <td style="padding: 16px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$2.80</strong></td>
+                <td style="padding: 16px 20px; font-weight: 600; color: #F8FAFC;">~100.80 บาท</td>
+                <td style="padding: 16px 20px; color: #A5B4FC; font-weight: 600;">~0.10 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇺🇸 United States (สหรัฐอเมริกา)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-primary">Tier 1</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$5.00</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~180.00 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.18 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇬🇧 United Kingdom (สหราชอาณาจักร)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-primary">Tier 1</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.50</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~162.00 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.16 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇨🇦 Canada &amp; 🇦🇺 Australia</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-primary">Tier 1</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.20</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~151.20 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.15 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇩🇪 Germany &amp; Western Europe (ยุโรป)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-primary">Tier 1</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$4.00</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~144.00 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.14 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇸🇬 Singapore (สิงคโปร์)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-muted">Tier 2</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$3.00</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~108.00 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.11 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇲🇾 Malaysia (มาเลเซีย)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-muted">Tier 2</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$2.20</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~79.20 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.08 บาท / คน</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-subtle);">
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🇻🇳 Vietnam, Philippines &amp; Indonesia</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-muted">Tier 3</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$1.80</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~64.80 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.065 บาท / คน</td>
+              </tr>
+              <tr>
+                <td style="padding: 14px 20px; font-weight: 600; color: #FFFFFF;">🌐 Worldwide / Other (ประเทศอื่นๆ ทั่วโลก)</td>
+                <td style="padding: 14px 20px;"><span class="badge badge-muted">All</span></td>
+                <td style="padding: 14px 20px;"><strong style="color: #10B981; font-family: var(--font-mono); font-size: 16px;">$1.60</strong></td>
+                <td style="padding: 14px 20px; font-weight: 600; color: #F8FAFC;">~57.60 บาท</td>
+                <td style="padding: 14px 20px; color: #A5B4FC; font-weight: 600;">~0.058 บาท / คน</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <button type="button" onclick="openAuthModal('signup')" class="btn btn-primary btn-lg" style="box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);">
+          <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+          <span>สมัครสมาชิกเพื่อเริ่มสร้างรายได้</span>
+        </button>
       </div>
     </div>
   </section>

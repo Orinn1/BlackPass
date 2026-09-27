@@ -274,7 +274,7 @@ class BlackPassStore {
       clicks: 0,
       unlocks: 0,
       revenue: 0.00,
-      cpm: 5.50,
+      cpm: 2.80,
       status: 'active',
       createdAt: new Date().toISOString()
     };
@@ -327,13 +327,13 @@ class BlackPassStore {
   }
 
   async recordUnlock(slug) {
-    const gain = 0.0058; // approx revenue per unlock
+    const gain = 0.0028; // conservative rate ~$2.80 CPM (approx 0.10 THB / unlock)
 
     // 1. Update local cache
     const item = this.cachedLockers.find(l => l.slug === slug);
     if (item) {
       item.unlocks = (item.unlocks || 0) + 1;
-      item.revenue = Number(((item.revenue || 0) + gain).toFixed(2));
+      item.revenue = Number(((item.revenue || 0) + gain).toFixed(4));
       localStorage.setItem(STORAGE_KEYS.LOCKERS, JSON.stringify(this.cachedLockers));
     }
 
