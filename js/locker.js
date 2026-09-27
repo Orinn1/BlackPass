@@ -97,17 +97,17 @@ function renderTaskButtons() {
   const container = document.getElementById('tasksList');
   if (!container) return;
 
-  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'ปุ่มที่ 1: สปอนเซอร์หลัก (30 วิ)') : 'ปุ่มที่ 1: สปอนเซอร์หลัก (30 วิ)';
-  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'แตะเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที';
-  const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)') : 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)';
-  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'แตะเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที';
-  const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)') : 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)';
-  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'แตะเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที') : 'แตะเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที';
+  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'ด่านที่ 1: ตรวจสอบความปลอดภัย') : 'ด่านที่ 1: ตรวจสอบความปลอดภัย';
+  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)') : 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)';
+  const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'ด่านที่ 2: สปอนเซอร์หลัก') : 'ด่านที่ 2: สปอนเซอร์หลัก';
+  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)') : 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)';
+  const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'ด่านที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม.') : 'ด่านที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม.';
+  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)') : 'แตะเปิดโฆษณา (ค้างไว้ 30 วิ)';
 
   const taskDefinitions = [
-    { title: t1Title, desc: t1Desc, icon: 'eye' },
-    { title: t2Title, desc: t2Desc, icon: 'shield' },
-    { title: t3Title, desc: t3Desc, icon: 'key' }
+    { title: t1Title, desc: t1Desc },
+    { title: t2Title, desc: t2Desc },
+    { title: t3Title, desc: t3Desc }
   ];
 
   let html = '';
@@ -117,8 +117,8 @@ function renderTaskButtons() {
       <div class="task-item" id="taskItem_${i}" onclick="handleTaskButtonClick(${i})">
         <div class="task-top-row">
           <div class="task-left">
-            <div class="task-icon" id="taskIcon_${i}">
-              <i data-lucide="${def.icon}" style="width: 16px; height: 16px;"></i>
+            <div class="task-num-badge" id="taskNumBadge_${i}">
+              <span class="num-text">${i}</span>
             </div>
             <div class="task-info">
               <span class="task-title">${def.title}</span>
@@ -126,10 +126,10 @@ function renderTaskButtons() {
             </div>
           </div>
           <div class="task-status-indicator" id="taskPill_${i}">
-            <!-- Pill action injected dynamically -->
+            <!-- Action pill injected dynamically -->
           </div>
         </div>
-        <!-- Mini Progress Bar on Active Step -->
+        <!-- Sleek Mini Progress Track -->
         <div class="task-mini-progress-track" id="taskMiniProgress_${i}">
           <div class="task-mini-progress-fill" id="taskMiniFill_${i}" style="width: 0%;"></div>
         </div>
@@ -144,17 +144,17 @@ function renderTaskButtons() {
 
 // Update the visual state of the 3 buttons
 function updateButtonsVisualState() {
-  const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', '👉 แตะเพื่อเริ่ม (ค้างไว้ 30 วิ)') : '👉 แตะเพื่อเริ่ม (ค้างไว้ 30 วิ)';
-  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', '✅ ผ่านแล้ว (ดูครบ 30 วิ)') : '✅ ผ่านแล้ว (ดูครบ 30 วิ)';
-  const lockedText = typeof getI18nText === 'function' ? getI18nText('locker_action_locked', '🔒 รอด่านก่อนหน้า') : '🔒 รอด่านก่อนหน้า';
-  const pausedTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_paused', '⏸️ หยุดนับ! แตะกลับไปโฆษณา (เหลือ {sec} วิ)') : '⏸️ หยุดนับ! แตะกลับไปโฆษณา (เหลือ {sec} วิ)';
+  const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', 'แตะเริ่ม (30 วิ)') : 'แตะเริ่ม (30 วิ)';
+  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', 'ผ่านแล้ว') : 'ผ่านแล้ว';
+  const lockedText = typeof getI18nText === 'function' ? getI18nText('locker_action_locked', 'รอด่านก่อน') : 'รอด่านก่อน';
+  const pausedTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_paused', 'แตะนับต่อ ({sec}s)') : 'แตะนับต่อ ({sec}s)';
 
   const isUserAway = document.hidden || !document.hasFocus();
 
   for (let i = 1; i <= totalSteps; i++) {
     const item = document.getElementById(`taskItem_${i}`);
     const pill = document.getElementById(`taskPill_${i}`);
-    const icon = document.getElementById(`taskIcon_${i}`);
+    const badge = document.getElementById(`taskNumBadge_${i}`);
     const desc = document.getElementById(`taskDesc_${i}`);
     const miniFill = document.getElementById(`taskMiniFill_${i}`);
     if (!item || !pill) continue;
@@ -162,10 +162,12 @@ function updateButtonsVisualState() {
     if (completedSteps[i]) {
       // 1. Completed State
       item.className = 'task-item completed';
-      pill.innerHTML = `<div class="btn-task-action completed"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> <span>${doneText}</span></div>`;
-      if (icon) icon.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i>`;
-      if (desc) desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
-      if (desc) desc.style.color = 'var(--text-muted)';
+      pill.innerHTML = `<div class="btn-task-action completed"><i data-lucide="check" style="width: 14px; height: 14px;"></i> <span>${doneText}</span></div>`;
+      if (badge) badge.innerHTML = `<i data-lucide="check" style="width: 14px; height: 14px;"></i>`;
+      if (desc) {
+        desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? '✅ ดูครบ 30 วินาทีเรียบร้อยแล้ว' : '✅ 30s completed';
+        desc.style.color = '#34D399';
+      }
       if (miniFill) miniFill.style.width = '100%';
     } else if (activeDwellingStep === i) {
       const currentSpent = secondsOnAd[i] + (isUserAway && dwellSessionStart[i] ? Math.floor((Date.now() - dwellSessionStart[i]) / 1000) : 0);
@@ -176,44 +178,48 @@ function updateButtonsVisualState() {
       if (isUserAway) {
         // 2. Currently Away on Ad Tab (Active Counting)
         item.className = 'task-item dwelling';
-        pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>⏳ ค้างหน้าโฆษณาอีก ${remaining} วิ...</span></div>`;
+        pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 13px; height: 13px;"></i> <span>⏳ ${remaining}s</span></div>`;
+        if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
         if (desc) {
           desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-            ? `⏳ กำลังนับเวลา... ค้างไว้ในหน้าโฆษณาอีก ${remaining} วิ (${pct}%)`
-            : `⏳ Counting... Stay on ad tab for ${remaining}s more (${pct}%)`;
+            ? `⏳ กำลังนับเวลา... ค้างไว้ในหน้าโฆษณาอีก ${remaining} วิ`
+            : `⏳ Counting... Stay on ad for ${remaining}s more`;
           desc.style.color = '#F59E0B';
         }
       } else {
-        // 3. User is on Locker Tab -> PAUSED! DOES NOT COUNT!
+        // 3. User is on Locker Tab -> PAUSED!
         item.className = 'task-item paused';
-        pill.innerHTML = `<div class="btn-task-action paused"><i data-lucide="pause-circle" style="width: 14px; height: 14px;"></i> <span>${pausedTpl.replace('{sec}', remaining)}</span></div>`;
+        pill.innerHTML = `<div class="btn-task-action paused"><i data-lucide="play" style="width: 12px; height: 12px; fill: currentColor;"></i> <span>${pausedTpl.replace('{sec}', remaining)}</span></div>`;
+        if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
         if (desc) {
           desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-            ? `⚠️ เวลาหยุดนับ! แตะที่ปุ่มนี้เพื่อสลับไปค้างหน้าโฆษณาต่ออีก ${remaining} วิ (${pct}%)`
-            : `⚠️ Timer paused! Tap to return to ad for ${remaining}s more (${pct}%)`;
+            ? `⚠️ เวลาหยุดนับ! แตะกลับไปค้างหน้าโฆษณาอีก ${remaining} วิ`
+            : `⚠️ Timer paused! Tap to return to ad for ${remaining}s`;
           desc.style.color = '#F87171';
         }
       }
     } else if (i === 1 || completedSteps[i - 1]) {
-      // 4. Unlocked / Ready to Click
+      // 4. Ready to Click
       item.className = 'task-item ready-to-click';
-      pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span></div>`;
+      pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span> <i data-lucide="chevron-right" style="width: 13px; height: 13px;"></i></div>`;
+      if (badge) badge.innerHTML = `<span class="num-text">${i}</span>`;
       if (desc) {
         desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-          ? `แตะเพื่อเปิดโฆษณาตัวที่ ${i} และค้างไว้ 30 วินาที`
-          : `Tap to open ad #${i} and stay for 30s`;
+          ? `แตะเพื่อเปิดโฆษณาและค้างไว้ 30 วินาที`
+          : `Tap to open ad and stay for 30s`;
         desc.style.color = 'var(--text-muted)';
       }
       if (miniFill) miniFill.style.width = '0%';
     } else {
       // 5. Locked State
       item.className = 'task-item locked';
-      pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 12px; height: 12px;"></i> <span>${lockedText}</span></div>`;
+      pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 11px; height: 11px;"></i> <span>${lockedText}</span></div>`;
+      if (badge) badge.innerHTML = `<i data-lucide="lock" style="width: 13px; height: 13px; opacity: 0.6;"></i>`;
       if (desc) {
         desc.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-          ? `รอด่านที่ ${i - 1} ผ่านก่อน จึงจะปลดล็อคปุ่มนี้`
-          : `Complete step ${i - 1} first to unlock`;
-        desc.style.color = 'var(--text-muted)';
+          ? `รอด่านที่ ${i - 1} ผ่านก่อน`
+          : `Complete step ${i - 1} first`;
+        desc.style.color = 'rgba(255, 255, 255, 0.3)';
       }
       if (miniFill) miniFill.style.width = '0%';
     }
@@ -387,16 +393,21 @@ function updateProgressUI() {
 
   const percent = Math.min(100, Math.round(fraction * 100));
 
-  const stepTemplate = typeof getI18nText === 'function'
-    ? getI18nText('locker_step_text', 'ทำสำเร็จ {current} จาก {total} ปุ่ม ({percent}%)')
-    : 'ทำสำเร็จ {current} จาก {total} ปุ่ม ({percent}%)';
+  const stepEl = document.getElementById('progressStepText');
+  if (stepEl) {
+    const stepTemplate = typeof getI18nText === 'function'
+      ? getI18nText('locker_step_text', '{current} / {total} ด่าน ({percent}%)')
+      : '{current} / {total} ด่าน ({percent}%)';
+    stepEl.textContent = stepTemplate
+      .replace('{current}', doneCount)
+      .replace('{total}', totalSteps)
+      .replace('{percent}', percent);
+  }
 
-  document.getElementById('progressStepText').textContent = stepTemplate
-    .replace('{current}', doneCount)
-    .replace('{total}', totalSteps)
-    .replace('{percent}', percent);
-
-  document.getElementById('progressBarFill').style.width = `${Math.max(8, percent)}%`;
+  const fillEl = document.getElementById('progressBarFill');
+  if (fillEl) {
+    fillEl.style.width = `${Math.max(6, percent)}%`;
+  }
 }
 
 // Bottom Action / Unlock Status Button
@@ -404,30 +415,38 @@ function updateBottomButtonUI() {
   const btn = document.getElementById('btnContinue');
   const btnText = document.getElementById('btnText');
   const btnIcon = document.getElementById('btnIcon');
-  if (!btn || !btnText) return;
+  const hintEl = document.getElementById('lockerHintText');
+  if (!btn) return;
 
   const doneCount = [completedSteps[1], completedSteps[2], completedSteps[3]].filter(Boolean).length;
 
   if (doneCount >= totalSteps) {
-    // All 3 Completed!
+    // All 3 Completed! Reveal glowing unlock button
+    btn.style.display = 'flex';
     btn.disabled = false;
     btn.className = 'btn-locker-continue btn-unlock';
-    btnText.textContent = typeof getI18nText === 'function'
-      ? getI18nText('locker_bottom_unlock', '🎉 ผ่านครบทั้ง 3 ปุ่มแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓')
-      : '🎉 ผ่านครบทั้ง 3 ปุ่มแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓';
-    btnIcon.className = '';
-    btnIcon.setAttribute('data-lucide', 'unlock');
+    if (btnText) {
+      btnText.textContent = typeof getI18nText === 'function'
+        ? getI18nText('locker_bottom_unlock', '🎉 ผ่านครบ 3 ด่านแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓')
+        : '🎉 ผ่านครบ 3 ด่านแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓';
+    }
+    if (btnIcon) {
+      btnIcon.setAttribute('data-lucide', 'unlock');
+    }
     btn.onclick = () => unlockContent();
+    if (hintEl) hintEl.style.display = 'none';
   } else {
-    // Waiting for completion
-    btn.disabled = true;
-    btn.className = 'btn-locker-continue';
-    const waitingTpl = typeof getI18nText === 'function'
-      ? getI18nText('locker_bottom_waiting', '🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ผ่านแล้ว {done}/3)')
-      : '🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ผ่านแล้ว {done}/3)';
-    btnText.textContent = waitingTpl.replace('{done}', doneCount);
-    btnIcon.className = '';
-    btnIcon.setAttribute('data-lucide', 'lock');
+    // Still in progress: Hide giant button, show minimal elegant hint
+    btn.style.display = 'none';
+    if (hintEl) {
+      hintEl.style.display = 'flex';
+      const remaining = totalSteps - doneCount;
+      const isTh = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th');
+      const hintMsg = isTh
+        ? `ค้างหน้าโฆษณาปุ่มละ 30 วินาที เพื่อปลดล็อค (เหลือ ${remaining} ด่าน)`
+        : `Stay on each ad for 30s to unlock (${remaining} remaining)`;
+      hintEl.innerHTML = `<i data-lucide="sparkles" style="width: 14px; height: 14px; color: #818CF8; flex-shrink: 0;"></i> <span>${hintMsg}</span>`;
+    }
   }
 
   lucide.createIcons();

@@ -18,7 +18,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
           <div class="locker-brand-badge">
             <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
-            <span data-i18n="locker_brand_badge">BlackPass ระบบยืนยันตัวตน</span>
+            <span data-i18n="locker_brand_badge">BlackPass ปลอดภัย 100%</span>
           </div>
 
           <div class="lang-switcher" style="padding: 2px;">
@@ -33,7 +33,7 @@
 
         <h2 class="locker-content-title" id="lockerTitle">Content Access Restricted</h2>
         <p class="locker-subtitle" id="lockerDesc" data-i18n="locker_default_desc">
-          กรุณาทำตามขั้นตอนด้านล่างเพื่อยืนยันเซสชันและปลดล็อคเนื้อหาสคริปต์ของคุณ
+          ทำตามขั้นตอนด้านล่างเพื่อยืนยันเซสชันและปลดล็อคเนื้อหา
         </p>
       </div>
 
@@ -41,10 +41,10 @@
       <div class="locker-progress-area">
         <div class="progress-header">
           <span data-i18n="locker_progress_label">ความคืบหน้า</span>
-          <span class="progress-step-text" id="progressStepText">ทำสำเร็จ 0 จาก 3 ปุ่ม (0%)</span>
+          <span class="progress-step-text" id="progressStepText">0 / 3 ด่าน (0%)</span>
         </div>
         <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="progressBarFill" style="width: 8%;"></div>
+          <div class="progress-bar-fill" id="progressBarFill" style="width: 6%;"></div>
         </div>
       </div>
 
@@ -68,48 +68,20 @@
           </a>
         </div>
 
-        <!-- Mobile Quick Guide Banner -->
-        <div class="mobile-guide-banner" id="mobileGuideBanner">
-          <div class="mobile-guide-head">
-            <i data-lucide="smartphone" style="width: 15px; height: 15px; color: #38BDF8;"></i>
-            <span>📱 วิธีผ่านด่านบนมือถือง่ายๆ</span>
-          </div>
-          <div class="mobile-guide-chips">
-            <span class="m-chip"><strong class="m-num">1</strong> แตะปุ่มเริ่ม</span>
-            <span class="m-chip"><strong class="m-num">2</strong> ค้างไว้ 30 วิ</span>
-            <span class="m-chip"><strong class="m-num">3</strong> สลับกลับมา ✅</span>
-          </div>
-        </div>
-
-        <!-- Instruction Banner -->
-        <div class="locker-instruction-banner" id="lockerInstructionBanner">
-          <i data-lucide="info" id="instructionIcon" style="width: 16px; height: 16px; color: #38bdf8; flex-shrink: 0; margin-top: 1px;"></i>
-          <span id="lockerInstructionText" data-i18n="locker_instruction_dwell">
-            ⚠️ กติกา: กดทำภารกิจให้ครบทั้ง 3 ปุ่ม โดยต้องค้างอยู่ที่หน้าโฆษณาปุ่มละ 30 วินาที จึงจะปลดล็อคเว็บไซต์
-          </span>
-        </div>
-
         <div class="tasks-list" id="tasksList">
           <!-- Dynamically populated step items -->
         </div>
 
-        <!-- Ad Slot (Native Banner / Sponsor placement) -->
-        <div class="locker-ad-slot" id="lockerAdSlot">
-          <span class="locker-ad-badge" data-i18n="locker_sponsor_badge">ผู้สนับสนุนการปลดล็อคอย่างเป็นทางการ</span>
-          <div id="adBannerMock" style="min-height: 70px; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.02); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <i data-lucide="sparkles" style="color: #F59E0B; width: 16px; height: 16px;"></i>
-              <span>High-Speed Roblox Script Executor v4.8 &bull; Instant Injection</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action / Countdown Button -->
-        <div class="locker-action-area">
-          <button type="button" class="btn-locker-continue" id="btnContinue" disabled>
-            <i data-lucide="lock" id="btnIcon" style="width: 18px; height: 18px;"></i>
-            <span id="btnText">🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ปุ่มละ 30 วิ)</span>
+        <!-- Action / Countdown Button (Shown cleanly when ready) -->
+        <div class="locker-action-area" id="lockerActionArea">
+          <button type="button" class="btn-locker-continue" id="btnContinue" style="display: none;">
+            <i data-lucide="unlock" id="btnIcon" style="width: 18px; height: 18px;"></i>
+            <span id="btnText">🎉 ผ่านครบ 3 ด่านแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓</span>
           </button>
+          <div class="locker-hint-text" id="lockerHintText">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #818CF8;"></i>
+            <span>ค้างหน้าโฆษณาปุ่มละ 30 วินาที เพื่อปลดล็อคเนื้อหา</span>
+          </div>
         </div>
       </div>
 
