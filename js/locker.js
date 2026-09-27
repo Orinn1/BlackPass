@@ -40,20 +40,23 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadLockerData() {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get('slug') || urlParams.get('id') || 'hub-access';
+  const customUrl = urlParams.get('url') || urlParams.get('redirect') || urlParams.get('return_to');
 
   currentLocker = await GateStore.getLocker(slug);
 
   if (!currentLocker) {
-    // Fallback default for Blacklist Script Hub
+    // Fallback default for Blacklist Script Hub or Quick Dynamic Link
     currentLocker = {
-      id: 'gf_hub_access',
-      name: 'Blacklist Script Hub Access',
-      slug: 'hub-access',
-      destinationUrl: 'https://th.blacklisthub.workers.dev/',
+      id: 'gf_' + slug,
+      name: customUrl ? (urlParams.get('title') || urlParams.get('name') || 'ปลดล็อคเนื้อหา / เข้าสู่ลิงก์ปลายทาง') : 'Blacklist Script Hub Access',
+      slug: slug,
+      destinationUrl: customUrl || 'https://th.blacklisthub.workers.dev/',
       steps: 3,
       timer: 30,
       ads: { popunder: false, banner: true, smartlink: true }
     };
+  } else if (customUrl) {
+    currentLocker.destinationUrl = customUrl;
   }
 
   // Request Server-Side Anti-Bypass Ticket from Worker / Local Server
@@ -594,12 +597,14 @@ async function unlockContent() {
 
   // Resolve destination URL
   const urlParams = new URLSearchParams(window.location.search);
-  const returnTo = urlParams.get('return_to') || urlParams.get('redirect') || '';
+  const returnTo = urlParams.get('url') || urlParams.get('return_to') || urlParams.get('redirect') || '';
 
   let destUrl = returnTo || currentLocker?.destinationUrl || 'https://th.blacklisthub.workers.dev/';
   destUrl = destUrl.replace(/[?&]auth_success=[^&]*/g, '');
 
-  if (passToken) {
+  // Only append pass_token if destUrl is internal to our site/hub so external destinations (Pastebin, Mediafire, etc.) remain clean
+  const isInternal = destUrl.startsWith('/') || destUrl.includes('workers.dev') || (window.location.hostname && destUrl.includes(window.location.hostname));
+  if (passToken && isInternal) {
     const separator = destUrl.includes('?') ? '&' : '?';
     destUrl = `${destUrl}${separator}pass_token=${encodeURIComponent(passToken)}`;
   }

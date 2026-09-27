@@ -8,6 +8,7 @@ let currentChartMetric = 'clicks'; // clicks | unlocks | revenue
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
+  initQuickShortener();
   renderDashboardStats();
   renderLockersTable();
   renderChart();
@@ -135,13 +136,16 @@ function renderLockersTable(targetTbodyId = 'lockersTableBody', filterQuery = ''
   }
 
   tbody.innerHTML = filtered.map(l => {
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const baseUrl = isLocal ? `http://${window.location.host}` : window.location.origin;
+    const shortUrl = `${baseUrl}/l/${l.slug}`;
     const lockerUrl = `locker.html?slug=${l.slug}`;
     return `
       <tr>
         <td>
           <div class="cell-locker-name">
             <span>${escapeHtml(l.name)}</span>
-            <span class="cell-slug">blackpass.link/l/${escapeHtml(l.slug)}</span>
+            <span class="cell-slug">${window.location.host}/l/${escapeHtml(l.slug)}</span>
           </div>
         </td>
         <td>
@@ -186,13 +190,75 @@ function renderLockersTable(targetTbodyId = 'lockersTableBody', filterQuery = ''
 
 // Copy Locker Link
 window.copyLockerLink = function(slug) {
-  const fullUrl = `${window.location.origin}${window.location.pathname.replace('dashboard.html', '')}locker.html?slug=${slug}`;
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const baseUrl = isLocal ? `http://${window.location.host}` : window.location.origin;
+  const fullUrl = `${baseUrl}/l/${slug}`;
   navigator.clipboard.writeText(fullUrl).then(() => {
-    showToast('Locker link copied to clipboard!', 'success');
+    showToast('คัดลอกลิงก์เรียบร้อยแล้ว!', 'success');
   }).catch(() => {
     showToast(`Link: ${fullUrl}`, 'info');
   });
 };
+
+// Quick Link Shortener (ShrinkEarn Style)
+function initQuickShortener() {
+  const form = document.getElementById('quickShortenForm');
+  const resultBox = document.getElementById('quickResultBox');
+  const urlEl = document.getElementById('quickGeneratedUrl');
+  const copyBtn = document.getElementById('btnCopyQuickResult');
+  const testBtn = document.getElementById('btnTestQuickResult');
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const targetUrl = document.getElementById('quickTargetUrl').value.trim();
+    let alias = (document.getElementById('quickAlias')?.value || '').trim();
+
+    if (!targetUrl) return;
+
+    if (!alias) {
+      alias = 'bp-' + Math.random().toString(36).substring(2, 7);
+    } else {
+      alias = alias.toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
+    }
+
+    const newLocker = await GateStore.createLocker({
+      name: `Locker: ${alias}`,
+      destinationUrl: targetUrl,
+      slug: alias,
+      steps: 3,
+      timer: 30,
+      antiBypass: true,
+      ads: { popunder: false, banner: true, smartlink: true }
+    });
+
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const baseUrl = isLocal ? `http://${window.location.host}` : window.location.origin;
+    const generatedUrl = `${baseUrl}/l/${newLocker.slug}`;
+
+    if (urlEl) urlEl.textContent = generatedUrl;
+    if (testBtn) testBtn.href = generatedUrl;
+    if (resultBox) resultBox.style.display = 'flex';
+
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(generatedUrl).then(() => {
+          showToast('คัดลอกลิงก์เรียบร้อยแล้ว!', 'success');
+        }).catch(() => {
+          showToast(`Link: ${generatedUrl}`, 'info');
+        });
+      };
+    }
+
+    renderDashboardStats();
+    renderLockersTable('lockersTableBody');
+    renderLockersTable('allLockersTableBody');
+    lucide.createIcons();
+
+    showToast(`ย่อลิงก์สำเร็จ! ได้ลิงก์ ${generatedUrl}`, 'success');
+  });
+}
 
 // Search Filter
 function initSearch() {

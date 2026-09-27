@@ -97,6 +97,48 @@
 
       <!-- View 1: Overview -->
       <section class="dashboard-view active" id="viewOverview">
+        <!-- Quick Link Shortener (ShrinkEarn Style) -->
+        <div class="quick-shortener-card">
+          <div class="quick-shortener-header">
+            <div class="quick-shortener-title">
+              <i data-lucide="zap" style="color: #6366F1; width: 20px; height: 20px;"></i>
+              <span>สร้างลิงก์กั้นโฆษณา (Quick Link Shortener)</span>
+            </div>
+            <span class="quick-shortener-badge">
+              <i data-lucide="badge-percent" style="width: 13px; height: 13px;"></i>
+              <span>รับเต็ม 100% ไม่โดนหักหัวคิว</span>
+            </span>
+          </div>
+
+          <form id="quickShortenForm" class="quick-shortener-form">
+            <div class="quick-input-group">
+              <input type="url" id="quickTargetUrl" class="quick-input-url" placeholder="วางลิงก์ปลายทางที่ต้องการกั้น (เช่น https://pastebin.com/... หรือ ลิงก์ดาวน์โหลด)" required />
+              <input type="text" id="quickAlias" class="quick-input-alias" placeholder="ชื่อต่อท้าย (ไม่บังคับ เช่น blox-key)" pattern="[a-zA-Z0-9-_]+" />
+              <button type="submit" class="btn btn-primary" id="btnQuickShorten">
+                <i data-lucide="scissors" style="width: 16px; height: 16px;"></i>
+                <span>ย่อลิงก์ทันที</span>
+              </button>
+            </div>
+          </form>
+
+          <div id="quickResultBox" class="quick-result-box" style="display: none;">
+            <div class="quick-result-url">
+              <i data-lucide="check-circle-2" style="color: #10B981; width: 18px; height: 18px; flex-shrink: 0;"></i>
+              <span id="quickGeneratedUrl"></span>
+            </div>
+            <div class="quick-result-actions">
+              <button type="button" class="btn btn-sm btn-primary" id="btnCopyQuickResult">
+                <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
+                <span>คัดลอกลิงก์</span>
+              </button>
+              <a href="#" target="_blank" class="btn btn-sm btn-secondary" id="btnTestQuickResult">
+                <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+                <span>ทดสอบเปิด</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- 5 Metrics Cards -->
         <div class="metrics-row">
           <div class="metric-card">

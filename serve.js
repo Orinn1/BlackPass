@@ -123,6 +123,40 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // --- Clean URL Shortcuts & Link Shortener Routes ---
+  if (reqPath.startsWith('/l/')) {
+    const slug = reqPath.slice(3).trim();
+    if (slug) {
+      res.writeHead(302, { Location: `/locker.html?slug=${encodeURIComponent(slug)}` });
+      res.end();
+      return;
+    }
+  }
+
+  if (reqPath === '/gate' || reqPath === '/go' || reqPath === '/short') {
+    const target = urlObj.searchParams.get('url') || urlObj.searchParams.get('to') || urlObj.searchParams.get('redirect') || '';
+    const slug = urlObj.searchParams.get('slug') || '';
+    const params = new URLSearchParams();
+    if (slug) params.set('slug', slug);
+    if (target) params.set('url', target);
+    const qs = params.toString();
+    res.writeHead(302, { Location: `/locker.html${qs ? '?' + qs : ''}` });
+    res.end();
+    return;
+  }
+
+  if (reqPath === '/locker') {
+    res.writeHead(302, { Location: `/locker.html${urlObj.search || ''}` });
+    res.end();
+    return;
+  }
+
+  if (reqPath === '/dashboard') {
+    res.writeHead(302, { Location: `/dashboard.html${urlObj.search || ''}` });
+    res.end();
+    return;
+  }
+
   // --- Static Files Serving ---
   if (reqPath.startsWith('/gateflow/')) {
     reqPath = reqPath.replace('/gateflow', '');
