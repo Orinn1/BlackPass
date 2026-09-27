@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Load Locker based on URL params
-function loadLockerData() {
+async function loadLockerData() {
   const urlParams = new URLSearchParams(window.location.search);
   const slug = urlParams.get('slug') || urlParams.get('id') || 'blox-fruits-v48';
 
-  currentLocker = GateStore.getLocker(slug);
+  currentLocker = await GateStore.getLocker(slug);
 
   if (!currentLocker) {
     // Fallback default

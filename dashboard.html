@@ -58,7 +58,10 @@
             <span class="user-name" id="sidebarUsername">OrinRankone</span>
             <span class="user-tier">92% RevShare Tier</span>
           </div>
-          <a href="index.html" title="Logout / Home" style="color: var(--text-muted); padding: 4px;">
+          <button type="button" onclick="openAuthModal('signin')" title="Switch / Sign In" style="color: var(--text-muted); padding: 4px;">
+            <i data-lucide="user" style="width: 16px; height: 16px;"></i>
+          </button>
+          <a href="#" onclick="GateStore.signOut(); showToast('Signed out of BlackPass', 'info'); setTimeout(()=>window.location.href='index.html', 500);" title="Logout" style="color: var(--text-muted); padding: 4px;">
             <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
           </a>
         </div>
@@ -612,8 +615,13 @@
   <!-- Toast Notification Container -->
   <div id="toastContainer"></div>
 
-  <!-- Scripts -->
+  <!-- Firebase SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/dashboard.js"></script>
   <script>
     lucide.createIcons();

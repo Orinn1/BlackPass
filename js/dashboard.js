@@ -322,7 +322,14 @@ function initCreateLockerForm() {
   const form = document.getElementById('createLockerForm');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  // Listen for background Firestore locker sync updates
+  window.onLockersUpdated = () => {
+    renderDashboardStats();
+    renderLockersTable('lockersTableBody');
+    renderLockersTable('allLockersTableBody');
+  };
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('inputLockerName').value;
@@ -334,7 +341,7 @@ function initCreateLockerForm() {
     const banner = document.getElementById('toggleBanner').checked;
     const antiBypass = document.getElementById('toggleAntiBypass').checked;
 
-    const newLocker = GateStore.createLocker({
+    const newLocker = await GateStore.createLocker({
       name,
       destinationUrl,
       slug,
@@ -350,7 +357,7 @@ function initCreateLockerForm() {
     renderLockersTable('lockersTableBody');
     renderLockersTable('allLockersTableBody');
 
-    showToast(`Content Locker "${newLocker.name}" created successfully!`, 'success');
+    showToast(`Content Locker "${newLocker.name}" created and synced online!`, 'success');
   });
 }
 
@@ -367,9 +374,9 @@ window.closeDeleteModal = function() {
   if (modal) modal.classList.remove('active');
 };
 
-document.getElementById('btnConfirmDelete')?.addEventListener('click', () => {
+document.getElementById('btnConfirmDelete')?.addEventListener('click', async () => {
   if (currentDeletingLockerId) {
-    GateStore.deleteLocker(currentDeletingLockerId);
+    await GateStore.deleteLocker(currentDeletingLockerId);
     closeDeleteModal();
     renderDashboardStats();
     renderLockersTable('lockersTableBody');

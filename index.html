@@ -31,11 +31,11 @@
       </ul>
 
       <div class="nav-actions">
-        <a href="dashboard.html" class="btn btn-ghost btn-sm">Sign In</a>
-        <a href="dashboard.html" class="btn btn-primary btn-sm">
-          <span>Create Locker</span>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="openAuthModal('signin')">Sign In</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="openAuthModal('signup')">
+          <span>Create Account</span>
           <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-        </a>
+        </button>
       </div>
     </div>
   </nav>
@@ -361,8 +361,13 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Firebase SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
   <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/landing.js"></script>
   <script>
     lucide.createIcons();
