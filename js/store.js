@@ -153,6 +153,13 @@ class BlackPassStore {
     return cred.user;
   }
 
+  async sendPasswordReset(email) {
+    if (window.fbAuth) {
+      await window.fbAuth.sendPasswordResetEmail(email.trim());
+    }
+    return true;
+  }
+
   async signOut() {
     if (window.fbAuth) {
       await window.fbAuth.signOut().catch(() => {});

@@ -1,6 +1,6 @@
 /* ==========================================================================
    BlackPass Authentication & User Session Manager
-   Firebase Auth UI, Register, Login, Logout & Modals
+   Firebase Auth UI, Register, Login, Forgot Password, Logout & Modals
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,7 +35,7 @@ function injectAuthModal() {
 
         <div class="modal-body" style="padding-top: 16px;">
           <!-- Tabs: Login vs Register -->
-          <div style="display: flex; background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 4px; margin-bottom: 20px;">
+          <div id="authTabsContainer" style="display: flex; background: var(--bg-surface-raised); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 4px; margin-bottom: 20px;">
             <button type="button" class="btn btn-sm btn-block active" id="tabBtnSignIn" onclick="switchAuthTab('signin')" style="border-radius: var(--radius-sm); font-weight: 600;">
               Sign In
             </button>
@@ -50,11 +50,18 @@ function injectAuthModal() {
               <label class="form-label">Email Address</label>
               <input type="email" class="form-input" id="signInEmail" placeholder="yourname@gmail.com" required>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom: 10px;">
               <label class="form-label">Password</label>
               <input type="password" class="form-input" id="signInPassword" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="btn btn-primary btn-block" id="btnSubmitSignIn" style="height: 44px; margin-top: 10px;">
+
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 18px;">
+              <button type="button" onclick="switchAuthTab('forgot')" style="font-size: 12px; color: #818CF8; font-weight: 600; background: none; border: none; padding: 0; cursor: pointer;">
+                Forgot Password?
+              </button>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="btnSubmitSignIn" style="height: 44px;">
               <span>Sign In to Dashboard</span>
               <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
             </button>
@@ -80,6 +87,27 @@ function injectAuthModal() {
             </button>
           </form>
 
+          <!-- Forgot Password Form (Hidden by default) -->
+          <form id="formForgot" style="display: none;">
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 18px;">
+              Enter your registered email address and we will immediately send a password reset link to your email inbox.
+            </p>
+            <div class="form-group">
+              <label class="form-label">Account Email Address</label>
+              <input type="email" class="form-input" id="forgotEmail" placeholder="yourname@gmail.com" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="btnSubmitForgot" style="height: 44px; margin-top: 10px;">
+              <span>Send Reset Password Link</span>
+              <i data-lucide="send" style="width: 16px; height: 16px;"></i>
+            </button>
+            <div style="text-align: center; margin-top: 18px;">
+              <button type="button" onclick="switchAuthTab('signin')" style="font-size: 13px; color: var(--text-secondary); font-weight: 500; background: none; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+                <span>Back to Sign In</span>
+              </button>
+            </div>
+          </form>
+
           <div style="margin-top: 20px; text-align: center; font-size: 12px; color: var(--text-muted);">
             Protected by Cloudflare &bull; Free instant activation
           </div>
@@ -94,31 +122,46 @@ function injectAuthModal() {
   initAuthForms();
 }
 
-// Switch between Sign In and Sign Up tabs
+// Switch between Sign In, Sign Up, and Forgot tabs
 window.switchAuthTab = function(tab) {
   const formSignIn = document.getElementById('formSignIn');
   const formSignUp = document.getElementById('formSignUp');
+  const formForgot = document.getElementById('formForgot');
+  const tabsContainer = document.getElementById('authTabsContainer');
   const tabSignIn = document.getElementById('tabBtnSignIn');
   const tabSignUp = document.getElementById('tabBtnSignUp');
   const modalTitle = document.getElementById('authModalTitle');
 
-  if (tab === 'signup') {
+  if (tab === 'forgot') {
+    formSignIn.style.display = 'none';
+    formSignUp.style.display = 'none';
+    formForgot.style.display = 'block';
+    if (tabsContainer) tabsContainer.style.display = 'none';
+    modalTitle.textContent = 'Reset Password';
+  } else if (tab === 'signup') {
+    formForgot.style.display = 'none';
     formSignIn.style.display = 'none';
     formSignUp.style.display = 'block';
+    if (tabsContainer) tabsContainer.style.display = 'flex';
     tabSignUp.classList.add('btn-primary');
     tabSignUp.style.color = '#FFFFFF';
     tabSignIn.classList.remove('btn-primary');
     tabSignIn.style.color = 'var(--text-secondary)';
     modalTitle.textContent = 'Create Publisher Account';
   } else {
+    // signin
+    formForgot.style.display = 'none';
     formSignUp.style.display = 'none';
     formSignIn.style.display = 'block';
+    if (tabsContainer) tabsContainer.style.display = 'flex';
     tabSignIn.classList.add('btn-primary');
     tabSignIn.style.color = '#FFFFFF';
     tabSignUp.classList.remove('btn-primary');
     tabSignUp.style.color = 'var(--text-secondary)';
     modalTitle.textContent = 'Sign In to BlackPass';
   }
+
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 };
 
 window.openAuthModal = function(tab = 'signin') {
@@ -190,10 +233,32 @@ function initAuthForms() {
       lucide.createIcons();
     }
   });
+
+  // Forgot Password Form
+  document.getElementById('formForgot')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmitForgot');
+    btn.disabled = true;
+    btn.innerHTML = `<i data-lucide="loader-2" class="spin" style="width:16px;height:16px;"></i> <span>Sending link...</span>`;
+    lucide.createIcons();
+
+    const email = document.getElementById('forgotEmail').value.trim();
+
+    try {
+      await GateStore.sendPasswordReset(email);
+      showToast(`Password reset email sent to ${email}! Please check your inbox and spam folder.`, 'success', 7000);
+      switchAuthTab('signin');
+    } catch (err) {
+      showToast(err.message || 'Failed to send password reset email. Check email address.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<span>Send Reset Password Link</span> <i data-lucide="send" style="width:16px;height:16px;"></i>`;
+      lucide.createIcons();
+    }
+  });
 }
 
 function bindAuthTriggers() {
-  // Bind links with #auth or data-auth
   document.querySelectorAll('[data-open-auth]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
