@@ -1,15 +1,14 @@
 /* ==========================================================================
    BlackPass Content Locker Engine
-   Enforced Dwell Time Verification & Anti-18+ Spam Protection
+   3 Buttons Model — 30 Seconds Dwell Time Each (Clean & Direct)
    ========================================================================== */
 
 let currentLocker = null;
-let currentStepIndex = 1;
-let totalSteps = 3;
-let requiredDwellSeconds = 10;
+const totalSteps = 3;
+const requiredDwellSeconds = 30; // 30 seconds dwell time per button
 let completedSteps = { 1: false, 2: false, 3: false };
 let stepAdOpenedAt = { 1: 0, 2: 0, 3: 0 };
-let stepStatus = { 1: 'IDLE', 2: 'IDLE', 3: 'IDLE' }; // 'IDLE', 'DWELLING', 'COMPLETED'
+let activeDwellingStep = null;
 let dwellInterval = null;
 let lastVisibilityWarnTime = 0;
 
@@ -22,16 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLockerLanguage();
   };
 
-  // Warn user immediately if they switch back to the locker tab before dwell time expires
+  // Warn user immediately if they switch back to the locker tab before 30s dwell expires
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && stepStatus[currentStepIndex] === 'DWELLING' && !completedSteps[currentStepIndex]) {
-      const elapsed = Math.floor((Date.now() - stepAdOpenedAt[currentStepIndex]) / 1000);
+    if (!document.hidden && activeDwellingStep && !completedSteps[activeDwellingStep]) {
+      const elapsed = Math.floor((Date.now() - stepAdOpenedAt[activeDwellingStep]) / 1000);
       const remaining = Math.max(0, requiredDwellSeconds - elapsed);
       if (remaining > 0 && Date.now() - lastVisibilityWarnTime > 3000) {
         lastVisibilityWarnTime = Date.now();
         const warnMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-          ? `⚠️ คุณยังค้างอยู่หน้าโฆษณาไม่ครบเวลา! (เหลืออีก ${remaining} วินาที) กรุณากลับไปดูต่อจนครบเพื่อปลดล็อค`
-          : `⚠️ Please stay on the sponsor page! (${remaining}s remaining to unlock).`;
+          ? `⚠️ คุณยังค้างอยู่หน้าโฆษณาไม่ครบ 30 วินาที! (เหลืออีก ${remaining} วิ) กรุณากลับไปดูต่อจนครบเพื่อปลดล็อค`
+          : `⚠️ You must stay on the sponsor page for 30s! (${remaining}s remaining).`;
         showToast(warnMsg, 'warning', 3500);
       }
     }
@@ -53,7 +52,7 @@ async function loadLockerData() {
       slug: 'hub-access',
       destinationUrl: 'https://th.blacklisthub.workers.dev/?auth_success=1',
       steps: 3,
-      timer: 10,
+      timer: 30,
       ads: { popunder: false, banner: true, smartlink: true }
     };
   }
@@ -61,337 +60,282 @@ async function loadLockerData() {
   // Record click impression
   GateStore.recordClick(currentLocker.slug);
 
-  totalSteps = currentLocker.steps || 3;
-  requiredDwellSeconds = currentLocker.timer || 10;
-
   document.getElementById('lockerTitle').textContent = currentLocker.name;
-  document.title = `${currentLocker.name} \u2014 BlackPass Verification`;
+  document.title = `${currentLocker.name} \u2014 BlackPass 30s Verification`;
 
-  renderTasks();
+  // Update instruction rule banner
+  const instructionEl = document.getElementById('lockerInstructionText');
+  if (instructionEl) {
+    instructionEl.textContent = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? '⚠️ กติกา: กดทำภารกิจให้ครบทั้ง 3 ปุ่ม โดยต้องค้างอยู่ที่หน้าโฆษณาปุ่มละ 30 วินาที จึงจะปลดล็อคเว็บไซต์'
+      : '⚠️ Rule: Complete all 3 buttons by staying on each sponsor ad for 30 seconds to unlock the website.';
+  }
+
+  renderTaskButtons();
   initAdInjectors();
-  startStep(1);
+  updateProgressUI();
+  updateBottomButtonUI();
 }
 
-// Render dynamic task items
-function renderTasks() {
+// Render 3 Interactive Task Buttons
+function renderTaskButtons() {
   const container = document.getElementById('tasksList');
   if (!container) return;
 
-  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'เปิดดูลิงก์สปอนเซอร์ (ด่าน 1)') : 'เปิดดูลิงก์สปอนเซอร์ (ด่าน 1)';
-  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'กดเปิดและค้างอยู่ที่หน้าโฆษณา 10 วินาที') : 'กดเปิดและค้างอยู่ที่หน้าโฆษณา 10 วินาที';
-  const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'ตรวจสอบเซสชันสปอนเซอร์ (ด่าน 2)') : 'ตรวจสอบเซสชันสปอนเซอร์ (ด่าน 2)';
-  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'กดเปิดและค้างอยู่ที่หน้าโฆษณา 10 วินาที') : 'กดเปิดและค้างอยู่ที่หน้าโฆษณา 10 วินาที';
-  const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'ออกคีย์เข้าใช้งานเว็บไซต์ (ด่าน 3)') : 'ออกคีย์เข้าใช้งานเว็บไซต์ (ด่าน 3)';
-  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'กดเปิดด่านสุดท้ายเพื่อปลดล็อค 24 ชั่วโมง') : 'กดเปิดด่านสุดท้ายเพื่อปลดล็อค 24 ชั่วโมง';
+  const t1Title = typeof getI18nText === 'function' ? getI18nText('locker_task_1_title', 'ปุ่มที่ 1: สปอนเซอร์เซิร์ฟเวอร์หลัก (30 วิ)') : 'ปุ่มที่ 1: สปอนเซอร์เซิร์ฟเวอร์หลัก (30 วิ)';
+  const t1Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_1_desc', 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวที่ 1 และค้างไว้ 30 วินาที';
+  const t2Title = typeof getI18nText === 'function' ? getI18nText('locker_task_2_title', 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)') : 'ปุ่มที่ 2: สปอนเซอร์ความปลอดภัย (30 วิ)';
+  const t2Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_2_desc', 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวที่ 2 และค้างไว้ 30 วินาที';
+  const t3Title = typeof getI18nText === 'function' ? getI18nText('locker_task_3_title', 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)') : 'ปุ่มที่ 3: รับสิทธิ์เข้าเว็บฮับ 24 ชม. (30 วิ)';
+  const t3Desc = typeof getI18nText === 'function' ? getI18nText('locker_task_3_desc', 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที') : 'กดเปิดโฆษณาตัวสุดท้ายและค้างไว้ 30 วินาที';
 
   const taskDefinitions = [
-    { title: t1Title, desc: t1Desc },
-    { title: t2Title, desc: t2Desc },
-    { title: t3Title, desc: t3Desc }
+    { title: t1Title, desc: t1Desc, icon: 'eye' },
+    { title: t2Title, desc: t2Desc, icon: 'shield' },
+    { title: t3Title, desc: t3Desc, icon: 'key' }
   ];
-
-  const pendingText = typeof getI18nText === 'function' ? getI18nText('locker_task_status_waiting', 'รอเปิดโฆษณา') : 'รอเปิดโฆษณา';
 
   let html = '';
   for (let i = 1; i <= totalSteps; i++) {
-    const def = taskDefinitions[i - 1] || { title: `Step ${i}`, desc: 'Complete required checkpoint' };
+    const def = taskDefinitions[i - 1];
     html += `
-      <div class="task-item" id="taskItem_${i}" onclick="handleTaskItemClick(${i})">
+      <div class="task-item" id="taskItem_${i}" onclick="handleTaskButtonClick(${i})">
         <div class="task-left">
           <div class="task-icon" id="taskIcon_${i}">
-            <i data-lucide="${i === 1 ? 'eye' : i === 2 ? 'shield' : 'key'}" style="width: 16px; height: 16px;"></i>
+            <i data-lucide="${def.icon}" style="width: 16px; height: 16px;"></i>
           </div>
           <div class="task-info">
             <span class="task-title">${def.title}</span>
             <span class="task-desc">${def.desc}</span>
           </div>
         </div>
-        <div class="task-status-indicator" id="taskStatus_${i}">
-          <i data-lucide="circle" style="width: 14px; height: 14px;"></i>
-          <span>${pendingText}</span>
+        <div class="task-status-indicator" id="taskPill_${i}">
+          <!-- Pill action injected dynamically -->
         </div>
       </div>
     `;
   }
 
   container.innerHTML = html;
+  updateButtonsVisualState();
   lucide.createIcons();
 }
 
-// Start a specific step
-function startStep(stepNum) {
-  if (stepNum > totalSteps) return;
-  currentStepIndex = stepNum;
-  requiredDwellSeconds = currentLocker.timer || 10;
-
-  if (dwellInterval) {
-    clearInterval(dwellInterval);
-    dwellInterval = null;
-  }
-  lastVisibilityWarnTime = 0;
-
-  // Update Progress Bar
-  const percent = Math.round(((stepNum - 1) / totalSteps) * 100);
-  const stepTemplate = typeof getI18nText === 'function' ? getI18nText('locker_step_text', 'Step {current} of {total} ({percent}%)') : 'Step {current} of {total} ({percent}%)';
-  document.getElementById('progressStepText').textContent = stepTemplate
-    .replace('{current}', stepNum)
-    .replace('{total}', totalSteps)
-    .replace('{percent}', percent);
-
-  document.getElementById('progressBarFill').style.width = `${Math.max(12, percent)}%`;
-
-  // Update instruction rule banner
-  const instructionEl = document.getElementById('lockerInstructionText');
-  if (instructionEl) {
-    const ruleTpl = typeof getI18nText === 'function'
-      ? getI18nText('locker_instruction_dwell', '⚠️ กติกา: ต้องคลิกเปิดหน้าสปอนเซอร์ และค้างอยู่ที่หน้านั้นอย่างน้อย {sec} วินาที (หากปิดก่อนเวลาจะไม่ปลดล็อค)')
-      : '⚠️ กติกา: ต้องคลิกเปิดหน้าสปอนเซอร์ และค้างอยู่ที่หน้านั้นอย่างน้อย {sec} วินาที (หากปิดก่อนเวลาจะไม่ปลดล็อค)';
-    instructionEl.textContent = ruleTpl.replace('{sec}', requiredDwellSeconds);
-  }
-
-  updateTaskItemsUI();
-
-  // If this step is already completed
-  if (completedSteps[stepNum]) {
-    setButtonStepCompleted(stepNum);
-    return;
-  }
-
-  // Step needs user to click to open the sponsor ad
-  stepStatus[stepNum] = 'IDLE';
-  setButtonPromptOpenAd(stepNum);
-}
-
-// Update task items visual states
-function updateTaskItemsUI() {
-  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_task_done', 'เสร็จสิ้นแล้ว') : 'เสร็จสิ้นแล้ว';
-  const dwellingText = typeof getI18nText === 'function' ? getI18nText('locker_task_status_dwelling', 'กำลังดู ({sec} วิ)') : 'กำลังดู ({sec} วิ)';
-  const waitingText = typeof getI18nText === 'function' ? getI18nText('locker_task_status_waiting', 'รอเปิดโฆษณา') : 'รอเปิดโฆษณา';
-  const pendingText = typeof getI18nText === 'function' ? getI18nText('locker_task_pending', 'รอดำเนินการ') : 'รอดำเนินการ';
+// Update the visual pill state of the 3 buttons
+function updateButtonsVisualState() {
+  const readyText = typeof getI18nText === 'function' ? getI18nText('locker_action_ready', '👉 กดเริ่ม (30 วิ)') : '👉 กดเริ่ม (30 วิ)';
+  const doneText = typeof getI18nText === 'function' ? getI18nText('locker_action_done', '✅ ผ่านแล้ว') : '✅ ผ่านแล้ว';
+  const lockedText = typeof getI18nText === 'function' ? getI18nText('locker_action_locked', '🔒 รอด่านก่อนหน้า') : '🔒 รอด่านก่อนหน้า';
 
   for (let i = 1; i <= totalSteps; i++) {
     const item = document.getElementById(`taskItem_${i}`);
-    const status = document.getElementById(`taskStatus_${i}`);
+    const pill = document.getElementById(`taskPill_${i}`);
     const icon = document.getElementById(`taskIcon_${i}`);
-    if (!item || !status) continue;
+    if (!item || !pill) continue;
 
     if (completedSteps[i]) {
+      // Completed State
       item.className = 'task-item completed';
-      status.innerHTML = `<i data-lucide="check-circle" style="width: 14px; height: 14px; color: #10B981;"></i> <span>${doneText}</span>`;
+      pill.innerHTML = `<div class="btn-task-action completed"><i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> <span>${doneText}</span></div>`;
       if (icon) icon.innerHTML = `<i data-lucide="check" style="width: 16px; height: 16px;"></i>`;
-    } else if (i === currentStepIndex) {
-      if (stepStatus[i] === 'DWELLING') {
-        item.className = 'task-item active';
-        const elapsed = Math.floor((Date.now() - (stepAdOpenedAt[i] || Date.now())) / 1000);
-        const rem = Math.max(0, requiredDwellSeconds - elapsed);
-        status.innerHTML = `<i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px; color: #F59E0B;"></i> <span>${dwellingText.replace('{sec}', rem)}</span>`;
-      } else {
-        item.className = 'task-item active';
-        status.innerHTML = `<i data-lucide="external-link" style="width: 14px; height: 14px; color: #818CF8;"></i> <span>${waitingText}</span>`;
-      }
+    } else if (activeDwellingStep === i) {
+      // Currently Dwelling State
+      item.className = 'task-item dwelling';
+      const elapsed = Math.floor((Date.now() - (stepAdOpenedAt[i] || Date.now())) / 1000);
+      const remaining = Math.max(0, requiredDwellSeconds - elapsed);
+      const dwellingTpl = typeof getI18nText === 'function' ? getI18nText('locker_action_dwelling', '⏳ ค้างอีก {sec} วิ') : '⏳ ค้างอีก {sec} วิ';
+      pill.innerHTML = `<div class="btn-task-action dwelling"><i data-lucide="loader-2" class="spin" style="width: 14px; height: 14px;"></i> <span>${dwellingTpl.replace('{sec}', remaining)}</span></div>`;
+    } else if (i === 1 || completedSteps[i - 1]) {
+      // Unlocked / Ready to Click
+      item.className = 'task-item ready-to-click';
+      pill.innerHTML = `<div class="btn-task-action ready"><span>${readyText}</span></div>`;
     } else {
-      item.className = 'task-item';
-      status.innerHTML = `<i data-lucide="circle" style="width: 14px; height: 14px;"></i> <span>${pendingText}</span>`;
+      // Locked State
+      item.className = 'task-item locked';
+      pill.innerHTML = `<div class="btn-task-action locked"><i data-lucide="lock" style="width: 12px; height: 12px;"></i> <span>${lockedText}</span></div>`;
     }
   }
-  lucide.createIcons();
-}
-
-// Set button in "Click to open sponsor ad" prompt state
-function setButtonPromptOpenAd(stepNum) {
-  const btn = document.getElementById('btnContinue');
-  const btnText = document.getElementById('btnText');
-  const btnIcon = document.getElementById('btnIcon');
-
-  btn.disabled = false;
-  btn.className = 'btn-locker-continue btn-need-action';
-
-  const promptTpl = typeof getI18nText === 'function'
-    ? getI18nText('locker_btn_open_ad', '👉 คลิกเปิดหน้าโฆษณา (ด่านที่ {step}/{total})')
-    : '👉 คลิกเปิดหน้าโฆษณา (ด่านที่ {step}/{total})';
-
-  btnText.textContent = promptTpl.replace('{step}', stepNum).replace('{total}', totalSteps);
-  btnIcon.className = '';
-  btnIcon.setAttribute('data-lucide', 'external-link');
-  btn.onclick = () => handleOpenAdAndStartDwell(stepNum);
 
   lucide.createIcons();
 }
 
-// User action: Open the sponsor ad in a new tab & start dwell countdown
-function handleOpenAdAndStartDwell(stepNum = currentStepIndex) {
-  // If already completed this step, proceed or unlock
-  if (completedSteps[stepNum]) {
-    if (stepNum < totalSteps) {
-      startStep(stepNum + 1);
-    } else {
-      unlockContent();
-    }
+// User clicking directly on one of the 3 Task Buttons
+window.handleTaskButtonClick = function(btnIndex) {
+  // Check if previous buttons completed
+  if (btnIndex > 1 && !completedSteps[btnIndex - 1]) {
+    const prevWarn = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? `⚠️ กรุณากดทำปุ่มที่ ${btnIndex - 1} ให้ผ่านก่อน!`
+      : `⚠️ Please complete Button ${btnIndex - 1} first!`;
+    showToast(prevWarn, 'warning', 3500);
     return;
   }
 
-  // Open the ad in a new tab
-  triggerSmartlinkAd(stepNum);
+  // Already completed this button
+  if (completedSteps[btnIndex]) {
+    const doneNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? `✅ ปุ่มที่ ${btnIndex} ผ่านการยืนยัน 30 วินาทีเรียบร้อยแล้ว!`
+      : `✅ Button ${btnIndex} has already completed the 30s dwell!`;
+    showToast(doneNotice, 'success', 2500);
+    return;
+  }
 
-  // Record timestamp & status
-  stepAdOpenedAt[stepNum] = Date.now();
-  stepStatus[stepNum] = 'DWELLING';
+  // Clicked while currently dwelling on this button -> Re-open/refocus ad
+  if (activeDwellingStep === btnIndex) {
+    triggerSmartlinkAd(btnIndex);
+    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[btnIndex]) / 1000);
+    const remaining = Math.max(0, requiredDwellSeconds - elapsed);
+    const refocusMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? `เปิดหน้าโฆษณาตัวที่ ${btnIndex} ให้ใหม่อีกครั้ง กรุณาค้างไว้อีก ${remaining} วินาที...`
+      : `Re-opened ad ${btnIndex}. Please stay on it for ${remaining}s more...`;
+    showToast(refocusMsg, 'info', 3000);
+    return;
+  }
+
+  // Start new dwell for this button!
+  activeDwellingStep = btnIndex;
+  stepAdOpenedAt[btnIndex] = Date.now();
   lastVisibilityWarnTime = 0;
 
-  const dwellSec = requiredDwellSeconds;
-  const dwellNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-    ? `🚀 เปิดหน้าสปอนเซอร์แล้ว! กรุณาค้างอยู่ที่หน้าโฆษณาอย่างน้อย ${dwellSec} วินาทีเพื่อปลดล็อค`
-    : `🚀 Sponsor ad opened! Please stay on the ad page for at least ${dwellSec} seconds.`;
-  showToast(dwellNotice, 'info', 4000);
+  // Open the ad in a new tab
+  triggerSmartlinkAd(btnIndex);
 
-  updateTaskItemsUI();
-  startDwellWatcher(stepNum);
-}
+  const startMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+    ? `🚀 เปิดโฆษณาปุ่มที่ ${btnIndex} แล้ว! กรุณาค้างอยู่ที่หน้าโฆษณา 30 วินาที...`
+    : `🚀 Opened Ad for Button ${btnIndex}! Please stay on the page for 30 seconds...`;
+  showToast(startMsg, 'info', 4000);
 
-// Watch dwell time strictly
-function startDwellWatcher(stepNum) {
+  updateButtonsVisualState();
+  startDwellCountdown(btnIndex);
+};
+
+// Dwell Countdown (30 seconds)
+function startDwellCountdown(btnIndex) {
   if (dwellInterval) clearInterval(dwellInterval);
 
-  updateDwellButtonUI(stepNum, requiredDwellSeconds);
-
   dwellInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[stepNum]) / 1000);
+    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[btnIndex]) / 1000);
     const remaining = Math.max(0, requiredDwellSeconds - elapsed);
 
     if (remaining > 0) {
-      updateDwellButtonUI(stepNum, remaining);
-      updateTaskItemsUI();
+      updateButtonsVisualState();
+      updateProgressUI();
     } else {
-      // Completed dwell time!
+      // 30 seconds dwell completed!
       clearInterval(dwellInterval);
       dwellInterval = null;
-      onStepDwellVerified(stepNum);
+      onButtonDwellVerified(btnIndex);
     }
   }, 500);
 }
 
-// Update button appearance during dwell
-function updateDwellButtonUI(stepNum, remaining) {
-  const btn = document.getElementById('btnContinue');
-  const btnText = document.getElementById('btnText');
-  const btnIcon = document.getElementById('btnIcon');
+// When a button completes its 30s dwell verification
+function onButtonDwellVerified(btnIndex) {
+  completedSteps[btnIndex] = true;
+  activeDwellingStep = null;
 
-  btn.disabled = false; // Allow clicking to re-open/return to ad if they lost it
-  btn.className = 'btn-locker-continue btn-dwelling';
-
-  const dwellTpl = typeof getI18nText === 'function'
-    ? getI18nText('locker_btn_dwelling', '⏳ กำลังดูโฆษณา... เหลืออีก {sec} วิ')
-    : '⏳ กำลังดูโฆษณา... เหลืออีก {sec} วิ';
-
-  btnText.textContent = dwellTpl.replace('{sec}', remaining);
-  btnIcon.className = 'spin';
-  btnIcon.setAttribute('data-lucide', 'loader-2');
-
-  btn.onclick = () => {
-    triggerSmartlinkAd(stepNum);
-    const returnMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-      ? `เปิดหน้าโฆษณาให้ใหม่อีกครั้ง กรุณาค้างไว้อีก ${remaining} วินาที...`
-      : `Re-opened ad. Please stay on it for ${remaining}s more...`;
-    showToast(returnMsg, 'info', 3000);
-  };
-
-  lucide.createIcons();
-}
-
-// When dwell duration is verified
-function onStepDwellVerified(stepNum) {
-  completedSteps[stepNum] = true;
-  stepStatus[stepNum] = 'COMPLETED';
-
-  // Update progress bar
-  const percent = Math.round((stepNum / totalSteps) * 100);
-  document.getElementById('progressBarFill').style.width = `${percent}%`;
-
-  updateTaskItemsUI();
+  updateButtonsVisualState();
+  updateProgressUI();
+  updateBottomButtonUI();
 
   const successMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-    ? `✅ ผ่านด่านที่ ${stepNum} เรียบร้อยแล้ว! (ดูครบ ${requiredDwellSeconds} วินาที)`
-    : `✅ Step ${stepNum} verified! (${requiredDwellSeconds}s dwell complete)`;
+    ? `✅ ปุ่มที่ ${btnIndex} ผ่านแล้ว! (ดูครบ 30 วินาทีเต็ม)`
+    : `✅ Button ${btnIndex} Verified! (30s dwell completed)`;
   showToast(successMsg, 'success', 3500);
 
-  setButtonStepCompleted(stepNum);
+  // Check if all 3 buttons are completed!
+  if (completedSteps[1] && completedSteps[2] && completedSteps[3]) {
+    const allDoneMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? '🎉 ยอดเยี่ยม! ผ่านครบทั้ง 3 ปุ่มแล้ว กำลังปลดล็อคเข้าสู่เว็บไซต์...'
+      : '🎉 Excellent! All 3 buttons verified! Unlocking website...';
+    showToast(allDoneMsg, 'success', 4000);
+
+    setTimeout(() => {
+      unlockContent();
+    }, 1200);
+  }
 }
 
-// Set button in verified / continue state
-function setButtonStepCompleted(stepNum) {
+// Progress Bar & Step Text Calculation
+function updateProgressUI() {
+  const doneCount = [completedSteps[1], completedSteps[2], completedSteps[3]].filter(Boolean).length;
+  let fraction = doneCount / totalSteps;
+
+  if (activeDwellingStep && !completedSteps[activeDwellingStep]) {
+    const elapsed = Math.floor((Date.now() - stepAdOpenedAt[activeDwellingStep]) / 1000);
+    const currentProgress = Math.min(1, elapsed / requiredDwellSeconds);
+    fraction = (doneCount + currentProgress) / totalSteps;
+  }
+
+  const percent = Math.min(100, Math.round(fraction * 100));
+
+  const stepTemplate = typeof getI18nText === 'function'
+    ? getI18nText('locker_step_text', 'ทำสำเร็จ {current} จาก {total} ปุ่ม ({percent}%)')
+    : 'ทำสำเร็จ {current} จาก {total} ปุ่ม ({percent}%)';
+
+  document.getElementById('progressStepText').textContent = stepTemplate
+    .replace('{current}', doneCount)
+    .replace('{total}', totalSteps)
+    .replace('{percent}', percent);
+
+  document.getElementById('progressBarFill').style.width = `${Math.max(8, percent)}%`;
+}
+
+// Bottom Action / Unlock Status Button
+function updateBottomButtonUI() {
   const btn = document.getElementById('btnContinue');
   const btnText = document.getElementById('btnText');
   const btnIcon = document.getElementById('btnIcon');
+  if (!btn || !btnText) return;
 
-  btn.disabled = false;
+  const doneCount = [completedSteps[1], completedSteps[2], completedSteps[3]].filter(Boolean).length;
 
-  if (stepNum < totalSteps) {
-    btn.className = 'btn-locker-continue btn-step-done';
-    const contTemplate = typeof getI18nText === 'function'
-      ? getI18nText('locker_btn_step_passed', '✅ ผ่านด่านที่ {step} แล้ว! ไปต่อด่านที่ {next} ➔')
-      : '✅ ผ่านด่านที่ {step} แล้ว! ไปต่อด่านที่ {next} ➔';
-    btnText.textContent = contTemplate.replace('{step}', stepNum).replace('{next}', stepNum + 1);
-    btnIcon.className = '';
-    btnIcon.setAttribute('data-lucide', 'arrow-right');
-    btn.onclick = () => startStep(stepNum + 1);
-  } else {
-    // Final Step &rarr; Unlock Button
+  if (doneCount >= totalSteps) {
+    // All 3 Completed!
+    btn.disabled = false;
     btn.className = 'btn-locker-continue btn-unlock';
     btnText.textContent = typeof getI18nText === 'function'
-      ? getI18nText('locker_btn_all_passed', '🎉 ยืนยันครบทุกด่านแล้ว! คลิกปลดล็อคเว็บไซต์ 🔓')
-      : '🎉 ยืนยันครบทุกด่านแล้ว! คลิกปลดล็อคเว็บไซต์ 🔓';
+      ? getI18nText('locker_bottom_unlock', '🎉 ผ่านครบทั้ง 3 ปุ่มแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓')
+      : '🎉 ผ่านครบทั้ง 3 ปุ่มแล้ว! ปลดล็อคเข้าสู่เว็บไซต์ 🔓';
     btnIcon.className = '';
     btnIcon.setAttribute('data-lucide', 'unlock');
-    btn.onclick = unlockContent;
+    btn.onclick = () => unlockContent();
+  } else {
+    // Waiting for completion
+    btn.disabled = true;
+    btn.className = 'btn-locker-continue';
+    const waitingTpl = typeof getI18nText === 'function'
+      ? getI18nText('locker_bottom_waiting', '🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ผ่านแล้ว {done}/3)')
+      : '🔒 กดทำภารกิจให้ครบ 3 ปุ่ม (ผ่านแล้ว {done}/3)';
+    btnText.textContent = waitingTpl.replace('{done}', doneCount);
+    btnIcon.className = '';
+    btnIcon.setAttribute('data-lucide', 'lock');
   }
 
   lucide.createIcons();
 }
 
 function updateLockerLanguage() {
-  renderTasks();
-  startStep(currentStepIndex);
+  renderTaskButtons();
+  updateProgressUI();
+  updateBottomButtonUI();
 }
 
-// User clicking on a task item
-window.handleTaskItemClick = function(stepNum) {
-  if (completedSteps[stepNum]) {
-    const doneNotice = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-      ? `ด่านที่ ${stepNum} ผ่านการยืนยันแล้ว!`
-      : `Step ${stepNum} is already verified!`;
-    showToast(doneNotice, 'success');
-    return;
-  }
-
-  if (stepNum === currentStepIndex) {
-    handleOpenAdAndStartDwell(stepNum);
-  } else if (stepNum > currentStepIndex) {
-    const waitPrev = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-      ? `กรุณาทำด่านที่ ${currentStepIndex} ให้เสร็จก่อน!`
-      : `Please complete Step ${currentStepIndex} first!`;
-    showToast(waitPrev, 'warning');
-  }
-};
-
-// Real Ad Trigger & Smartlink Navigation
-function triggerSmartlinkAd(stepNum = currentStepIndex) {
+// Real Ad Trigger (Links 1, 2, 3)
+function triggerSmartlinkAd(btnIndex = 1) {
   const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
   const globalAds = settings?.ads || {};
 
-  // Check step-specific URLs first (OrinRankone Adsterra Smartlinks)
+  // Check step-specific URLs (OrinRankone 3 Adsterra Smartlinks)
   let stepUrl = '';
-  if (stepNum === 1) stepUrl = globalAds.step1Url || 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
-  else if (stepNum === 2) stepUrl = globalAds.step2Url || 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
-  else if (stepNum === 3) stepUrl = globalAds.step3Url || 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
+  if (btnIndex === 1) stepUrl = globalAds.step1Url || 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  else if (btnIndex === 2) stepUrl = globalAds.step2Url || 'https://asiafilm.org/4/d8707d797617eddbed2038e5921285e3';
+  else if (btnIndex === 3) stepUrl = globalAds.step3Url || 'https://asiafilm.org/4/15645e0d7a0b92a6fcc92b70cbee607d';
 
-  // Prioritize Locker-specific smartlink, then step-specific, then fallback to global smartlink
-  const targetSmartlink = (currentLocker?.smartlinkUrl && currentLocker.smartlinkUrl.trim())
-    ? currentLocker.smartlinkUrl.trim()
-    : (stepUrl && stepUrl.trim())
-      ? stepUrl.trim()
-      : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
-        ? globalAds.smartlinkUrl.trim()
-        : 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
+  const targetSmartlink = (stepUrl && stepUrl.trim())
+    ? stepUrl.trim()
+    : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
+      ? globalAds.smartlinkUrl.trim()
+      : 'https://asiafilm.org/4/1c188bbb2ce8a02bfa3ee2ad75de4c53';
 
   try {
     const adWindow = window.open(targetSmartlink, '_blank');
@@ -401,11 +345,6 @@ function triggerSmartlinkAd(stepNum = currentStepIndex) {
   } catch (e) {
     console.warn('[BlackPass] Popup blocked by browser policy:', e);
   }
-}
-
-// Backward-compatible alias
-function simulatePopunderAd(stepNum) {
-  triggerSmartlinkAd(stepNum);
 }
 
 // Clean Ad Injector Engine (Filters out 18+ and adult spam)
@@ -418,7 +357,6 @@ function initAdInjectors() {
     const bannerContainer = document.getElementById('adBannerMock');
     if (bannerContainer) {
       const lower = ads.bannerCode.toLowerCase();
-      // Block suspicious adult scripts
       if (lower.includes('porn') || lower.includes('xxx') || lower.includes('erotic') || lower.includes('dating18')) {
         console.warn('[BlackPass Shield] Blocked suspicious 18+ banner code');
       } else {
@@ -434,11 +372,10 @@ function initAdInjectors() {
     }
   }
 
-  // 2. Popunder / Push script: Block intrusive 18+ social bar / push scripts
+  // 2. Popunder script: Block intrusive 18+ social bar / push scripts
   if (ads.popunderScript && ads.popunderScript.trim()) {
     const popVal = ads.popunderScript.trim();
     const lower = popVal.toLowerCase();
-    // Block known intrusive adult networks and social bars
     if (lower.includes('accountut') || lower.includes('bellnewyork') || lower.includes('adult') || lower.includes('sex') || lower.includes('erotic')) {
       console.warn('[BlackPass Shield] Blocked 18+ spam script:', popVal);
       return;
@@ -453,16 +390,15 @@ function initAdInjectors() {
   }
 }
 
-// Unlock Content Trigger - Strictly enforced dwell verification
+// Unlock Content Trigger - Strictly enforced dwell verification on all 3 buttons
 function unlockContent() {
-  // CRITICAL ANTI-BYPASS: "ถ้าไม่ค้างอยู่หน้า โฆษณา ไม่ต้องลบ"
+  // CRITICAL CHECK: Must complete all 3 buttons 30s dwell
   for (let s = 1; s <= totalSteps; s++) {
     if (!completedSteps[s]) {
       const err = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
-        ? `⛔ ด่านที่ ${s} ยังไม่ผ่านเงื่อนไขการดูโฆษณา! กรุณาเปิดดูโฆษณาให้ครบเวลา`
-        : `⛔ Step ${s} not verified! You must stay on the sponsor page to unlock.`;
+        ? `⛔ ปุ่มที่ ${s} ยังไม่ผ่านการดูโฆษณา 30 วินาที! กรุณากดทำภารกิจให้ครบ`
+        : `⛔ Button ${s} not verified for 30s! Please complete all 3 buttons.`;
       showToast(err, 'error', 4000);
-      startStep(s);
       return;
     }
   }
@@ -475,7 +411,7 @@ function unlockContent() {
   const successView = document.getElementById('lockerSuccessView');
   successView.classList.add('active');
 
-  // Resolve destination URL (Support return_to or currentLocker destination)
+  // Resolve destination URL
   const urlParams = new URLSearchParams(window.location.search);
   const returnTo = urlParams.get('return_to') || urlParams.get('redirect') || '';
 
