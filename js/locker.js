@@ -14,6 +14,8 @@ let dwellSessionStart = { 1: null, 2: null, 3: null };
 let activeDwellingStep = null;
 let backgroundTicker = null;
 let lastToastTime = 0;
+let serverSessionTicket = null;
+let isVipBypassed = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadLockerData();
@@ -47,11 +49,24 @@ async function loadLockerData() {
       id: 'gf_hub_access',
       name: 'Blacklist Script Hub Access',
       slug: 'hub-access',
-      destinationUrl: 'https://th.blacklisthub.workers.dev/?auth_success=1',
+      destinationUrl: 'https://th.blacklisthub.workers.dev/',
       steps: 3,
       timer: 30,
       ads: { popunder: false, banner: true, smartlink: true }
     };
+  }
+
+  // Request Server-Side Anti-Bypass Ticket from Worker / Local Server
+  try {
+    const ticketRes = await fetch(`/api/gate/start?slug=${encodeURIComponent(currentLocker.slug || 'hub-access')}`);
+    if (ticketRes.ok) {
+      const ticketData = await ticketRes.json();
+      if (ticketData.success && ticketData.ticket) {
+        serverSessionTicket = ticketData.ticket;
+      }
+    }
+  } catch (e) {
+    console.warn('[BlackPass] Failed to fetch server gate ticket:', e);
   }
 
   // Record click impression
@@ -531,8 +546,8 @@ function initAdInjectors() {
 }
 
 // Unlock Content Trigger - Strictly enforced dwell verification on all 3 buttons
-function unlockContent() {
-  // CRITICAL CHECK: Must complete all 3 buttons 30s dwell
+async function unlockContent() {
+  // CRITICAL CHECK: Must complete all 3 buttons 30s dwell on client
   for (let s = 1; s <= totalSteps; s++) {
     if (!completedSteps[s]) {
       const err = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
@@ -540,6 +555,32 @@ function unlockContent() {
         : `⛔ Button ${s} not verified for 30s! Please complete all 3 buttons.`;
       showToast(err, 'error', 4000);
       return;
+    }
+  }
+
+  // Server-Side Anti-Bypass Check: Submit Ticket to Worker
+  let passToken = null;
+  if (!isVipBypassed && serverSessionTicket) {
+    try {
+      const verifyRes = await fetch('/api/gate/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ticket: serverSessionTicket,
+          steps: [1, 2, 3]
+        })
+      });
+
+      const verifyData = await verifyRes.json();
+      if (!verifyRes.ok || !verifyData.success) {
+        const errMsg = verifyData.error || '⛔ ตรวจพบการพยายามข้ามด่าน! เวลาดูโฆษณาไม่ครบตามที่เซิร์ฟเวอร์กำหนด';
+        showToast(errMsg, 'error', 5500);
+        return;
+      }
+
+      passToken = verifyData.passToken;
+    } catch (e) {
+      console.warn('[BlackPass] Server verification error:', e);
     }
   }
 
@@ -555,9 +596,12 @@ function unlockContent() {
   const urlParams = new URLSearchParams(window.location.search);
   const returnTo = urlParams.get('return_to') || urlParams.get('redirect') || '';
 
-  let destUrl = returnTo || currentLocker?.destinationUrl || 'https://th.blacklisthub.workers.dev/?auth_success=1';
-  if (!destUrl.includes('auth_success=1')) {
-    destUrl = destUrl.includes('?') ? `${destUrl}&auth_success=1` : `${destUrl}?auth_success=1`;
+  let destUrl = returnTo || currentLocker?.destinationUrl || 'https://th.blacklisthub.workers.dev/';
+  destUrl = destUrl.replace(/[?&]auth_success=[^&]*/g, '');
+
+  if (passToken) {
+    const separator = destUrl.includes('?') ? '&' : '?';
+    destUrl = `${destUrl}${separator}pass_token=${encodeURIComponent(passToken)}`;
   }
 
   // Set 24-Hour Authorization immediately across localStorage & sessionStorage
@@ -565,6 +609,9 @@ function unlockContent() {
     const expiry24h = Date.now() + (24 * 60 * 60 * 1000);
     localStorage.setItem('blacklist_lootlabs_auth_expiry', String(expiry24h));
     sessionStorage.setItem('blacklist_lootlabs_auth', 'true');
+    if (passToken) {
+      localStorage.setItem('blackpass_token', passToken);
+    }
     localStorage.setItem('blacklist_lootlabs_unlocked_event', String(Date.now()));
     window.dispatchEvent(new Event('storage'));
   } catch(e) {}
@@ -627,6 +674,7 @@ function initVipModal() {
       // Valid test keys
       if (key.includes('VIP') || key === 'ADMIN' || key === 'BYPASS' || key === '30BAHT') {
         closeVipModal();
+        isVipBypassed = true;
         const successMsg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'ตรวจสอบคีย์ VIP สำเร็จ! กำลังข้ามด่านทั้งหมด...' : 'VIP Key validated! Bypassing all tasks...';
         showToast(successMsg, 'success', 2000);
         setTimeout(() => {
