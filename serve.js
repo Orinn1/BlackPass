@@ -157,6 +157,12 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (reqPath === '/shorten' || reqPath === '/shrink') {
+    res.writeHead(302, { Location: `/index.html` });
+    res.end();
+    return;
+  }
+
   // --- Static Files Serving ---
   if (reqPath.startsWith('/gateflow/')) {
     reqPath = reqPath.replace('/gateflow', '');

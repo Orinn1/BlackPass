@@ -62,6 +62,77 @@
         เปลี่ยนสคริปต์ Roblox, ไฟล์ดาวน์โหลด และลิงก์เนื้อหาของคุณให้เป็นรายได้ต่อเนื่อง ด้วยระบบด่านภารกิจ, ระบบกันบอท Anti-Bypass และระบบถอนเงินเข้า TrueMoney / PromptPay ทันใจ
       </p>
 
+      <!-- ShrinkEarn-Style Clean Hero Shortener Box (ช่องย่อลิงก์แบบ ShrinkEarn) -->
+      <div class="hero-shortener-container">
+        <form id="publicShortenForm" class="hero-shorten-form">
+          <div class="hero-shorten-bar">
+            <div class="hero-shorten-input-icon">
+              <i data-lucide="link-2" style="width: 22px; height: 22px; color: #6366F1;"></i>
+            </div>
+            <input 
+              type="url" 
+              id="publicTargetUrl" 
+              class="hero-shorten-input" 
+              placeholder="วางลิงก์ของคุณที่นี่... (เช่น https://pastebin.com/... หรือ ลิงก์ดาวน์โหลด)" 
+              required 
+              autocomplete="off"
+            />
+            <button type="submit" class="hero-shorten-btn" id="btnPublicShorten">
+              <span>ย่อลิงก์ทันที</span>
+              <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+            </button>
+          </div>
+          <!-- Optional custom alias -->
+          <div class="hero-shorten-options">
+            <span style="font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+              <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #10B981;"></i>
+              <span>ได้เงินค่าคลิกสะสมเข้ากระเป๋าทันทีที่คนทำครบ 30 วิ (เรท $5.50 CPM)</span>
+            </span>
+            <div class="hero-alias-wrap">
+              <span class="hero-alias-prefix">/l/</span>
+              <input type="text" id="publicAliasInput" class="hero-alias-input" placeholder="ตั้งชื่อย่อเอง (ไม่บังคับ)" pattern="[a-zA-Z0-9-_]+" />
+            </div>
+          </div>
+        </form>
+
+        <!-- Result Box (Hidden by default, shows upon submit) -->
+        <div id="publicShortenResult" class="hero-shorten-result" style="display: none;">
+          <div class="result-top-row">
+            <div class="result-url-badge">
+              <i data-lucide="check-circle-2" style="color: #10B981; width: 22px; height: 22px; flex-shrink: 0;"></i>
+              <span id="publicGeneratedLink" class="result-link-text"></span>
+            </div>
+            <div class="result-btn-group">
+              <button type="button" class="btn btn-primary btn-sm" id="btnCopyPublicShort">
+                <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
+                <span>คัดลอกลิงก์</span>
+              </button>
+              <a href="#" target="_blank" class="btn btn-secondary btn-sm" id="btnTestPublicShort">
+                <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+                <span>ทดสอบเปิด</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Earnings Notice & Connect to Wallet -->
+          <div class="result-payout-banner">
+            <div class="result-payout-text">
+              <i data-lucide="coins" style="color: #F59E0B; width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px;"></i>
+              <div>
+                <strong>💰 ลิงก์นี้เริ่มนับยอดเงินให้คุณแล้ว!</strong>
+                <p>คนผ่านด่าน 3 ปุ่ม 30 วิ เมื่อไหร่ เงินจะเข้ากระเป๋าคุณอัตโนมัติ ถอนเงินเข้า TrueMoney Wallet หรือ PromptPay ได้ทันที</p>
+              </div>
+            </div>
+            <div class="result-payout-actions">
+              <a href="dashboard.html" class="btn btn-warning btn-sm" style="background: #F59E0B; color: #000; font-weight: 700;">
+                <i data-lucide="wallet" style="width: 15px; height: 15px;"></i>
+                <span>เข้าสู่กระเป๋าเงินเพื่อดูยอด / แจ้งถอนเงิน</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="hero-cta-group">
         <a href="dashboard.html" class="btn btn-primary btn-lg">
           <i data-lucide="lock" style="width: 18px; height: 18px;"></i>
