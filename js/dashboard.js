@@ -349,6 +349,7 @@ function initCreateLockerForm() {
     const popunder = document.getElementById('togglePopunder').checked;
     const banner = document.getElementById('toggleBanner').checked;
     const antiBypass = document.getElementById('toggleAntiBypass').checked;
+    const smartlinkUrl = document.getElementById('inputLockerSmartlink')?.value || '';
 
     const newLocker = await GateStore.createLocker({
       name,
@@ -357,6 +358,7 @@ function initCreateLockerForm() {
       steps: Number(steps),
       timer: Number(timer),
       antiBypass,
+      smartlinkUrl,
       ads: { popunder, banner, smartlink: true }
     });
 
@@ -419,7 +421,54 @@ function initPayoutForm() {
 }
 
 // Settings Handlers
+function loadSettingsToUI() {
+  const settings = GateStore.getSettings();
+
+  const usernameInput = document.getElementById('settingsUsername');
+  if (usernameInput && settings.profile?.username) {
+    usernameInput.value = settings.profile.username;
+  }
+
+  const emailInput = document.getElementById('settingsEmail');
+  if (emailInput) {
+    emailInput.value = settings.profile?.email || (GateStore.currentUser ? GateStore.currentUser.email : '');
+  }
+
+  const customDomainInput = document.getElementById('settingsCustomDomain');
+  if (customDomainInput && settings.customDomain) {
+    customDomainInput.value = settings.customDomain;
+  }
+
+  const webhookInput = document.getElementById('settingsWebhookUrl');
+  if (webhookInput && settings.api?.webhookUrl) {
+    webhookInput.value = settings.api.webhookUrl;
+  }
+
+  const networkSelect = document.getElementById('settingsAdNetwork');
+  if (networkSelect && settings.ads?.network) {
+    networkSelect.value = settings.ads.network;
+  }
+
+  const smartlinkInput = document.getElementById('settingsSmartlinkUrl');
+  if (smartlinkInput && settings.ads?.smartlinkUrl) {
+    smartlinkInput.value = settings.ads.smartlinkUrl;
+  }
+
+  const popunderInput = document.getElementById('settingsPopunderScript');
+  if (popunderInput && settings.ads?.popunderScript) {
+    popunderInput.value = settings.ads.popunderScript;
+  }
+
+  const bannerInput = document.getElementById('settingsBannerCode');
+  if (bannerInput && settings.ads?.bannerCode) {
+    bannerInput.value = settings.ads.bannerCode;
+  }
+}
+
 function initSettingsForm() {
+  loadSettingsToUI();
+
+  // Save Publisher Profile
   document.getElementById('btnSaveProfile')?.addEventListener('click', () => {
     const username = document.getElementById('settingsUsername').value;
     const email = document.getElementById('settingsEmail').value;
@@ -431,18 +480,55 @@ function initSettingsForm() {
     const sbUsername = document.getElementById('sidebarUsername');
     if (sbUsername) sbUsername.textContent = username;
 
-    showToast('Publisher profile saved successfully.', 'success');
+    const msg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'บันทึกข้อมูลส่วนตัวสำเร็จแล้ว' : 'Publisher profile saved successfully.';
+    showToast(msg, 'success');
   });
 
+  // Save Ad Network & Monetization Configuration
+  document.getElementById('btnSaveAdSettings')?.addEventListener('click', () => {
+    const network = document.getElementById('settingsAdNetwork')?.value || 'adsterra';
+    const smartlinkUrl = (document.getElementById('settingsSmartlinkUrl')?.value || '').trim();
+    const popunderScript = (document.getElementById('settingsPopunderScript')?.value || '').trim();
+    const bannerCode = (document.getElementById('settingsBannerCode')?.value || '').trim();
+
+    const settings = GateStore.getSettings();
+    settings.ads = {
+      network,
+      smartlinkUrl,
+      popunderScript,
+      bannerCode
+    };
+    GateStore.saveSettings(settings);
+
+    const msg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th')
+      ? 'บันทึกการตั้งค่าโฆษณาเรียบร้อยแล้ว! ทุกคลิกจะสร้างรายได้เข้าบัญชีของคุณโดยตรง'
+      : 'Ad Network configuration saved! Traffic will now monetize directly to your account.';
+    showToast(msg, 'success');
+  });
+
+  // Save Custom Domain
+  document.getElementById('btnSaveCustomDomain')?.addEventListener('click', () => {
+    const domain = (document.getElementById('settingsCustomDomain')?.value || '').trim();
+    const settings = GateStore.getSettings();
+    settings.customDomain = domain;
+    GateStore.saveSettings(settings);
+
+    const msg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'บันทึกโดเมนกำหนดเองเรียบร้อยแล้ว' : 'Custom domain saved successfully.';
+    showToast(msg, 'success');
+  });
+
+  // Save API & Webhook
   document.getElementById('btnSaveApiSettings')?.addEventListener('click', () => {
     const webhookUrl = document.getElementById('settingsWebhookUrl').value;
     const settings = GateStore.getSettings();
     settings.api = settings.api || {};
     settings.api.webhookUrl = webhookUrl;
     GateStore.saveSettings(settings);
-    showToast('Webhook endpoint and API parameters updated.', 'success');
+    const msg = (typeof getI18nText === 'function' && window.currentAppLanguage === 'th') ? 'บันทึกการตั้งค่า Webhook & API เรียบร้อยแล้ว' : 'Webhook endpoint and API parameters updated.';
+    showToast(msg, 'success');
   });
 
+  // Danger Zone: Reset
   document.getElementById('btnResetAllData')?.addEventListener('click', () => {
     const confirmMsg = typeof getI18nText === 'function' ? getI18nText('reset_confirm_msg', 'คุณต้องการรีเซ็ตข้อมูลทั้งหมดในระบบให้เป็นค่าว่างเปล่า (0) ใช่หรือไม่?') : 'Are you sure you want to reset all platform data to completely empty (0)?';
     if (confirm(confirmMsg)) {
@@ -452,6 +538,7 @@ function initSettingsForm() {
       renderLockersTable('allLockersTableBody');
       drawChart();
       renderAnalyticsDailyTable();
+      loadSettingsToUI();
       const successMsg = typeof getI18nText === 'function' ? getI18nText('reset_success_msg', 'รีเซ็ตข้อมูลทั้งหมดเป็นค่าว่างเรียบร้อยแล้ว!') : 'All platform data reset to blank successfully!';
       showToast(successMsg, 'success');
     }

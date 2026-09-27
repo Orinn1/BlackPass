@@ -242,6 +242,7 @@ class BlackPassStore {
       steps: Number(payload.steps) || 3,
       timer: Number(payload.timer) || 8,
       antiBypass: payload.antiBypass !== false,
+      smartlinkUrl: (payload.smartlinkUrl || '').trim(),
       ads: {
         popunder: payload.ads?.popunder !== false,
         banner: payload.ads?.banner !== false,
@@ -371,12 +372,28 @@ class BlackPassStore {
         walletAccount: '',
         balance: 0.00,
         pendingPayout: 0.00
+      },
+      ads: {
+        smartlinkUrl: '',
+        popunderScript: '',
+        bannerCode: '',
+        network: 'adsterra'
       }
     };
 
     try {
       const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-      return data ? JSON.parse(data) : defaultSettings;
+      if (!data) return defaultSettings;
+      const parsed = JSON.parse(data);
+      if (!parsed.ads) {
+        parsed.ads = {
+          smartlinkUrl: '',
+          popunderScript: '',
+          bannerCode: '',
+          network: 'adsterra'
+        };
+      }
+      return parsed;
     } catch (e) {
       return defaultSettings;
     }
@@ -400,6 +417,12 @@ class BlackPassStore {
         walletAccount: '',
         balance: 0.00,
         pendingPayout: 0.00
+      },
+      ads: {
+        smartlinkUrl: '',
+        popunderScript: '',
+        bannerCode: '',
+        network: 'adsterra'
       }
     };
     this.saveSettings(cleanSettings);

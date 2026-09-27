@@ -48,6 +48,7 @@ async function loadLockerData() {
   document.title = `${currentLocker.name} &mdash; BlackPass Verification`;
 
   renderTasks();
+  initAdInjectors();
   startStep(1);
 }
 
@@ -263,15 +264,72 @@ window.handleTaskItemClick = function(stepNum) {
   }
 };
 
-// Simulate Adsterra / PopAds Popunder tab
-function simulatePopunderAd() {
+// Real Ad Trigger & Popunder Execution Engine
+function triggerSmartlinkAd() {
+  const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
+  const globalAds = settings?.ads || {};
+
+  // Prioritize Locker-specific smartlink, then fallback to global smartlink from Settings
+  const targetSmartlink = (currentLocker?.smartlinkUrl && currentLocker.smartlinkUrl.trim())
+    ? currentLocker.smartlinkUrl.trim()
+    : (globalAds.smartlinkUrl && globalAds.smartlinkUrl.trim())
+      ? globalAds.smartlinkUrl.trim()
+      : 'https://publishers.adsterra.com/referral/demo';
+
   try {
-    const dummyWindow = window.open('https://bellnewyork.org', '_blank');
-    if (dummyWindow) {
+    const adWindow = window.open(targetSmartlink, '_blank');
+    if (adWindow) {
       window.focus();
     }
   } catch (e) {
-    // Popups blocked
+    console.warn('[BlackPass] Popup blocked by browser policy:', e);
+  }
+}
+
+// Backward-compatible alias
+function simulatePopunderAd() {
+  triggerSmartlinkAd();
+}
+
+// Initialize dynamic banner and popunder script injection
+function initAdInjectors() {
+  const settings = (typeof GateStore !== 'undefined' && GateStore.getSettings) ? GateStore.getSettings() : null;
+  const ads = settings?.ads || {};
+
+  // 1. Inject Custom Native Banner if configured
+  if (ads.bannerCode && ads.bannerCode.trim()) {
+    const bannerContainer = document.getElementById('adBannerMock');
+    if (bannerContainer) {
+      bannerContainer.innerHTML = ads.bannerCode;
+      const scripts = Array.from(bannerContainer.querySelectorAll('script'));
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+    }
+  }
+
+  // 2. Inject Popunder / Push script if configured
+  if (ads.popunderScript && ads.popunderScript.trim()) {
+    const popVal = ads.popunderScript.trim();
+    if (popVal.startsWith('http://') || popVal.startsWith('https://') || popVal.startsWith('//')) {
+      const s = document.createElement('script');
+      s.src = popVal;
+      s.async = true;
+      document.head.appendChild(s);
+    } else if (popVal.includes('<script')) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = popVal;
+      const sTags = tempDiv.querySelectorAll('script');
+      sTags.forEach(st => {
+        const s = document.createElement('script');
+        if (st.src) s.src = st.src;
+        if (st.innerHTML) s.innerHTML = st.innerHTML;
+        document.head.appendChild(s);
+      });
+    }
   }
 }
 
