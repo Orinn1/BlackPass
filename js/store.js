@@ -21,7 +21,7 @@ const DEFAULT_LOCKERS = [
     timer: 8,
     antiBypass: true,
     adultAds: true,
-    smartlinkUrl: 'https://omg10.com/4/11905140',
+    smartlinkUrl: 'https://omg10.com/4/11905577',
     ads: { popunder: true, banner: true, smartlink: true },
     clicks: 148,
     unlocks: 112,
@@ -406,8 +406,8 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: 'https://omg10.com/4/11905140',
-        step1Url: 'https://omg10.com/4/11905140',
+        smartlinkUrl: 'https://omg10.com/4/11905577',
+        step1Url: 'https://omg10.com/4/11905577',
         step2Url: 'https://omg10.com/4/11905141',
         step3Url: 'https://omg10.com/4/11905142',
         popunderScript: '',
@@ -422,8 +422,8 @@ class BlackPassStore {
       const parsed = JSON.parse(data);
       if (!parsed.ads || !parsed.ads.step1Url) {
         parsed.ads = {
-          smartlinkUrl: 'https://omg10.com/4/11905140',
-          step1Url: 'https://omg10.com/4/11905140',
+          smartlinkUrl: 'https://omg10.com/4/11905577',
+          step1Url: 'https://omg10.com/4/11905577',
           step2Url: 'https://omg10.com/4/11905141',
           step3Url: 'https://omg10.com/4/11905142',
           popunderScript: parsed.ads?.popunderScript || '',
@@ -458,8 +458,8 @@ class BlackPassStore {
         pendingPayout: 0.00
       },
       ads: {
-        smartlinkUrl: 'https://omg10.com/4/11905140',
-        step1Url: 'https://omg10.com/4/11905140',
+        smartlinkUrl: 'https://omg10.com/4/11905577',
+        step1Url: 'https://omg10.com/4/11905577',
         step2Url: 'https://omg10.com/4/11905141',
         step3Url: 'https://omg10.com/4/11905142',
         popunderScript: '',

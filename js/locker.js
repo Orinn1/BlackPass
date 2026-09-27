@@ -467,8 +467,8 @@ function updateLockerLanguage() {
 // Real Ad Trigger (Links 1, 2, 3) - Monetag High CPM Direct Links
 function triggerSmartlinkAd(btnIndex = 1) {
   // Owner's verified Monetag Direct Links (High Thai CPM)
-  let targetSmartlink = 'https://omg10.com/4/11905140';
-  if (btnIndex === 1) targetSmartlink = 'https://omg10.com/4/11905140';
+  let targetSmartlink = 'https://omg10.com/4/11905577';
+  if (btnIndex === 1) targetSmartlink = 'https://omg10.com/4/11905577';
   else if (btnIndex === 2) targetSmartlink = 'https://omg10.com/4/11905141';
   else if (btnIndex === 3) targetSmartlink = 'https://omg10.com/4/11905142';
 
